@@ -45,7 +45,7 @@
                                         <option value="{{ $obj->id }}">{{ $obj->nombre }}</option>
                                     @endforeach
                                 </select>
-                              </div>
+                            </div>
 
                             <div class="input-area">
                                 <label for="largeInput" class="form-label">Municipio</label>
@@ -60,42 +60,48 @@
                             </div>
                             <div class="input-area">
                                 <label for="largeInput" class="form-label">Codigo luminaria</label>
-                                <input type="text"  name="codigo_luminaria" value="{{ old('codigo_luminaria') }}" required
+                                <input type="text" name="codigo_luminaria" value="{{ old('codigo_luminaria') }}" required
                                     class="form-control">
 
                             </div>
                             <div class="input-area">
-
                                 <label for="largeInput" class="form-label">Tipo luminaria</label>
-                                <select class="form-control" id="departamento">
+                                <select class="form-control" id="tipo_luminaria">
                                     @foreach ($tipos as $obj)
                                         <option value="{{ $obj->id }}">{{ $obj->nombre }}</option>
                                     @endforeach
                                 </select>
-
                             </div>
+
+                            <div class="input-area">
+                                <label for="largeInput" class="form-label">Potencia promedio</label>
+                                <select class="form-control" id="potencia_promedio">
+                                    
+                                </select>
+                            </div>
+
                             <div class="input-area">
                                 <label for="largeInput" class="form-label">Potencia nominal</label>
-                                <input type="number" step="0.001" name="potencia_nominal" value="{{ old('potencia_nominal') }}" required
-                                    class="form-control">
+                                <input type="number" step="0.001" name="potencia_nominal"
+                                    value="{{ old('potencia_nominal') }}" required class="form-control">
                             </div>
 
                             <div class="input-area">
                                 <label for="largeInput" class="form-label">Consumo mensual</label>
-                                <input type="number" step="0.001" name="consumo_mensual" value="{{ old('consumo_mensual') }}" required
-                                    class="form-control">
+                                <input type="number" step="0.001" name="consumo_mensual"
+                                    value="{{ old('consumo_mensual') }}" required class="form-control">
                             </div>
 
                             <div class="input-area">
                                 <label for="largeInput" class="form-label">Decidad luminicia</label>
-                                <input type="number" step="0.001" name="decidad_luminicia" value="{{ old('decidad_luminicia') }}" required
-                                    class="form-control">
+                                <input type="number" step="0.001" name="decidad_luminicia"
+                                    value="{{ old('decidad_luminicia') }}" required class="form-control">
                             </div>
 
                             <div class="input-area">
                                 <label for="largeInput" class="form-label">Fecha ultimo censo</label>
-                                <input type="date" name="fecha_ultimo_censo" value="{{ old('fecha_ultimo_censo') }}" required
-                                    class="form-control">
+                                <input type="date" name="fecha_ultimo_censo" value="{{ old('fecha_ultimo_censo') }}"
+                                    required class="form-control">
                             </div>
 
                         </div>
@@ -126,9 +132,8 @@
                 // var para la Departamento
                 const Departamento = $(this).val();
 
-                //funcionpara las municipios
+
                 $.get("{{ url('censo_luminaria/get_municipios') }}" + '/' + Departamento, function(data) {
-                    //esta el la peticion get, la cual se divide en tres partes. ruta,variables y funcion
                     console.log(data);
                     var _select = '<option value="">Seleccione</option>'
                     for (var i = 0; i < data.length; i++)
@@ -139,11 +144,10 @@
                 });
             });
 
-             //combo para municipios
-             $("#municipio").change(function() {
+
+            $("#municipio").change(function() {
                 var Municipio = $(this).val();
                 $.get("{{ url('censo_luminaria/get_distritos') }}" + '/' + Municipio, function(data) {
-                    //console.log(data);
                     var _select = ''
                     for (var i = 0; i < data.length; i++)
                         _select += '<option value="' + data[i].id + '"  >' + data[i].nombre +
@@ -152,7 +156,24 @@
                     $("#distrito").html(_select);
                 });
             });
+
+            $("#tipo_luminaria").change(function() {
+                var tipo_luminaria = $(this).val();
+                $.get("{{ url('censo_luminaria/get_potencia_promedio') }}" + '/' + tipo_luminaria,
+                    function(data) {
+                        if (data.length === 0) {
+                            var _select = '<option value="">No aplica</option>'
+                        } else {
+                            var _select = '<option value="">Seleccione</option>'
+                            for (var i = 0; i < data.length; i++)
+                                _select += '<option value="' + data[i].id + '"  >' + data[i].potencia +
+                                '</option>';
+                        }
+                        $("#potencia_promedio").html(_select);
+                    });
+            });
+
         });
-        </script>
+    </script>
 
 @endsection

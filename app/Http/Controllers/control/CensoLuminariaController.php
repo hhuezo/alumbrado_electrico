@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\catalogo\Departamento;
 use App\Models\catalogo\Distrito;
 use App\Models\catalogo\Municipio;
+use App\Models\catalogo\PotenciaPromedio;
 use App\Models\catalogo\TipoLuminaria;
 use App\Models\control\CensoLuminaria;
 use Illuminate\Http\Request;
@@ -40,6 +41,11 @@ class CensoLuminariaController extends Controller
     public function get_distritos($id)
     {
         return Distrito::where('municipio_id','=',$id)->get();
+    }
+
+    public function get_potencia_promedio($id)
+    {
+        return PotenciaPromedio::where('tipo_luminaria_id','=',$id)->get();
     }
 
 
