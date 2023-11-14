@@ -55,18 +55,18 @@
 
                             <div class="input-area">
                                 <label for="largeInput" class="form-label">Distrito</label>
-                                <select class="form-control" name="distrito_id" id="distrito">
+                                <select class="form-control" name="distrito_id" id="distrito" required>
                                 </select>
                             </div>
                             <div class="input-area">
                                 <label for="largeInput" class="form-label">Codigo luminaria</label>
-                                <input type="text" name="codigo_luminaria" value="{{ old('codigo_luminaria') }}" required
+                                <input type="number" name="codigo_luminaria" value="{{ old('codigo_luminaria') }}" required
                                     class="form-control">
 
                             </div>
                             <div class="input-area">
                                 <label for="largeInput" class="form-label">Tipo luminaria</label>
-                                <select class="form-control" id="tipo_luminaria">
+                                <select class="form-control" id="tipo_luminaria" name="tipo_luminaria_id">
                                     @foreach ($tipos as $obj)
                                         <option value="{{ $obj->id }}">{{ $obj->nombre }}</option>
                                     @endforeach
@@ -88,7 +88,7 @@
 
                             <div class="input-area">
                                 <label for="largeInput" class="form-label">Consumo mensual</label>
-                                <input type="number" step="0.001" readonly name="consumo_mensual" id="consumo_mensual"
+                                <input type="number" step="0.001"  name="consumo_mensual" id="consumo_mensual"
                                     value="{{ old('consumo_mensual') }}" required class="form-control">
                             </div>
 

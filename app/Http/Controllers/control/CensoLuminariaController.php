@@ -57,7 +57,20 @@ class CensoLuminariaController extends Controller
 
     public function store(Request $request)
     {
-        //
+
+        $censo = new CensoLuminaria();
+        $censo->tipo_luminaria_id = $request->tipo_luminaria_id;
+        $censo->potencia_nominal = $request->potencia_nominal;
+        $censo->consumo_mensual = $request->consumo_mensual;
+        $censo->fecha_ultimo_censo = $request->fecha_ultimo_censo;
+        $censo->distrito_id = $request->distrito_id;
+        $censo->usuario_ingreso = auth()->user()->id;
+        $censo->codigo_luminaria = $request->codigo_luminaria;
+        $censo->decidad_luminicia = $request->decidad_luminicia;
+        $censo->save();
+
+        alert()->success('El registro ha sido agregado correctamente');
+        return back();
     }
 
     /**
