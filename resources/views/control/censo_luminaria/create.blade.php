@@ -1,7 +1,7 @@
 @extends ('menu')
 @section('contenido')
-    @include('sweetalert::alert', ['cdn' => 'https://cdn.jsdelivr.net/npm/sweetalert2@9'])
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @include('sweetalert::alert')
     <div class="grid grid-cols-12 gap-5 mb-5">
 
         <div class="2xl:col-span-12 lg:col-span-12 col-span-12">
@@ -76,19 +76,19 @@
                             <div class="input-area">
                                 <label for="largeInput" class="form-label">Potencia promedio</label>
                                 <select class="form-control" id="potencia_promedio">
-                                    
+                                    <option value="">No aplica</option>
                                 </select>
                             </div>
 
                             <div class="input-area">
                                 <label for="largeInput" class="form-label">Potencia nominal</label>
-                                <input type="number" step="0.001" name="potencia_nominal"
+                                <input type="number" step="0.001" name="potencia_nominal" id="potencia_nominal"
                                     value="{{ old('potencia_nominal') }}" required class="form-control">
                             </div>
 
                             <div class="input-area">
                                 <label for="largeInput" class="form-label">Consumo mensual</label>
-                                <input type="number" step="0.001" name="consumo_mensual"
+                                <input type="number" step="0.001" readonly name="consumo_mensual" id="consumo_mensual"
                                     value="{{ old('consumo_mensual') }}" required class="form-control">
                             </div>
 
@@ -105,6 +105,7 @@
                             </div>
 
                         </div>
+                        <div>&nbsp;</div>
                         <div style="text-align: right;">
                             <button type="submit" style="margin-right: 18px" class="btn btn-dark">Aceptar</button>
                         </div>
@@ -162,7 +163,8 @@
                 $.get("{{ url('censo_luminaria/get_potencia_promedio') }}" + '/' + tipo_luminaria,
                     function(data) {
                         if (data.length === 0) {
-                            var _select = '<option value="">No aplica</option>'
+                            var _select = '<option value="">No aplica</option>';
+                            $("#potencia_nominal").prop("disabled", false);
                         } else {
                             var _select = '<option value="">Seleccione</option>'
                             for (var i = 0; i < data.length; i++)
@@ -171,6 +173,51 @@
                         }
                         $("#potencia_promedio").html(_select);
                     });
+
+                    document.getElementById('potencia_nominal').value = "";
+                    document.getElementById('consumo_mensual').value = "";
+            });
+
+            $("#potencia_promedio").change(function() {
+                var potencia_promedio = $(this).val();
+                if (potencia_promedio == "") {
+                    document.getElementById('consumo_mensual').value = "";
+                    $("#potencia_nominal").prop("disabled", true);
+
+                } else {
+                    $.get("{{ url('censo_luminaria/get_consumo_mensual') }}" + '/' + potencia_promedio,
+                        function(data) {
+                            if (data.length === 0) {
+                                document.getElementById('consumo_mensual').value = "";
+                                $("#potencia_nominal").prop("disabled", false);
+                            } else {
+                                document.getElementById('consumo_mensual').value = data
+                                    .consumo_promedio;
+                                $("#potencia_nominal").prop("disabled", true);
+                            }
+
+                        });
+                }
+
+            });
+
+            $("#potencia_nominal").change(function() {
+                if ($(this).val() > 0) {
+                    var potencia_nominal = parseFloat($(this).val());
+
+                    var consumo_mensual = (potencia_nominal * 360 * 0.90) / 1000;
+                    document.getElementById('consumo_mensual').value = consumo_mensual;
+
+                    console.log(potencia_nominal);
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'El valor ingresado no es válido'
+                    })
+                    document.getElementById('potencia_nominal').value = "";
+                }
+
             });
 
         });

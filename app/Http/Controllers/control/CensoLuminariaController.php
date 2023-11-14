@@ -48,6 +48,12 @@ class CensoLuminariaController extends Controller
         return PotenciaPromedio::where('tipo_luminaria_id','=',$id)->get();
     }
 
+    public function get_consumo_mensual($id)
+    {
+        return PotenciaPromedio::findOrFail($id);
+    }
+
+
 
     public function store(Request $request)
     {
