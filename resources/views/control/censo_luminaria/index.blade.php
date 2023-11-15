@@ -21,9 +21,11 @@
                             <thead>
                                 <tr class="td-table">
 
-                                    <td style="text-align: center">Id</td>
-                                    <td style="text-align: center">Nombre</td>
-                                    <td style="text-align: center">Activo</td>
+                                    <td style="text-align: center">Codigo</td>
+                                    <td style="text-align: center">Tipo luminaria</td>
+                                    <td style="text-align: center">Fecha</td>
+                                    <td style="text-align: center">Consumo mensual</td>
+                                    <td style="text-align: center">Distrito</td>
                                     <td style="text-align: center">opciones</td>
 
                                 </tr>
@@ -32,26 +34,17 @@
                                 @if ($censo_luminarias->count() > 0)
                                     @foreach ($censo_luminarias as $obj)
                                     <tr>
-                                        <td align="center">{{ $obj->Id }}</td>
-                                        <td>{{ $obj->Nombre }}</td>
-                                        <td align="center"><input type="checkbox" {{$obj->Activo == 1 ? 'checked':''}}></td>
+                                        <td align="center">{{ $obj->codigo_luminaria }}</td>
+                                        <td>{{ $obj->tipo_luminaria->nombre }}</td>
+
+                                        <td align="center">{{ date('d/m/Y', strtotime($obj->fecha_ingreso)) }}</td>
+
+                                        <td align="center">{{ $obj->consumo_mensual }} (kWh)</td>
+                                        <td>{{ $obj->distrito->nombre }}</td>
                                         <td align="center">
-                                            <a href="{{ url('catalogo/lugar_formacion') }}/{{ $obj->Id }}/edit">
+                                            <a href="{{ url('control/censo_luminaria') }}/{{ $obj->id }}/edit">
                                                 <iconify-icon icon="mdi:pencil-box" width="40"></iconify-icon>
                                             </a>
-                                            &nbsp;&nbsp;
-
-                                            @if ($obj->Activo == 1)
-                                            <iconify-icon data-bs-toggle="modal"
-                                            data-bs-target="#modal-delete-{{ $obj->Id }}" icon="mdi:trash"
-                                            width="40"></iconify-icon>
-                                            @else
-                                            <iconify-icon data-bs-toggle="modal"
-                                            data-bs-target="#modal-active-{{ $obj->Id }}"
-                                            icon="fontisto:checkbox-active" style="color: #1769aa;"
-                                            width="30"></iconify-icon>
-                                            @endif
-
                                         </td>
                                     </tr>
 

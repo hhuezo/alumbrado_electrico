@@ -66,7 +66,7 @@
                             </div>
                             <div class="input-area">
                                 <label for="largeInput" class="form-label">Tipo luminaria</label>
-                                <select class="form-control" id="tipo_luminaria">
+                                <select class="form-control" name="tipo_luminaria_id" id="tipo_luminaria">
                                     @foreach ($tipos as $obj)
                                         <option value="{{ $obj->id }}">{{ $obj->nombre }}</option>
                                     @endforeach

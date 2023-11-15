@@ -57,7 +57,18 @@ class CensoLuminariaController extends Controller
 
     public function store(Request $request)
     {
-        //
+        $censo = new CensoLuminaria();
+        $censo->tipo_luminaria_id = $request->tipo_luminaria_id;
+        $censo->potencia_nominal = $request->potencia_nominal;
+        $censo->consumo_mensual = $request->consumo_mensual;
+        $censo->fecha_ultimo_censo = $request->fecha_ultimo_censo;
+        $censo->distrito_id = $request->distrito_id;
+        $censo->usuario_ingreso = auth()->user()->id;
+        $censo->codigo_luminaria = $request->codigo_luminaria;
+        $censo->decidad_luminicia = $request->decidad_luminicia;
+        $censo->save();
+        alert()->success('El registro ha sido creado correctamente');
+        return back();
     }
 
     /**
@@ -71,15 +82,17 @@ class CensoLuminariaController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
-        //
+        $censo = CensoLuminaria::findOrFail($id);
+        $tipos = TipoLuminaria::where('Activo','=',1)->get();
+        $departamentos = Departamento::get();
+        $municipios = Municipio::where('departamento_id','=',$censo->distrito->municipio->departamento_id)->get();
+        $distritos = Distrito::where('municipio_id','=',$censo->distrito->municipio_id)->get();
+
+        $potencias_promedio = PotenciaPromedio::where('tipo_luminaria_id','=',$censo->tipo_luminaria_id)->get();
+
+        return view('control.censo_luminaria.edit', compact('censo','tipos','departamentos','municipios','distritos','potencias_promedio'));
     }
 
     /**
