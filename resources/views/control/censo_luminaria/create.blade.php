@@ -2,6 +2,22 @@
 @section('contenido')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @include('sweetalert::alert')
+
+    <style>
+        #loading {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+        }
+
+        #loading img {
+            width: 50px; /* ajusta el tamaño de la imagen según sea necesario */
+            height: 50px;
+        }
+    </style>
     <div class="grid grid-cols-12 gap-5 mb-5">
 
         <div class="2xl:col-span-12 lg:col-span-12 col-span-12">
@@ -37,6 +53,32 @@
                         @csrf
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-7">
 
+                            <div id="loading">
+                                <img src="{{ asset('img/loading.gif') }}" style="width: 100px; height:100px" alt="Cargando...">
+                            </div>
+
+                            <input type="hidden" id="latitud" class="form-control">
+                            <input type="hidden" id="longitud" class="form-control">
+
+                            <div class="input-area">
+                                <label for="largeInput" class="form-label">Localización</label>
+                                <div class="relative">
+                                    <input type="text" id="localizacion" class="form-control !pr-12" readonly>
+                                    <button onclick="obtenerUbicacion()" type="button"
+                                        class="absolute btn-dark right-0 top-1/2 -translate-y-1/2 w-9 h-full border-l border-l-slate-200 dark:border-l-slate-700 flex items-center justify-center">
+                                        <iconify-icon icon="mdi:location" style="color: white;"
+                                            width="24"></iconify-icon>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="input-area">
+                                <label for="largeInput" class="form-label">Codigo luminaria</label>
+                                <input type="text" name="codigo_luminaria" value="{{ old('codigo_luminaria') }}" required
+                                    class="form-control">
+
+                            </div>
+
                             <div class="input-area">
                                 <label for="largeInput" class="form-label">Departamento</label>
                                 <select class="form-control" id="departamento">
@@ -48,22 +90,17 @@
                             </div>
 
                             <div class="input-area">
-                                <label for="largeInput" class="form-label">Municipio</label>
-                                <select class="form-control" id="municipio">
-                                </select>
-                            </div>
-
-                            <div class="input-area">
                                 <label for="largeInput" class="form-label">Distrito</label>
                                 <select class="form-control" name="distrito_id" id="distrito">
                                 </select>
                             </div>
-                            <div class="input-area">
-                                <label for="largeInput" class="form-label">Codigo luminaria</label>
-                                <input type="text" name="codigo_luminaria" value="{{ old('codigo_luminaria') }}" required
-                                    class="form-control">
 
-                            </div>
+                            {{-- <div class="input-area">
+                                <label for="largeInput" class="form-label">Distrito</label>
+                                <select class="form-control" name="distrito_id" id="distrito">
+                                </select>
+                            </div> --}}
+
                             <div class="input-area">
                                 <label for="largeInput" class="form-label">Tipo luminaria</label>
                                 <select class="form-control" name="tipo_luminaria_id" id="tipo_luminaria">
@@ -134,19 +171,19 @@
                 const Departamento = $(this).val();
 
 
-                $.get("{{ url('censo_luminaria/get_municipios') }}" + '/' + Departamento, function(data) {
+                $.get("{{ url('censo_luminaria/get_distritos') }}" + '/' + Departamento, function(data) {
                     console.log(data);
-                    var _select = '<option value="">Seleccione</option>'
+                    var _select = ''
                     for (var i = 0; i < data.length; i++)
                         _select += '<option value="' + data[i].id + '">' + data[i].nombre +
                         '</option>';
-                    $("#municipio").html(_select);
+                    $("#distrito").html(_select);
 
                 });
             });
 
 
-            $("#municipio").change(function() {
+           /* $("#municipio").change(function() {
                 var Municipio = $(this).val();
                 $.get("{{ url('censo_luminaria/get_distritos') }}" + '/' + Municipio, function(data) {
                     var _select = ''
@@ -156,7 +193,7 @@
 
                     $("#distrito").html(_select);
                 });
-            });
+            });*/
 
             $("#tipo_luminaria").change(function() {
                 var tipo_luminaria = $(this).val();
@@ -174,8 +211,8 @@
                         $("#potencia_promedio").html(_select);
                     });
 
-                    document.getElementById('potencia_nominal').value = "";
-                    document.getElementById('consumo_mensual').value = "";
+                document.getElementById('potencia_nominal').value = "";
+                document.getElementById('consumo_mensual').value = "";
             });
 
             $("#potencia_promedio").change(function() {
@@ -220,7 +257,44 @@
 
             });
 
+
+
         });
+
+        function obtenerUbicacion() {
+            // Mostrar la imagen de carga
+            toggleLoading(true);
+
+            // Verificar si el navegador soporta la geolocalización
+            if (navigator.geolocation) {
+                // Obtener la ubicación actual
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    // Extraer latitud y longitud
+                    var latitud = position.coords.latitude;
+                    var longitud = position.coords.longitude;
+
+                    // Mostrar latitud y longitud en los campos de texto
+                    $("#latitud").val(latitud);
+                    $("#longitud").val(longitud);
+                    $("#localizacion").val(latitud+ ' '+longitud);
+
+                     // Ocultar la imagen de carga
+                     toggleLoading(false);
+                });
+            } else {
+                alert("Tu navegador no soporta la geolocalización.");
+                    // Ocultar la imagen de carga en caso de error
+                    toggleLoading(false);
+            }
+        }
+
+        function toggleLoading(show) {
+                if (show) {
+                    $("#loading").show();
+                } else {
+                    $("#loading").hide();
+                }
+            }
     </script>
 
 @endsection

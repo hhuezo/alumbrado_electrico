@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <title>DGEHM</title>
-    <link rel="icon" type="image/png" href="{{ asset('assets/images/logo/favicon.svg') }}">
+    <link rel="icon" type="image/png" href="{{ asset('img/escudo.svg') }}">
     <!-- BEGIN: Google Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
@@ -25,6 +25,71 @@
     <link rel="stylesheet" href="{{ asset('assets/css/jquery.dataTables.min.css') }}">
     <script src="{{ asset('assets/js/jquery-3.6.0.min.js') }}" sync></script>
     <script src="{{ asset('assets/js/jquery.dataTables.min.js') }}"></script>
+
+    <style>
+        /* The switch - the box around the slider */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        /* Hide default HTML checkbox */
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        /* The slider */
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        input:checked+.slider {
+            background-color: #2196F3;
+        }
+
+        input:focus+.slider {
+            box-shadow: 0 0 1px #2196F3;
+        }
+
+        input:checked+.slider:before {
+            -webkit-transform: translateX(26px);
+            -ms-transform: translateX(26px);
+            transform: translateX(26px);
+        }
+
+        /* Rounded sliders */
+        .slider.round {
+            border-radius: 34px;
+        }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+    </style>
 
 
     <script>
@@ -52,10 +117,10 @@
                 class="w-screen h-screen fixed top-0 bg-slate-900 bg-opacity-50 backdrop-blur-sm z-10 hidden"></div>
             <div class="logo-segment">
                 <a class="flex items-center" href="{{ url('/') }}">
-                    <img src="{{ asset('assets/images/logo/logo-c.svg') }}" class="black_logo" alt="logo">
-                    <img src="{{ asset('assets/images/logo/logo-c-white.svg') }}" class="white_logo" alt="logo">
-                    <span
-                        class="ltr:ml-3 rtl:mr-3 text-xl font-Inter font-bold text-slate-900 dark:text-white">DGEHM</span>
+                    <img src="{{ asset('img/logo-blanco.png') }}" class="black_logo" alt="logo">
+                    <img src="{{ asset('img/logo-blanco.png') }}" class="white_logo" alt="logo">
+                    {{-- <span
+                        class="ltr:ml-3 rtl:mr-3 text-xl font-Inter font-bold text-slate-900 dark:text-white">DGEHM</span> --}}
                 </a>
                 <!-- Sidebar Type Button -->
                 <div id="sidebar_type" class="cursor-pointer text-slate-900 dark:text-white text-lg">
@@ -107,15 +172,7 @@
                                 </li>
                             </ul>
                         </li>
-                        <li>
-                            <a href="{{ url('seguridad/usuarios') }}" class="navItem">
-                                <span class="flex items-center">
 
-                                    <iconify-icon class=" nav-icon" icon="heroicons-outline:user"></iconify-icon>
-                                    <span>Verificar Usuarios</span>
-                                </span>
-                            </a>
-                        </li>
 
                         <li class="">
                             <a href="#" class="navItem">
@@ -155,7 +212,7 @@
 
 
 
-                    @can('read catalogos')
+
                         <li class="">
                             <a href="#" class="navItem">
                                 <span class="flex items-center">
@@ -169,11 +226,11 @@
                             </a>
                             <ul class="sidebar-submenu">
                                 <li>
-                                    <a href="{{ url('catalogo/sector') }}">Sector</a>
+                                    <a href="{{ url('catalogo/biblioteca') }}">Biblioteca</a>
                                 </li>
 
                                 <li>
-                                    <a href="{{ url('catalogo/profesion') }}">Profesion</a>
+                                    <a href="{{ url('catalogo/reporte_falla') }}">Reporte falla</a>
                                 </li>
 
                                 <li>
@@ -186,19 +243,18 @@
 
                             </ul>
                         </li>
-                    @endcan
 
-                    @can('read certificacion')
+
+
                         <li>
-                            <a href="{{ url('registro/certificacion') }}" class="navItem">
+                            <a href="{{ url('control/censo_luminaria') }}" class="navItem">
                                 <span class="flex items-center">
-
-                                    <iconify-icon class=" nav-icon" icon="heroicons-outline:user"></iconify-icon>
-                                    <span>Certificacion</span>
+                                    <iconify-icon class=" nav-icon" icon="vaadin:records" style="color: white;"  width="15" ></iconify-icon>
+                                    <span>Censo luminaria</span>
                                 </span>
                             </a>
                         </li>
-                    @endcan
+
 
 
                     @can('read proyecto')

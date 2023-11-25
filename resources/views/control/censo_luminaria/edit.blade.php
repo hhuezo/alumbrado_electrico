@@ -8,7 +8,7 @@
                 <div class="card-body flex flex-col p-6">
                     <header class="flex mb-5 items-center border-b border-slate-100 dark:border-slate-700 pb-5 -mx-6 px-6">
                         <div class="flex-1">
-                            <div class="card-title text-slate-900 dark:text-white">Lugar formación
+                            <div class="card-title text-slate-900 dark:text-white">Censo
 
                                 <a href="{{ url('catalogo/lugar_formacion') }}">
                                     <button class="btn btn-dark btn-sm float-right">
@@ -19,10 +19,6 @@
                             </div>
                         </div>
                     </header>
-
-
-
-
 
                     @if (count($errors) > 0)
                         <div class="alert alert-danger">
@@ -44,18 +40,7 @@
                                 <select class="form-control" id="departamento">
                                     @foreach ($departamentos as $obj)
                                         <option value="{{ $obj->id }}"
-                                            {{ $censo->distrito->municipio->departamento_id == $obj->id ? 'selected' : '' }}>
-                                            {{ $obj->nombre }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            <div class="input-area">
-                                <label for="largeInput" class="form-label">Municipio</label>
-                                <select class="form-control" id="municipio">
-                                    @foreach ($municipios as $obj)
-                                        <option value="{{ $obj->id }}"
-                                            {{ $censo->distrito->municipio->id == $obj->id ? 'selected' : '' }}>
+                                            {{ $censo->distrito->departamento_id == $obj->id ? 'selected' : '' }}>
                                             {{ $obj->nombre }}</option>
                                     @endforeach
                                 </select>

@@ -35,12 +35,12 @@ class CensoLuminariaController extends Controller
 
     public function get_municipios($id)
     {
-        return Municipio::where('departamento_id','=',$id)->get();
+        return Municipio::where('departamento_id','=',$id)->orderBy('nombre')->get();
     }
 
     public function get_distritos($id)
     {
-        return Distrito::where('municipio_id','=',$id)->get();
+        return Distrito::where('departamento_id','=',$id)->get();
     }
 
     public function get_potencia_promedio($id)
@@ -71,12 +71,6 @@ class CensoLuminariaController extends Controller
         return back();
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         //
@@ -87,12 +81,11 @@ class CensoLuminariaController extends Controller
         $censo = CensoLuminaria::findOrFail($id);
         $tipos = TipoLuminaria::where('Activo','=',1)->get();
         $departamentos = Departamento::get();
-        $municipios = Municipio::where('departamento_id','=',$censo->distrito->municipio->departamento_id)->get();
-        $distritos = Distrito::where('municipio_id','=',$censo->distrito->municipio_id)->get();
+        $distritos = Distrito::where('departamento_id','=',$censo->distrito->deaprtamento_id)->get();
 
         $potencias_promedio = PotenciaPromedio::where('tipo_luminaria_id','=',$censo->tipo_luminaria_id)->get();
 
-        return view('control.censo_luminaria.edit', compact('censo','tipos','departamentos','municipios','distritos','potencias_promedio'));
+        return view('control.censo_luminaria.edit', compact('censo','tipos','departamentos','distritos','potencias_promedio'));
     }
 
     /**

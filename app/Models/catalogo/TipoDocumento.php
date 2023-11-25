@@ -5,11 +5,11 @@ namespace App\Models\catalogo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Distrito extends Model
+class TipoDocumento extends Model
 {
     use HasFactory;
 
-    protected $table = 'distrito';
+    protected $table = 'tipo_documento';
 
     protected $primaryKey = 'id';
 
@@ -18,13 +18,13 @@ class Distrito extends Model
 
     protected $fillable = [
         'nombre',
-        'departamento_id'
+        'activo',
+        'fecha_creacion',
+        'fecha_modificacion',
+        'usuario_creacion',
+        'usuario_modificacion'
     ];
 
     protected $guarded = [];
 
-    public function departamento()
-    {
-        return $this->belongsTo(Departamento::class, 'departamento_id', 'id');
-    }
 }
