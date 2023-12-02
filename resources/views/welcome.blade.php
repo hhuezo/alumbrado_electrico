@@ -265,12 +265,14 @@
 
                         <div class="row">
                             <div class="col-md-4 col-sm-6 col-xs-12">
+                                <a href="{{url('publico/reporte_falla_publico')}}">
                                 <div class="wrap-item text-center">
                                     <div class="item-img">
                                         <img src="{{ asset('img/error.png') }}" style="height:100px">
                                     </div>
                                     <h3 class="pad-bt15">Reporte de fallas</h3>
                                 </div>
+                                </a>
                             </div>
                             <div class="col-md-4 col-sm-6 col-xs-12">
                                 <div class="wrap-item text-center">
@@ -305,6 +307,8 @@
             <div class="container">
                 <br><br><br><br>
                 <div class="row">
+
+
                     <div class="col-md-3 col-sm-6 col-xs-12">
                         <div class="wrap-item text-center">
                             <div class="item-img">
@@ -360,16 +364,19 @@
                     </div>
                     @foreach ($biblioteca as $obj)
                         <div class="col-md-3 col-sm-6 col-xs-12">
-                            <div class="service-item">
+                            <div class="wrap-item text-center">
+                                <div class="item-img">
+                                    <img src="{{ asset('template/img/ser01.png') }}">
+                                </div>
                                 <h3>{{ $obj->titulo }}</h3>
                                 <p>{{ $obj->descripcion }}</p>
-
+                            </div>
+                            <div style="text-align: center">
                                 @if ($obj->archivo)
                                     <a target="_blank" href="{{ asset('docs') }}/{{ $obj->archivo }}"><iconify-icon
-                                            icon="mdi:file" style="color: #67696c;"
+                                            icon="mingcute:download-3-fill" style="color: #67696c;"
                                             width="40"></iconify-icon></a>
                                 @endif
-
                             </div>
                         </div>
                     @endforeach

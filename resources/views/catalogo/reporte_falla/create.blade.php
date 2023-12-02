@@ -65,8 +65,8 @@
                                             </div>
 
                                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-7">
-                                                <input type="text" id="latitud" name="latitud" class="form-control">
-                                                <input type="text" id="longitud"  name="longitud" class="form-control">
+                                                <input type="hidden" id="latitud" name="latitud" class="form-control">
+                                                <input type="hidden" id="longitud"  name="longitud" class="form-control">
 
                                                 <div class="input-area relative">
                                                     <label for="largeInput" class="form-label">Localización</label>
@@ -129,7 +129,7 @@
 
                                                 <div class="input-area relative">
                                                     <label for="largeInput" class="form-label">Telefono</label>
-                                                    <input type="text" name="telefono_contacto" value="{{ old('telefono_contacto') }}" class="form-control">
+                                                    <input type="text" name="telefono_contacto" value="{{ old('telefono_contacto') }}" data-inputmask="'mask': ['9999-9999']" class="form-control">
                                                 </div>
 
 
@@ -162,12 +162,15 @@
         </div>
     </div>
 
-    <!-- scripts -->
-    <script src="{{ asset('assets/js/jquery-3.6.0.min.js') }}"></script>
+ <!-- scripts -->
+ <script src="{{ asset('assets/js/jquery-3.6.0.min.js') }}"></script>
+
+ <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.3.4/jquery.inputmask.bundle.min.js'></script>
 
 
     <script type="text/javascript">
         $(document).ready(function() {
+            $(":input").inputmask();
             $("#departamento").change(function() {
                 // var para la Departamento
                 const Departamento = $(this).val();

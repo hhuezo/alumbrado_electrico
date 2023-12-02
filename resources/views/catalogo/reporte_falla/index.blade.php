@@ -36,7 +36,12 @@
                                     @foreach ($reporte_fallas as $obj)
                                         <tr>
                                             <td align="center">{{ $obj->id }}</td>
-                                            <td>{{ $obj->fecha }}</td>
+                                            @if ($obj->fecha)
+                                                <td>{{ date('d/m/Y', strtotime($obj->fecha)) }}</td>
+                                            @else
+                                                <td></td>
+                                            @endif
+
                                             <td>{{ $obj->distrito->nombre }}</td>
                                             <td>{{ $obj->tipo_falla->nombre }}</td>
                                             <td>{{ $obj->nombre_contacto }}</td>

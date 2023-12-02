@@ -106,7 +106,7 @@
 
                                                 <div class="input-area relative">
                                                     <label for="largeInput" class="form-label">Telefono</label>
-                                                    <input type="text" name="telefono_contacto"  value="{{$reporte_falla->telefono_contacto}}"  class="form-control">
+                                                    <input type="text" name="telefono_contacto"  value="{{$reporte_falla->telefono_contacto}}" data-inputmask="'mask': ['9999-9999']" class="form-control">
                                                 </div>
 
                                                 <div class="input-area">
@@ -164,5 +164,13 @@
         </div>
     </div>
 
+   <!-- scripts -->
+   <script src="{{ asset('assets/js/jquery-3.6.0.min.js') }}"></script>
 
+   <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.3.4/jquery.inputmask.bundle.min.js'></script>
+   <script>
+       $(document).ready(function() {
+           $(":input").inputmask();
+       });
+   </script>
 @endsection
