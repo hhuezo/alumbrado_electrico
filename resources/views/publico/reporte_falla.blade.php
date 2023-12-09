@@ -313,7 +313,8 @@
 
     <!-- Incluir la API de Google Maps -->
     <script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=API_KEY&callback=initMap"></script>
+        src="https://maps.googleapis.com/maps/api/js?key={{ $configuracion->api_key_maps }}&amp;callback=initMap"></script>
+
 
     <div id="coordinates"></div>
 

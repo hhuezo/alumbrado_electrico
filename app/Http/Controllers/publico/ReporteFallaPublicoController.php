@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\catalogo\Departamento;
 use App\Models\catalogo\Distrito;
 use App\Models\catalogo\TipoFalla;
+use App\Models\Configuracion;
 use App\Models\control\ReporteFalla;
 use Illuminate\Http\Request;
 
@@ -16,8 +17,9 @@ class ReporteFallaPublicoController extends Controller
     {
         $departamentos = Departamento::get();
         $tipos = TipoFalla::get();
+        $configuracion = Configuracion::first();
 
-        return view('publico.reporte_falla', compact('departamentos', 'tipos'));
+        return view('publico.reporte_falla', compact('departamentos', 'tipos','configuracion'));
     }
 
     public function create()
