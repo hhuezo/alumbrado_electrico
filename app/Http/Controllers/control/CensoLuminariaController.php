@@ -35,12 +35,12 @@ class CensoLuminariaController extends Controller
 
     public function get_municipios($id)
     {
-        return Municipio::where('departamento_id','=',$id)->get();
+        return Municipio::where('departamento_id','=',$id)->orderBy('nombre')->get();
     }
 
     public function get_distritos($id)
     {
-        return Distrito::where('municipio_id','=',$id)->get();
+        return Distrito::where('departamento_id','=',$id)->get();
     }
 
     public function get_potencia_promedio($id)
@@ -57,7 +57,6 @@ class CensoLuminariaController extends Controller
 
     public function store(Request $request)
     {
-
         $censo = new CensoLuminaria();
         $censo->tipo_luminaria_id = $request->tipo_luminaria_id;
         $censo->potencia_nominal = $request->potencia_nominal;
@@ -68,31 +67,25 @@ class CensoLuminariaController extends Controller
         $censo->codigo_luminaria = $request->codigo_luminaria;
         $censo->decidad_luminicia = $request->decidad_luminicia;
         $censo->save();
-
-        alert()->success('El registro ha sido agregado correctamente');
+        alert()->success('El registro ha sido creado correctamente');
         return back();
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
-        //
+        $censo = CensoLuminaria::findOrFail($id);
+        $tipos = TipoLuminaria::where('Activo','=',1)->get();
+        $departamentos = Departamento::get();
+        $distritos = Distrito::where('departamento_id','=',$censo->distrito->deaprtamento_id)->get();
+
+        $potencias_promedio = PotenciaPromedio::where('tipo_luminaria_id','=',$censo->tipo_luminaria_id)->get();
+
+        return view('control.censo_luminaria.edit', compact('censo','tipos','departamentos','distritos','potencias_promedio'));
     }
 
     /**
