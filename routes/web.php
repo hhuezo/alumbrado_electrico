@@ -39,8 +39,8 @@ Route::resource('catalogo/biblioteca', BibliotecaController::class);
 
 
 
-
-
+Route::get('catalogo/reporte_falla/get_distrito_id/{name}', [ReporteFallaController::class,'getDistritoId']);
+Route::get('catalogo/reporte_falla/get_departamento_id/{name}', [ReporteFallaController::class,'getDepartamentoId']);
 Route::resource('catalogo/reporte_falla', ReporteFallaController::class);
 
 

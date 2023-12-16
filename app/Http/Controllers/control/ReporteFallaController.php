@@ -25,6 +25,8 @@ class ReporteFallaController extends Controller
         return view('catalogo.reporte_falla.create', compact('departamentos','tipos'));
     }
 
+
+
     public function store(Request $request)
     {
 

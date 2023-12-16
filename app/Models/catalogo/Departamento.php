@@ -29,4 +29,15 @@ class Departamento extends Model
         return $this->hasMany(Municipio::class, 'departamento_id');
     }
 
+    public function getDepartamentoId($nombre)
+    {
+        $departamento = Departamento::where('nombre','=',$nombre)->first();
+
+        if($departamento)
+        {
+            return $departamento->id;
+        }
+        return 0;
+    }
+
 }

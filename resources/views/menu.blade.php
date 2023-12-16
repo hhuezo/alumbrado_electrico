@@ -173,7 +173,7 @@
                             </ul>
                         </li>
 
-
+{{--
                         <li class="">
                             <a href="#" class="navItem">
                                 <span class="flex items-center">
@@ -207,7 +207,7 @@
 
 
                             </ul>
-                        </li>
+                        </li> --}}
                     @endcan
 
 
@@ -232,14 +232,14 @@
                                 <li>
                                     <a href="{{ url('catalogo/reporte_falla') }}">Reporte falla</a>
                                 </li>
-
+{{--
                                 <li>
                                     <a href="{{ url('catalogo/lugar_formacion') }}">Lugares formación</a>
                                 </li>
 
                                 <li>
                                     <a href="{{ url('catalogo/pais') }}">Paises</a>
-                                </li>
+                                </li> --}}
 
                             </ul>
                         </li>

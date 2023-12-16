@@ -32,4 +32,6 @@ class Municipio extends Model
     {
         return $this->hasMany(Distrito::class, 'municipio_id');
     }
+
+
 }

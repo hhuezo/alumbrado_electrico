@@ -192,9 +192,9 @@
                                     <li class=""><a href="#portfolio">Evaluación de proyectos</a></li>
                                     <li class=""><a href="#testimonial">Estimación de factura</a></li>
                                     <li class=""> <a href="{{ route('login') }}">Login</a></li>
-                                    @if (Route::has('register'))
+                                    {{-- @if (Route::has('register'))
                                         <li class=""><a href="{{ route('register') }}">Registro</a></li>
-                                    @endif
+                                    @endif --}}
                                 </ul>
                                 {{-- <div class="collapse navbar-collapse" id="myNavbar">
                   <ul class="nav navbar-nav navbar-right">

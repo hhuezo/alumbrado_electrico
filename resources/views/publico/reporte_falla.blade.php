@@ -21,7 +21,7 @@
 
     <style>
         #map {
-            height: 550px;
+            height: 500px;
             width: 100%;
         }
 
@@ -108,7 +108,7 @@
                                                     class="form-control">
                                                 <input type="hidden" id="longitud" name="longitud"
                                                     class="form-control">
-
+                                                <input type="hidden" id="distrito_get_id" class="form-control">
 
 
                                                 <div class="input-area relative">
@@ -264,6 +264,7 @@
         function updateCoordinatesInput(lat, lng) {
             document.getElementById('latitud').value = lat.toFixed(11);
             document.getElementById('longitud').value = lng.toFixed(11);
+            obtenerUbicacion(lat.toFixed(11), lng.toFixed(11))
         }
 
         function handleLocationError(browserHasGeolocation, pos) {
@@ -273,6 +274,79 @@
                 'Error: La geolocalización ha fallado.' :
                 'Error: Tu navegador no soporta la geolocalización.');
             infoWindow.open(map);
+        }
+
+
+        function obtenerUbicacion(latitud, longitud) {
+            var url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitud}&lon=${longitud}`;
+
+            $.ajax({
+                url: url,
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    //console.log(data);
+                    if (data.address) {
+                        var departamento = data.address.state;
+                        var municipio = data.address.city || data.address.town || data.address.village || data
+                            .address.county;
+
+                        //console.log(departamento);
+                        //console.log(municipio);
+                        getDepartamento(departamento);
+                        if (municipio != undefined) {
+                            getDistritoId(municipio);
+                        }
+
+                    } else {
+                        console.log("No se pudo obtener la información de ubicación.")
+                    }
+                },
+                error: function() {
+                    console.log("No se pudo obtener la información de ubicación.")
+                }
+            });
+        }
+
+
+
+
+
+        function getDepartamento(nombre) {
+            var baseUrl = "{{ url('/catalogo/reporte_falla/get_departamento_id') }}";
+            var urlCompleta = baseUrl + '/' + nombre;
+
+            $.ajax({
+                url: urlCompleta,
+                type: 'GET',
+                success: function(data) {
+                    if (data != 0) {
+                        document.getElementById('departamento').value = data;
+                        getDistrito(data);
+                    }
+                },
+                error: function() {
+                    console.log("No se pudo obtener la información de ubicación.")
+                }
+            });
+        }
+
+        function getDistritoId(nombre) {
+            var baseUrl = "{{ url('/catalogo/reporte_falla/get_distrito_id') }}";
+            var urlCompleta = baseUrl + '/' + nombre;
+
+            $.ajax({
+                url: urlCompleta,
+                type: 'GET',
+                success: function(data) {
+                    console.log("municipio: ", data);
+                    document.getElementById('distrito_get_id').value = data;
+
+                },
+                error: function() {
+                    console.log("No se pudo obtener la información de ubicación.")
+                }
+            });
         }
     </script>
 
@@ -292,10 +366,15 @@
 
             $.get("{{ url('publico/reporte_falla_publico/get_distritos') }}" + '/' + id,
                 function(data) {
-                    console.log(data);
+                    //console.log(data);
+                    var distrito_get_id = document.getElementById('distrito_get_id').value;
                     var _select = '';
                     for (var i = 0; i < data.length; i++) {
-                        _select += '<option value="' + data[i].id + '">' + data[i].nombre + '</option>';
+                        if (distrito_get_id == data[i].id) {
+                            _select += '<option value="' + data[i].id + '" selected>' + data[i].nombre + '</option>';
+                        } else {
+                            _select += '<option value="' + data[i].id + '">' + data[i].nombre + '</option>';
+                        }
                     }
                     $("#distrito").html(_select);
                 });

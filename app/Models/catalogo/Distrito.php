@@ -27,4 +27,14 @@ class Distrito extends Model
     {
         return $this->belongsTo(Departamento::class, 'departamento_id', 'id');
     }
+
+    public function distritoId($nombre)
+    {
+        $distrito = Distrito::where('nombre','=',$nombre)->first();
+        if($distrito)
+        {
+            return $distrito->id;
+        }
+        return 0;
+    }
 }

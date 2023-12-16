@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\catalogo\Departamento;
 use App\Models\catalogo\Distrito;
 use App\Models\catalogo\EstadoReporteFalla;
+use App\Models\catalogo\Municipio;
 use App\Models\catalogo\TipoFalla;
 use App\Models\control\ReporteFalla;
 use Exception;
@@ -85,7 +86,7 @@ class ReporteFallaController extends Controller
         $tipos = TipoFalla::get();
         $estados_reporte = EstadoReporteFalla::get();
 
-        return view('catalogo.reporte_falla.edit', compact('reporte_falla', 'departamentos', 'tipos', 'distritos','estados_reporte'));
+        return view('catalogo.reporte_falla.edit', compact('reporte_falla', 'departamentos', 'tipos', 'distritos', 'estados_reporte'));
     }
 
     public function update(Request $request, $id)
@@ -138,17 +139,33 @@ class ReporteFallaController extends Controller
         return back();
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         $reporte_falla = ReporteFalla::findOrFail($id);
         $reporte_falla->delete();
         alert()->success('El registro ha sido eliminado correctamente');
         return back();
+    }
+
+    public function getDepartamentoId($name)
+    {
+        $nombreSinDepartamento = str_replace("Departamento de", "", $name);
+        $nombreFinal = trim($nombreSinDepartamento);
+
+        $departamentoModel = new Departamento();
+        $departamentoId = $departamentoModel->getDepartamentoId($nombreFinal);
+
+        return $departamentoId;
+    }
+
+    public function getDistritoId($name)
+    {
+        $nombreSinDistrito = str_replace("Municipio de", "", $name);
+        $nombreFinal = trim($nombreSinDistrito);
+
+        $distritoModel = new Distrito();
+        $distritoId = $distritoModel->distritoId($nombreFinal);
+
+        return $distritoId;
     }
 }
