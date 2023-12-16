@@ -44,12 +44,8 @@ class ReporteFallaController extends Controller
     public function store(Request $request)
     {
         try {
-            // Obtener la fecha actual
+
             $fechaActual = Carbon::now();
-
-            // Formatear la fecha en el formato "Y-m-d"
-            $fechaFormateada = $fechaActual->format('Y-m-d');
-
 
             $reporte_falla = new ReporteFalla();
             $reporte_falla->fecha = $fechaActual->format('Y-m-d');
@@ -85,6 +81,30 @@ class ReporteFallaController extends Controller
 
         return $response;
     }
+
+
+    public function getDepartamentoId($name)
+    {
+        $nombreSinDepartamento = str_replace("Departamento de", "", $name);
+        $nombreFinal = trim($nombreSinDepartamento);
+
+        $departamentoModel = new Departamento();
+        $departamentoId = $departamentoModel->getDepartamentoId($nombreFinal);
+
+        return $departamentoId;
+    }
+
+    public function getDistritoId($name)
+    {
+        $nombreSinDistrito = str_replace("Municipio de", "", $name);
+        $nombreFinal = trim($nombreSinDistrito);
+
+        $distritoModel = new Distrito();
+        $distritoId = $distritoModel->distritoId($nombreFinal);
+
+        return $distritoId;
+    }
+
 
     public function show($id)
     {

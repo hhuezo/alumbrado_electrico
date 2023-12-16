@@ -19,7 +19,8 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });*/
-
+Route::get('api_get_distrito_id/{name}', [ReporteFallaController::class,'getDistritoId']);
+Route::get('api_get_departamento_id/{name}', [ReporteFallaController::class,'getDepartamentoId']);
 Route::get('api_get_distritos/{id}', [ReporteFallaController::class,'getDistritos']);
 Route::resource('api_reporte_falla', ReporteFallaController::class);
 Route::get('api_censo_luminaria/get_potencia_promedio/{id}', [CensoLuminariaController::class,'get_potencia_promedio']);
