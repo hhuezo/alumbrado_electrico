@@ -91,7 +91,7 @@ class ReporteFallaController extends Controller
         $departamentoModel = new Departamento();
         $departamentoId = $departamentoModel->getDepartamentoId($nombreFinal);
 
-        return $departamentoId;
+        return response()->json(['departamentoId' => $departamentoId]);
     }
 
     public function getDistritoId($name)
@@ -102,7 +102,7 @@ class ReporteFallaController extends Controller
         $distritoModel = new Distrito();
         $distritoId = $distritoModel->distritoId($nombreFinal);
 
-        return $distritoId;
+        return response()->json(['distritoId' => $distritoId]);
     }
 
 
