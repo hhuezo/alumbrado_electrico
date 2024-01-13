@@ -22,7 +22,10 @@ Route::get('/', function () {
     return view('welcome');
 });*/
 
-Route::get('/', [WelcomeController::class, 'index'])->name('index');
+//Route::get('/', [WelcomeController::class, 'index'])->name('index');
+Route::get('/', function () {
+    return view('auth.login');
+});
 Auth::routes();
 
 
