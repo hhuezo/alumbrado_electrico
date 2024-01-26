@@ -130,7 +130,7 @@
                             </div>
 
                             <div class="input-area">
-                                <label for="largeInput" class="form-label">Decidad luminicia</label>
+                                <label for="largeInput" class="form-label">Desidad luminicia</label>
                                 <input type="number" step="0.001" name="decidad_luminicia"
                                     value="{{ old('decidad_luminicia') }}" required class="form-control">
                             </div>
@@ -166,6 +166,7 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
+            obtenerUbicacion();
             $("#departamento").change(function() {
                 // var para la Departamento
                 const Departamento = $(this).val();

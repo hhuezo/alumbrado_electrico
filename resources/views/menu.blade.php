@@ -173,7 +173,7 @@
                             </ul>
                         </li>
 
-{{--
+                        {{--
                         <li class="">
                             <a href="#" class="navItem">
                                 <span class="flex items-center">
@@ -213,26 +213,26 @@
 
 
 
-                        <li class="">
-                            <a href="#" class="navItem">
-                                <span class="flex items-center">
-                                    <iconify-icon class=" nav-icon" icon="heroicons-outline:clipboard-list">
-                                    </iconify-icon>
-                                    {{-- <span>Verificar Usuarios</span>
+                    <li class="">
+                        <a href="#" class="navItem">
+                            <span class="flex items-center">
+                                <iconify-icon class=" nav-icon" icon="heroicons-outline:clipboard-list">
+                                </iconify-icon>
+                                {{-- <span>Verificar Usuarios</span>
                                 <iconify-icon class=" nav-icon" icon="heroicons-outline:user"></iconify-icon> --}}
-                                    <span>Catalogos</span>
-                                </span>
-                                <iconify-icon class="icon-arrow" icon="heroicons-outline:chevron-right"></iconify-icon>
-                            </a>
-                            <ul class="sidebar-submenu">
-                                <li>
-                                    <a href="{{ url('catalogo/biblioteca') }}">Biblioteca</a>
-                                </li>
+                                <span>Catalogos</span>
+                            </span>
+                            <iconify-icon class="icon-arrow" icon="heroicons-outline:chevron-right"></iconify-icon>
+                        </a>
+                        <ul class="sidebar-submenu">
+                            <li>
+                                <a href="{{ url('catalogo/biblioteca') }}">Biblioteca</a>
+                            </li>
 
-                                <li>
-                                    <a href="{{ url('catalogo/reporte_falla') }}">Reporte falla</a>
-                                </li>
-{{--
+                            <li>
+                                <a href="{{ url('catalogo/reporte_falla') }}">Reporte falla</a>
+                            </li>
+                            {{--
                                 <li>
                                     <a href="{{ url('catalogo/lugar_formacion') }}">Lugares formación</a>
                                 </li>
@@ -241,43 +241,46 @@
                                     <a href="{{ url('catalogo/pais') }}">Paises</a>
                                 </li> --}}
 
-                            </ul>
-                        </li>
+                        </ul>
+                    </li>
 
 
 
-                        <li>
-                            <a href="{{ url('control/censo_luminaria') }}" class="navItem">
-                                <span class="flex items-center">
-                                    <iconify-icon class=" nav-icon" icon="vaadin:records" style="color: white;"  width="15" ></iconify-icon>
-                                    <span>Censo luminaria</span>
-                                </span>
-                            </a>
-                        </li>
+                    <li>
+                        <a href="{{ url('control/censo_luminaria') }}" class="navItem">
+                            <span class="flex items-center">
+                                <iconify-icon class=" nav-icon" icon="vaadin:records" style="color: white;"
+                                    width="15"></iconify-icon>
+                                <span>Censo luminaria</span>
+                            </span>
+                        </a>
+                    </li>
 
 
 
-                    @can('read proyecto')
-                        <li>
-                            <a href="{{ url('registro/proyecto') }}" class="navItem">
-                                <span class="flex items-center">
-                                    <iconify-icon class=" nav-icon" icon="material-symbols:add-notes"
-                                        style="color: white;"></iconify-icon>
-                                    <span>Proyectos realizados</span>
-                                </span>
-                            </a>
-                        </li>
 
-                        <li>
-                            <a href="{{ url('registro/documento') }}" class="navItem">
-                                <span class="flex items-center">
-                                    <iconify-icon class=" nav-icon" icon="material-symbols:add-notes"
-                                        style="color: white;"></iconify-icon>
-                                    <span>Documentos</span>
-                                </span>
-                            </a>
-                        </li>
-                    @endcan
+                    <li>
+                        <a href="{{ url('importacion/base_datos') }}" class="navItem">
+                            <span class="flex items-center">
+                                <iconify-icon class=" nav-icon" icon="material-symbols:add-notes"
+                                    style="color: white;"></iconify-icon>
+                                <span>Importar base de datos</span>
+                            </span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{{ url('importacion/base_datos') }}/1"  target="_blank" class="navItem">
+                            <span class="flex items-center">
+                                <iconify-icon class=" nav-icon" icon="material-symbols:add-notes"
+                                    style="color: white;"></iconify-icon>
+                                <span>Visualizar mapa</span>
+                            </span>
+                        </a>
+                    </li>
+
+
+
 
                 </ul>
 

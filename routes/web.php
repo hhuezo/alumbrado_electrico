@@ -3,6 +3,7 @@
 use App\Http\Controllers\catalogo\BibliotecaController;
 use App\Http\Controllers\catalogo\ReporteFallaController;
 use App\Http\Controllers\control\CensoLuminariaController;
+use App\Http\Controllers\importacion\BaseDatosController;
 use App\Http\Controllers\publico\ReporteFallaPublicoController;
 use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
@@ -51,3 +52,5 @@ Route::resource('catalogo/reporte_falla', ReporteFallaController::class);
 //acceso publico
 Route::get('publico/reporte_falla_publico/get_distritos/{id}', [ReporteFallaPublicoController::class,'get_distritos']);
 Route::resource('publico/reporte_falla_publico', ReporteFallaPublicoController::class);
+
+Route::resource('importacion/base_datos', BaseDatosController::class);
