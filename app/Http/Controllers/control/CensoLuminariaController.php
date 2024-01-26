@@ -66,6 +66,8 @@ class CensoLuminariaController extends Controller
         $censo->usuario_ingreso = auth()->user()->id;
         $censo->codigo_luminaria = $request->codigo_luminaria;
         $censo->decidad_luminicia = $request->decidad_luminicia;
+        $censo->latitud = $request->latitud;
+        $censo->longitud = $request->longitud;
         $censo->save();
         alert()->success('El registro ha sido creado correctamente');
         return back();

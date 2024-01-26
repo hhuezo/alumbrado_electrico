@@ -57,8 +57,8 @@
                                 <img src="{{ asset('img/loading.gif') }}" style="width: 100px; height:100px" alt="Cargando...">
                             </div>
 
-                            <input type="hidden" id="latitud" class="form-control">
-                            <input type="hidden" id="longitud" class="form-control">
+                            <input type="hidden" id="latitud" name="latitud" class="form-control">
+                            <input type="hidden" id="longitud" name="longitud" class="form-control">
 
                             <div class="input-area">
                                 <label for="largeInput" class="form-label">Localización</label>
@@ -132,7 +132,7 @@
                             <div class="input-area">
                                 <label for="largeInput" class="form-label">Desidad luminicia</label>
                                 <input type="number" step="0.001" name="decidad_luminicia"
-                                    value="{{ old('decidad_luminicia') }}" required class="form-control">
+                                    value="{{ old('decidad_luminicia') }}" class="form-control">
                             </div>
 
                             <div class="input-area">
