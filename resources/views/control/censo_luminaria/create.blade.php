@@ -243,7 +243,8 @@
                 if ($(this).val() > 0) {
                     var potencia_nominal = parseFloat($(this).val());
 
-                    var consumo_mensual = (potencia_nominal * 360 * 0.90) / 1000;
+                   // var consumo_mensual = (potencia_nominal * 360 * 0.90) / 1000;
+                    var consumo_mensual = (potencia_nominal * 360) / 1000;
                     document.getElementById('consumo_mensual').value = consumo_mensual;
 
                     console.log(potencia_nominal);
