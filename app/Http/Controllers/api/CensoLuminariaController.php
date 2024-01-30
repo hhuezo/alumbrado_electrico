@@ -72,7 +72,7 @@ class CensoLuminariaController extends Controller
             $censo->fecha_ultimo_censo = $request->fecha_ultimo_censo;
             //$censo->usuario_ingreso = auth()->user()->id;
             $censo->codigo_luminaria = $request->codigo_luminaria;
-            $censo->decidad_luminicia = $request->dencidad_luminicia;
+            $censo->direccion = $request->direccion;
             $censo->latitud = $request->latitud;
             $censo->longitud = $request->longitud;
             $censo->save();
