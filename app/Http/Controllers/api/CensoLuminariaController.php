@@ -29,7 +29,7 @@ class CensoLuminariaController extends Controller
         return $response;
     }
 
-    public function get_data_create($departamento,$municipio)
+    public function get_data_create($departamento)
     {
         $tipos = TipoLuminaria::where('Activo', '=', 1)->get();
         $departamentos = Departamento::get();
