@@ -4,6 +4,7 @@ namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
 use App\Models\catalogo\Departamento;
+use App\Models\catalogo\Municipio;
 use App\Models\catalogo\PotenciaPromedio;
 use App\Models\catalogo\TipoLuminaria;
 use App\Models\control\CensoLuminaria;
@@ -22,6 +23,16 @@ class CensoLuminariaController extends Controller
         $tipos = TipoLuminaria::where('Activo', '=', 1)->get();
         $departamentos = Departamento::get();
 
+        $response = ["departamentos" => $departamentos, "tipos" => $tipos];
+
+        return $response;
+    }
+
+    public function get_data_create($departamento,$municipio)
+    {
+        $tipos = TipoLuminaria::where('Activo', '=', 1)->get();
+        $departamentos = Departamento::get();
+        $municipio = Municipio::where('departamento_id',$departamento)->get();
         $response = ["departamentos" => $departamentos, "tipos" => $tipos];
 
         return $response;
