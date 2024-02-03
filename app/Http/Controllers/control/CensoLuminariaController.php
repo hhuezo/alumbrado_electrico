@@ -8,15 +8,17 @@ use App\Models\catalogo\Distrito;
 use App\Models\catalogo\Municipio;
 use App\Models\catalogo\PotenciaPromedio;
 use App\Models\catalogo\TipoLuminaria;
+use App\Models\Configuracion;
 use App\Models\control\CensoLuminaria;
 use Illuminate\Http\Request;
+use GuzzleHttp\Client;
 
 class CensoLuminariaController extends Controller
 {
 
     public function __construct()
     {
-          $this->middleware('auth');
+        $this->middleware('auth');
     }
 
     public function index()
@@ -26,26 +28,77 @@ class CensoLuminariaController extends Controller
     }
 
 
-    public function create()
+    public function show_map()
     {
-        $tipos = TipoLuminaria::where('Activo','=',1)->get();
-        $departamentos = Departamento::get();
-        return view('control.censo_luminaria.create', compact('tipos','departamentos'));
+        $configuracion = Configuracion::first();
+        return view('control.censo_luminaria.map', compact('configuracion'));
+    }
+
+    public function create(Request $request)
+    {
+        if ($request->latitude && $request->longitude) {
+            $latitude = $request->latitude;
+            $longitude = $request->longitude;
+
+
+            $url = "https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat={$latitude}&lon={$longitude}";
+
+            $client = new Client();
+            $response = $client->get($url);
+            $data = json_decode($response->getBody(), true);
+
+            $id_departamento = null;
+            $id_distrito = null;
+            $distritos = null;
+
+            if (isset($data['address'])) {
+                $api_departamento = $data['address']['state'];
+                $api_departamento = str_replace("Departamento de ", "", $api_departamento);
+                $api_municipio = $data['address']['city'] ?? $data['address']['town'] ?? $data['address']['village'] ?? $data['address']['county'];
+                $api_municipio = str_replace("Municipio de ", "", $api_municipio);
+
+                if ($api_departamento) {
+                    $departamento = Departamento::where('nombre', $api_departamento)->first();
+                    if ($departamento) {
+                        $id_departamento = $departamento->id;
+                        if ($api_municipio) {
+                            $distrito = Distrito::where('departamento_id', $id_departamento)->where('nombre', $api_municipio)->first();
+                            $distritos = Distrito::where('departamento_id', $id_departamento)->get();
+                            if ($distrito) {
+                                $id_distrito = $distrito->id;
+                            }
+                        }
+                    }
+                }
+            } else {
+                // Manejar la situación donde no se pudo obtener la información de ubicación
+                \Log::error("No se pudo obtener la información de ubicación.");
+            }
+
+
+            $tipos = TipoLuminaria::where('Activo', '=', 1)->get();
+            $departamentos = Departamento::get();
+            $configuracion = Configuracion::first();
+            return view('control.censo_luminaria.create', compact('tipos', 'departamentos', 'distritos','configuracion', 'latitude', 'longitude', 'id_departamento', 'id_distrito',));
+        } else {
+            alert()->error('la ubicacion es incorrecta');
+            return back();
+        }
     }
 
     public function get_municipios($id)
     {
-        return Municipio::where('departamento_id','=',$id)->orderBy('nombre')->get();
+        return Municipio::where('departamento_id', '=', $id)->orderBy('nombre')->get();
     }
 
     public function get_distritos($id)
     {
-        return Distrito::where('departamento_id','=',$id)->get();
+        return Distrito::where('departamento_id', '=', $id)->get();
     }
 
     public function get_potencia_promedio($id)
     {
-        return PotenciaPromedio::where('tipo_luminaria_id','=',$id)->get();
+        return PotenciaPromedio::where('tipo_luminaria_id', '=', $id)->get();
     }
 
     public function get_consumo_mensual($id)
@@ -64,13 +117,13 @@ class CensoLuminariaController extends Controller
         $censo->fecha_ultimo_censo = $request->fecha_ultimo_censo;
         $censo->distrito_id = $request->distrito_id;
         $censo->usuario_ingreso = auth()->user()->id;
-        $censo->codigo_luminaria = $request->codigo_luminaria;
-        $censo->decidad_luminicia = $request->decidad_luminicia;
+        //$censo->codigo_luminaria = $request->codigo_luminaria;
+        //$censo->decidad_luminicia = $request->decidad_luminicia;
         $censo->latitud = $request->latitud;
         $censo->longitud = $request->longitud;
         $censo->save();
         alert()->success('El registro ha sido creado correctamente');
-        return back();
+        return redirect('control/censo_luminaria/');
     }
 
     public function show($id)
@@ -81,13 +134,13 @@ class CensoLuminariaController extends Controller
     public function edit($id)
     {
         $censo = CensoLuminaria::findOrFail($id);
-        $tipos = TipoLuminaria::where('Activo','=',1)->get();
+        $tipos = TipoLuminaria::where('Activo', '=', 1)->get();
         $departamentos = Departamento::get();
-        $distritos = Distrito::where('departamento_id','=',$censo->distrito->deaprtamento_id)->get();
+        $distritos = Distrito::where('departamento_id', '=', $censo->distrito->deaprtamento_id)->get();
 
-        $potencias_promedio = PotenciaPromedio::where('tipo_luminaria_id','=',$censo->tipo_luminaria_id)->get();
+        $potencias_promedio = PotenciaPromedio::where('tipo_luminaria_id', '=', $censo->tipo_luminaria_id)->get();
 
-        return view('control.censo_luminaria.edit', compact('censo','tipos','departamentos','distritos','potencias_promedio'));
+        return view('control.censo_luminaria.edit', compact('censo', 'tipos', 'departamentos', 'distritos', 'potencias_promedio'));
     }
 
     /**

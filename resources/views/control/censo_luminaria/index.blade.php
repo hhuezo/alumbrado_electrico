@@ -7,7 +7,7 @@
         <header class=" card-header noborder">
             <h4 class="card-title">Listado de censos
             </h4>
-            <a href="{{ url('control/censo_luminaria/create') }}">
+            <a href="{{ url('control/censo_luminaria/show_map') }}">
                 <button class="btn btn-dark">Nuevo</button>
             </a>
         </header>
