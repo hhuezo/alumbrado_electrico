@@ -14,6 +14,75 @@
     <script>
         $(document).ready(function() {
 
+
+
+            @if ($data_potencia_instalada_rango)
+                var conteo = <?php echo count($data_potencia_instalada_rango); ?>;
+                var dataPotenciaInstaladaRango = @json($data_potencia_instalada_rango);
+
+                for (var i = 1; i <= conteo; i++) {
+                    Highcharts.chart('container_potencia_instalada_rango' + i, {
+                        chart: {
+                            type: 'column',
+                            // height: 1700
+                        },
+                        title: {
+                            align: 'left',
+                            text: 'Conteo por potencia instalada'
+                        },
+                        subtitle: {
+                            align: 'left',
+                            text: ''
+                        },
+                        accessibility: {
+                            announceNewData: {
+                                enabled: true
+                            }
+                        },
+                        xAxis: {
+                            type: 'category'
+                        },
+                        yAxis: {
+                            title: {
+                                text: 'Número de luminarias'
+                            }
+
+                        },
+                        legend: {
+                            enabled: false
+                        },
+                        plotOptions: {
+                            series: {
+                                borderWidth: 0,
+                                dataLabels: {
+                                    enabled: true,
+                                    format: '{point.y:.0f}'
+                                }
+                            }
+                        },
+
+                        tooltip: {
+                            headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}</b>   <br/>'
+                        },
+
+                        series: [{
+                            name: 'Browsers',
+                            colorByPoint: true,
+                            data: dataPotenciaInstaladaRango[i],
+                            point: {
+                                events: {
+                                    click: function() {
+                                        //showDashboard(i);
+                                        console.log("hola");
+                                    }
+                                }
+                            }
+                        }]
+                    });
+                }
+            @endif
+
             // consumo por tipo luminaria
             Highcharts.chart('container_tipo_luminaria', {
                 chart: {
@@ -233,8 +302,8 @@
 
             Highcharts.chart('container_potencia_instalada', {
                 chart: {
-                    type: 'bar',
-                    height: 1700
+                    type: 'column',
+                    // height: 1700
                 },
                 title: {
                     align: 'left',
@@ -284,9 +353,12 @@
                 }]
             });
 
+
+
         });
     </script>
 
+    @include('modal_potencia')
 
 
     <div class="content-wrapper transition-all duration-150 " id="content_wrapper">
@@ -329,7 +401,10 @@
                                 </div>
                             </div>
 
+
                             <div class="xl:col-span-6 col-span-12 lg:col-span-5 ">
+                                <button class="btn btn-dark mr-3" type="button" data-bs-toggle="modal"
+                                    data-bs-target="#modal-potencia">Ver detalle</button>
                                 <div class="card p-6 h-full">
                                     <div class="space-y-5">
                                         <div id="container_potencia_instalada"></div>
