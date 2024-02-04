@@ -32,7 +32,7 @@ class HomeController extends Controller
 
         $resultados = DB::table('base_datos_siget')
             ->join('tipo_luminaria', 'base_datos_siget.tipo_luminaria_id', '=', 'tipo_luminaria.id')
-            ->select('tipo_luminaria.nombre as tipo', DB::raw('SUM(base_datos_siget.consumo_mensual) as consumo_mensual'))
+            ->select('tipo_luminaria.nombre as tipo', DB::raw('SUM(base_datos_siget.consumo_mensual * numero_luminarias) as consumo_mensual'))
             ->groupBy('tipo_luminaria.nombre')
             ->get();
 
