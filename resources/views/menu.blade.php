@@ -232,14 +232,9 @@
                             <li>
                                 <a href="{{ url('catalogo/reporte_falla') }}">Reporte falla</a>
                             </li>
-                            {{--
-                                <li>
-                                    <a href="{{ url('catalogo/lugar_formacion') }}">Lugares formación</a>
-                                </li>
-
-                                <li>
-                                    <a href="{{ url('catalogo/pais') }}">Paises</a>
-                                </li> --}}
+                            <li>
+                                <a href="{{ url('catalogo/distrito') }}">Distritos</a>
+                            </li>
 
                         </ul>
                     </li>

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\catalogo\BibliotecaController;
+use App\Http\Controllers\catalogo\DistritoController;
 use App\Http\Controllers\catalogo\ReporteFallaController;
 use App\Http\Controllers\control\CensoLuminariaController;
 use App\Http\Controllers\importacion\BaseDatosController;
@@ -39,14 +40,15 @@ Route::get('censo_luminaria/get_potencia_promedio/{id}', [CensoLuminariaControll
 Route::get('censo_luminaria/get_consumo_mensual/{id}', [CensoLuminariaController::class,'get_consumo_mensual']);
 Route::resource('control/censo_luminaria', CensoLuminariaController::class);
 
+//catalogos
 Route::post('catalogo/biblioteca/active', [BibliotecaController::class,'active']);
 Route::resource('catalogo/biblioteca', BibliotecaController::class);
-
+Route::resource('catalogo/biblioteca', BibliotecaController::class);
 
 
 Route::get('catalogo/reporte_falla/get_distrito_id/{name}', [ReporteFallaController::class,'getDistritoId']);
 Route::get('catalogo/reporte_falla/get_departamento_id/{name}', [ReporteFallaController::class,'getDepartamentoId']);
-Route::resource('catalogo/reporte_falla', ReporteFallaController::class);
+Route::resource('catalogo/distrito', DistritoController::class);
 
 
 
