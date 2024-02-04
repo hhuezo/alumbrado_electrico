@@ -18,7 +18,9 @@ class Distrito extends Model
 
     protected $fillable = [
         'nombre',
-        'departamento_id'
+        'departamento_id',
+        'extension_territorial',
+        'poblacion'
     ];
 
     protected $guarded = [];
