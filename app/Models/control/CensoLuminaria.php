@@ -28,6 +28,7 @@ class CensoLuminaria extends Model
         'usuario_ingreso',
         'codigo_luminaria',
         'decidad_luminicia',
+        'direccion'
     ];
 
     protected $guarded =[

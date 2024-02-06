@@ -50,12 +50,14 @@ class CensoLuminariaController extends Controller
             $id_departamento = null;
             $id_distrito = null;
             $distritos = null;
+            $direccion = null;
 
             if (isset($data['address'])) {
                 $api_departamento = $data['address']['state'];
                 $api_departamento = str_replace("Departamento de ", "", $api_departamento);
                 $api_municipio = $data['address']['city'] ?? $data['address']['town'] ?? $data['address']['village'] ?? $data['address']['county'];
                 $api_municipio = str_replace("Municipio de ", "", $api_municipio);
+                $direccion = $data['display_name'];
 
                 if ($api_departamento) {
                     $departamento = Departamento::where('nombre', $api_departamento)->first();
@@ -79,7 +81,7 @@ class CensoLuminariaController extends Controller
             $tipos = TipoLuminaria::where('Activo', '=', 1)->get();
             $departamentos = Departamento::get();
             $configuracion = Configuracion::first();
-            return view('control.censo_luminaria.create', compact('tipos', 'departamentos', 'distritos','configuracion', 'latitude', 'longitude', 'id_departamento', 'id_distrito',));
+            return view('control.censo_luminaria.create', compact('tipos', 'departamentos', 'distritos','configuracion', 'latitude', 'longitude', 'id_departamento', 'id_distrito','direccion'));
         } else {
             alert()->error('la ubicacion es incorrecta');
             return back();
@@ -117,7 +119,7 @@ class CensoLuminariaController extends Controller
         $censo->fecha_ultimo_censo = $request->fecha_ultimo_censo;
         $censo->distrito_id = $request->distrito_id;
         $censo->usuario_ingreso = auth()->user()->id;
-        //$censo->codigo_luminaria = $request->codigo_luminaria;
+        $censo->direccion = $request->direccion;
         //$censo->decidad_luminicia = $request->decidad_luminicia;
         $censo->latitud = $request->latitud;
         $censo->longitud = $request->longitud;

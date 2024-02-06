@@ -70,6 +70,11 @@
                                 </select>
                             </div>
 
+                            <div class="input-area">
+                                <label for="largeInput" class="form-label">Dirección</label>
+                                <input type="text"  name="direccion" value="{{ $direccion }}" class="form-control">
+                            </div>
+
 
 
                             <div class="input-area">
