@@ -1,6 +1,4 @@
-@extends ('menu')
-@section('contenido')
-    @include('sweetalert::alert', ['cdn' => 'https://cdn.jsdelivr.net/npm/sweetalert2@9'])
+{{-- @include('sweetalert::alert', ['cdn' => 'https://cdn.jsdelivr.net/npm/sweetalert2@9'])
 
     <style>
         #loading {
@@ -19,7 +17,7 @@
         }
     </style>
 
-    <div class="grid grid-cols-12 gap-5 mb-5">
+     <div class="grid grid-cols-12 gap-5 mb-5">
 
         <div class="2xl:col-span-12 lg:col-span-12 col-span-12">
             <div class="card">
@@ -158,6 +156,242 @@
                 $("#loading").hide();
             }
         }
-    </script>
+    </script> --}}
 
-@endsection
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title id='Description'>JavaScript PivotGrid - Pivot Table Designer</title>
+    <link rel="stylesheet" href="{{ asset('jqwidgets/jqwidgets/styles/jqx.base.css') }}" type="text/css" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1 minimum-scale=1" />
+
+    <link rel="stylesheet" href="{{ asset('jqwidgets/jqwidgets/styles/jqx.light.css') }}" type="text/css" />
+    <script type="text/javascript" src="{{ asset('jqwidgets/scripts/jquery-1.11.1.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('jqwidgets/jqwidgets/jqxcore.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('jqwidgets/jqwidgets/jqxdata.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('jqwidgets/jqwidgets/jqxbuttons.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('jqwidgets/jqwidgets/jqxcheckbox.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('jqwidgets/jqwidgets/jqxinput.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('jqwidgets/jqwidgets/jqxscrollbar.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('jqwidgets/jqwidgets/jqxmenu.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('jqwidgets/jqwidgets/jqxwindow.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('jqwidgets/jqwidgets/jqxlistbox.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('jqwidgets/jqwidgets/jqxdropdownlist.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('jqwidgets/jqwidgets/jqxdragdrop.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('jqwidgets/jqwidgets/jqxpivot.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('jqwidgets/jqwidgets/jqxpivotgrid.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('jqwidgets/jqwidgets/jqxpivotdesigner.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('jqwidgets/scripts/demos.js') }}"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            // prepare sample data
+            var data = new Array();
+            var firstNames = [
+                "Andrew", "Nancy", "Shelley", "Regina", "Yoshi", "Antoni", "Mayumi", "Ian", "Peter", "Lars",
+                "Petra", "Martin", "Sven", "Elio", "Beate", "Cheryl", "Michael", "Guylene"
+            ];
+            var lastNames = [
+                "Fuller", "Davolio", "Burke", "Murphy", "Nagase", "Saavedra", "Ohno", "Devling", "Wilson",
+                "Peterson", "Winkler", "Bein", "Petersen", "Rossi", "Vileid", "Saylor", "Bjorn", "Nodier"
+            ];
+            var productNames = [
+                "Black Tea", "Green Tea", "Caffe Espresso", "Doubleshot Espresso", "Caffe Latte",
+                "White Chocolate Mocha", "Cramel Latte", "Caffe Americano", "Cappuccino", "Espresso Truffle",
+                "Espresso con Panna", "Peppermint Mocha Twist"
+            ];
+            var priceValues = [
+                "2.25", "1.5", "3.0", "3.3", "4.5", "3.6", "3.8", "2.5", "5.0", "1.75", "3.25", "4.0"
+            ];
+            for (var i = 0; i < 500; i++) {
+                var row = {};
+                var productindex = Math.floor(Math.random() * productNames.length);
+                var price = parseFloat(priceValues[productindex]);
+                var quantity = 1 + Math.round(Math.random() * 10);
+                row["firstname"] = firstNames[Math.floor(Math.random() * firstNames.length)];
+                row["lastname"] = lastNames[Math.floor(Math.random() * lastNames.length)];
+                row["productname"] = productNames[productindex];
+                row["price"] = price;
+                row["quantity"] = quantity;
+                row["total"] = price * quantity;
+                data[i] = row;
+            }
+            // create a data source and data adapter
+            var source = {
+                localdata: data,
+                datatype: "array",
+                datafields: [{
+                        name: 'firstname',
+                        type: 'string'
+                    },
+                    {
+                        name: 'lastname',
+                        type: 'string'
+                    },
+                    {
+                        name: 'productname',
+                        type: 'string'
+                    },
+                    {
+                        name: 'quantity',
+                        type: 'number'
+                    },
+                    {
+                        name: 'price',
+                        type: 'number'
+                    },
+                    {
+                        name: 'total',
+                        type: 'number'
+                    }
+                ]
+            };
+            var dataAdapter = new $.jqx.dataAdapter(source);
+            dataAdapter.dataBind();
+            // create a pivot data source from the dataAdapter
+            var pivotDataSource = new $.jqx.pivot(
+                dataAdapter, {
+                    customAggregationFunctions: {
+                        'var': function(values) {
+                            if (values.length <= 1)
+                                return 0;
+                            // sample's mean
+                            var mean = 0;
+                            for (var i = 0; i < values.length; i++)
+                                mean += values[i];
+                            mean /= values.length;
+                            // calc squared sum
+                            var ssum = 0;
+                            for (var i = 0; i < values.length; i++)
+                                ssum += Math.pow(values[i] - mean, 2)
+                            // calc the variance
+                            var variance = ssum / values.length;
+                            return variance;
+                        }
+                    },
+                    pivotValuesOnRows: false,
+                    fields: [{
+                            dataField: 'firstname',
+                            text: 'First Name'
+                        },
+                        {
+                            dataField: 'lastname',
+                            text: 'Last Name'
+                        },
+                        {
+                            dataField: 'productname',
+                            text: 'Product Name'
+                        },
+                        {
+                            dataField: 'quantity',
+                            text: 'Quantity'
+                        },
+                        {
+                            dataField: 'price',
+                            text: 'Price'
+                        },
+                        {
+                            dataField: 'total',
+                            text: 'Total'
+                        }
+                    ],
+                    rows: [{
+                            dataField: 'firstname',
+                            text: 'First Name'
+                        },
+                        {
+                            dataField: 'lastname',
+                            text: 'Last Name'
+                        }
+                    ],
+                    columns: [{
+                        dataField: 'productname',
+                        align: 'left'
+                    }],
+                    filters: [{
+                        dataField: 'productname',
+                        text: 'Product name',
+                        filterFunction: function(value) {
+                            if (value == "Black Tea" || value == "Green Tea")
+                                return true;
+                            return false;
+                        }
+                    }],
+                    values: [{
+                            dataField: 'price',
+                            'function': 'sum',
+                            text: 'Sum',
+                            align: 'left',
+                            formatSettings: {
+                                prefix: '$',
+                                decimalPlaces: 2,
+                                align: 'center'
+                            },
+                            cellsClassName: 'myItemStyle',
+                            cellsClassNameSelected: 'myItemStyleSelected'
+                        },
+                        {
+                            dataField: 'price',
+                            'function': 'count',
+                            text: 'Count',
+                            className: 'myItemStyle',
+                            classNameSelected: 'myItemStyleSelected'
+                        }
+                    ]
+                });
+            var localization = {
+                'var': 'Variance'
+            };
+            // create a pivot grid
+            $('#divPivotGrid').jqxPivotGrid({
+                localization: localization,
+                source: pivotDataSource,
+                treeStyleRows: false,
+                autoResize: false,
+                multipleSelectionEnabled: true
+            });
+            var pivotGridInstance = $('#divPivotGrid').jqxPivotGrid('getInstance');
+            // create a pivot grid
+            $('#divPivotGridDesigner').jqxPivotDesigner({
+                type: 'pivotGrid',
+                target: pivotGridInstance
+            });
+        });
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-2FX5PV9DNT"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+        gtag('config', 'G-2FX5PV9DNT');
+    </script>
+</head>
+<!-- CSS de Bootstrap 5 -->
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-Qt9Hug5NfnQDGMoaQYXN1+PiQvda7poO7/6kEduZTtF3EhCv7Sj5hJf3JvNQJbB6" crossorigin="anonymous">
+<!-- JavaScript Bundle con Popper de Bootstrap 5 -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"
+    integrity="sha384-kQtW33rZJAHj6MNi6OnkEO2F7YsF5v/T6KZK4uLNLq5yNQb6v4jRWtBc3J0MdK+L" crossorigin="anonymous">
+</script>
+
+
+<body class='default'>
+    <div class="table-responsive">
+        <table class="data-table">
+            <tr>
+                <td>
+                    <div id="divPivotGridDesigner" style="height: 400px; width: 450px;">
+                    </div>
+                </td>
+                <td>
+                    <div id="divPivotGrid" style="height: 400px; width: 1400px;">
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
