@@ -17,7 +17,22 @@ class BaseDatosController extends Controller
 
     public function index()
     {
-        return view('importacion.base_datos');
+        $data = BaseDatosSiget::select("municipio as Municipio","tipo_luminaria.nombre as Tipo","potencia_nominal as Potencia",
+        "consumo_mensual as ConsumoMensual","numero_luminarias as NumeroLuminarias")
+        ->join('tipo_luminaria','tipo_luminaria.id','=','base_datos_siget.tipo_luminaria_id')
+        ->get();
+
+        foreach($data as $record)
+        {
+            $record->ConsumoMensual = intval($record->ConsumoMensual);
+        }
+
+
+
+       // $datafields = ["municipio","tipo_luminaria_id","potencia_nominal","consumo_mensual","numero_luminarias"];
+       $datafields = ["Municipio","Tipo","Potencia","ConsumoMensual","NumeroLuminarias"];
+
+        return view('importacion.base_datos',compact('datafields','data'));
     }
 
     public function create()
