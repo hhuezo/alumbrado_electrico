@@ -10,6 +10,15 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 class DataBaseImport implements ToModel, WithHeadingRow
 {
     private $rowNumber = 0;
+    private $anio;
+    private $mes;
+
+    public function __construct($anio, $mes)
+    {
+        $this->anio = $anio;
+        $this->mes = $mes;
+    }
+
     public function model(array $row)
     {
         if ($this->rowNumber == 0) {
@@ -56,7 +65,9 @@ class DataBaseImport implements ToModel, WithHeadingRow
                 'tipo_luminaria_id'     => $row['4'],
                 'potencia_nominal'     => $row['5'],
                 'consumo_mensual'     => $row['6'],
-                'numero_luminarias'     => $row['7']
+                'numero_luminarias'     => $row['7'],
+                'anio'     => $this->anio,
+                'mes'     => $this->mes
             ]);
         }
 

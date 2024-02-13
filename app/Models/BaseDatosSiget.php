@@ -22,6 +22,8 @@ class BaseDatosSiget extends Model
         'potencia_nominal',
         'consumo_mensual',
         'numero_luminarias',
+        'anio',
+        'mes',
     ];
 
     protected $guarded = [];

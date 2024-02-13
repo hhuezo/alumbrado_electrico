@@ -17,7 +17,7 @@ class BaseDatosController extends Controller
 
     public function index()
     {
-        $data = BaseDatosSiget::select("municipio as Municipio","tipo_luminaria.nombre as Tipo","potencia_nominal as Potencia",
+        /*$data = BaseDatosSiget::select("municipio as Municipio","tipo_luminaria.nombre as Tipo","potencia_nominal as Potencia",
         "consumo_mensual as ConsumoMensual","numero_luminarias as NumeroLuminarias")
         ->join('tipo_luminaria','tipo_luminaria.id','=','base_datos_siget.tipo_luminaria_id')
         ->get();
@@ -32,7 +32,11 @@ class BaseDatosController extends Controller
        // $datafields = ["municipio","tipo_luminaria_id","potencia_nominal","consumo_mensual","numero_luminarias"];
        $datafields = ["Municipio","Tipo","Potencia","ConsumoMensual","NumeroLuminarias"];
 
-        return view('importacion.base_datos',compact('datafields','data'));
+        return view('importacion.base_datos',compact('datafields','data'));*/
+
+        $meses = ['01' => 'Enero','02' => 'Febrero','03' => 'Marzo','04' => 'Abril','05' => 'Mayo','06' => 'Junio','07' => 'Julio','08' => 'Agosto','09' => 'Septiembre','10' => 'Octubre','11' => 'Noviembre','12' => 'Diciembre'];
+
+        return view('importacion.base_datos',compact('meses'));
     }
 
     public function create()
@@ -41,7 +45,6 @@ class BaseDatosController extends Controller
 
     public function store(Request $request)
     {
-
         try {
             $file = $request->file('file');
             $spreadsheet = IOFactory::load($file);
@@ -50,8 +53,10 @@ class BaseDatosController extends Controller
                 return back()->withErrors(['file' => 'El documento debe tener una sola hoja']);
             }
 
-            BaseDatosSiget::truncate();
-            $import = new DataBaseImport;
+            //BaseDatosSiget::truncate();
+
+            BaseDatosSiget::where('anio',$request->anio)->where('mes',$request->mes)->delete();
+            $import = new DataBaseImport($request->anio,$request->mes);
             Excel::import($import, $file);
 
             alert()->success('El registro ha sido creado correctamente');
@@ -98,14 +103,12 @@ class BaseDatosController extends Controller
         $censos = CensoLuminaria::get();
 
         $array_data = [];
-        foreach($censos as $censo)
-        {
-            $array = ["lat"=>$censo->latitud +0,"lng"=>$censo->longitud +0, "shortDescription"=> "Cod: ".$censo->codigo_luminaria];
-            array_push($array_data,$array );
-
+        foreach ($censos as $censo) {
+            $array = ["lat" => $censo->latitud + 0, "lng" => $censo->longitud + 0, "shortDescription" => "Cod: " . $censo->codigo_luminaria];
+            array_push($array_data, $array);
         }
 
-        return view('importacion.show', compact('configuracion','array_data'));
+        return view('importacion.show', compact('configuracion', 'array_data'));
     }
 
     public function edit($id)

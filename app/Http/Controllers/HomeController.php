@@ -30,11 +30,30 @@ class HomeController extends Controller
         //grafico por tecnologia
         //$tipo_luminaria_array = TipoLuminaria::pluck('nombre', 'id')->toArray();
 
-        $resultados = DB::table('base_datos_siget')
-            ->join('tipo_luminaria', 'base_datos_siget.tipo_luminaria_id', '=', 'tipo_luminaria.id')
-            ->select('tipo_luminaria.nombre as tipo', DB::raw('SUM(base_datos_siget.consumo_mensual * numero_luminarias) as consumo_mensual'))
-            ->groupBy('tipo_luminaria.nombre')
-            ->get();
+        $anio = BaseDatosSiget::max('anio');
+        if($anio)
+        {
+            $mes = BaseDatosSiget::where('anio', $anio)->max('mes');
+        }
+
+
+
+        if ($anio && $mes) {
+            $resultados = DB::table('base_datos_siget')
+                ->join('tipo_luminaria', 'base_datos_siget.tipo_luminaria_id', '=', 'tipo_luminaria.id')
+                ->where('mes', $mes)
+                ->where('anio', $anio)
+                ->select('tipo_luminaria.nombre as tipo', DB::raw('SUM(base_datos_siget.consumo_mensual * numero_luminarias) as consumo_mensual'))
+                ->groupBy('tipo_luminaria.nombre')
+                ->get();
+        } else {
+            // Si no hay valores válidos para $anio y $mes, ejecutar la consulta sin esas condiciones
+            $resultados = DB::table('base_datos_siget')
+                ->join('tipo_luminaria', 'base_datos_siget.tipo_luminaria_id', '=', 'tipo_luminaria.id')
+                ->select('tipo_luminaria.nombre as tipo', DB::raw('SUM(base_datos_siget.consumo_mensual * numero_luminarias) as consumo_mensual'))
+                ->groupBy('tipo_luminaria.nombre')
+                ->get();
+        }
 
         $data_tipo_luminaria = $resultados->map(function ($resultado) {
             return [
@@ -43,12 +62,21 @@ class HomeController extends Controller
                 "drilldown" => $resultado->tipo,
             ];
         })->all();
-
-        $resultados = DB::table('base_datos_siget')
-            ->join('tipo_luminaria', 'base_datos_siget.tipo_luminaria_id', '=', 'tipo_luminaria.id')
-            ->select('tipo_luminaria.nombre as tipo', DB::raw('sum(base_datos_siget.numero_luminarias) as conteo'))
-            ->groupBy('tipo_luminaria.nombre')
-            ->get();
+        if ($anio && $mes) {
+            $resultados = DB::table('base_datos_siget')
+                ->join('tipo_luminaria', 'base_datos_siget.tipo_luminaria_id', '=', 'tipo_luminaria.id')
+                ->where('mes', $mes)
+                ->where('anio', $anio)
+                ->select('tipo_luminaria.nombre as tipo', DB::raw('sum(base_datos_siget.numero_luminarias) as conteo'))
+                ->groupBy('tipo_luminaria.nombre')
+                ->get();
+        } else {
+            $resultados = DB::table('base_datos_siget')
+                ->join('tipo_luminaria', 'base_datos_siget.tipo_luminaria_id', '=', 'tipo_luminaria.id')
+                ->select('tipo_luminaria.nombre as tipo', DB::raw('sum(base_datos_siget.numero_luminarias) as conteo'))
+                ->groupBy('tipo_luminaria.nombre')
+                ->get();
+        }
 
         $data_numero_luminaria = $resultados->map(function ($resultado) {
             return [
@@ -58,23 +86,36 @@ class HomeController extends Controller
             ];
         })->all();
 
-        $maxPotenciaNominal = DB::table('base_datos_siget')->max('potencia_nominal');
+        if ($anio && $mes) {
+            $maxPotenciaNominal = DB::table('base_datos_siget')->where('mes', $mes)->where('anio', $anio)->max('potencia_nominal');
+        } else {
+            $maxPotenciaNominal = DB::table('base_datos_siget')->max('potencia_nominal');
+        }
 
         $rangos = [[0, 36], [37, 72], [73, 148], [149, $maxPotenciaNominal]];
 
         $data_potencia_instalada = [];
 
         foreach ($rangos as $rango) {
+
+            if ($anio && $mes) {
             $resultado = DB::table('base_datos_siget')
                 ->select(DB::raw('SUM(base_datos_siget.numero_luminarias) as total_conteo'))
                 ->whereBetween('base_datos_siget.potencia_nominal', [$rango[0], $rango[1]])
+                ->where('mes', $mes)->where('anio', $anio)
                 ->get();
+            } else {
+                $resultado = DB::table('base_datos_siget')
+                ->select(DB::raw('SUM(base_datos_siget.numero_luminarias) as total_conteo'))
+                ->whereBetween('base_datos_siget.potencia_nominal', [$rango[0], $rango[1]])
+                ->get();
+            }
 
             // Agrega el resultado de este rango específico al array de resultados
             $data_potencia_instalada[] = [
-                'name' => $rango[0].' - '.$rango[1],
+                'name' => $rango[0] . ' - ' . $rango[1],
                 'y' => $resultado[0]->total_conteo + 0,
-                'drilldown' => $rango[0].' - '.$rango[1]
+                'drilldown' => $rango[0] . ' - ' . $rango[1]
             ];
         }
 
