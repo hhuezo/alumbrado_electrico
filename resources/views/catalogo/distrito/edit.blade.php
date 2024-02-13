@@ -46,36 +46,54 @@
                                                 <div class="grid pt-4 pb-3 px-4">
                                                     <div class="input-area relative">
                                                         <label for="largeInput" class="form-label">Codigo</label>
-                                                        <input type="text" value="{{ $distrito->codigo }}"
-                                                            readonly class="form-control">
+                                                        <input type="text" value="{{ $distrito->codigo }}" readonly
+                                                            class="form-control">
                                                     </div>
                                                 </div>
                                                 <div class="grid pt-4 pb-3 px-4">
                                                     <div class="input-area relative">
                                                         <label for="largeInput" class="form-label">Distrito</label>
-                                                        <input type="text" value="{{ $distrito->nombre }}"
-                                                            readonly class="form-control">
+                                                        <input type="text" value="{{ $distrito->nombre }}" readonly
+                                                            class="form-control">
+                                                    </div>
+                                                </div>
+                                                <div class="grid pt-4 pb-3 px-4">
+                                                    <div class="input-area relative">
+                                                        <label for="largeInput" class="form-label">Municipio</label>
+                                                        <input type="text" value="{{ $distrito->municipio->nombre }}"
+                                                            class="form-control" readonly>
                                                     </div>
                                                 </div>
                                                 <div class="grid pt-4 pb-3 px-4">
                                                     <div class="input-area relative">
                                                         <label for="largeInput" class="form-label">Departamento</label>
-                                                        <input type="text" value="{{ $distrito->departamento->nombre }}" class="form-control" readonly>
+                                                        <input type="text"
+                                                            value="{{ $distrito->municipio->departamento->nombre }}"
+                                                            class="form-control" readonly>
                                                     </div>
                                                 </div>
                                                 <div class="grid pt-4 pb-3 px-4">
-                                                    <div class="input-area relative">
-                                                        <label for="largeInput" class="form-label">Extension territorial</label>
-                                                        <input type="number" name="extension_territorial" step="0.01" value="{{ $distrito->extension_territorial }}"
-                                                             class="form-control">
+                                                    <div class="input-area">
+                                                        <label for="largeInput" class="form-label">Extension
+                                                            territorial</label>
+                                                        <div class="relative">
+                                                            <input type="number" name="extension_territorial"
+                                                                step="0.01"
+                                                                value="{{ $distrito->extension_territorial }}"
+                                                                class="form-control !pl-12">
+                                                            <span
+                                                                class="absolute left-0 top-1/2 -translate-y-1/2 w-9 h-full border-r border-r-slate-200 dark:border-r-slate-700 flex items-center justify-center">
+                                                                km2
+                                                            </span>
+                                                        </div>
                                                     </div>
                                                 </div>
 
                                                 <div class="grid pt-4 pb-3 px-4">
                                                     <div class="input-area relative">
                                                         <label for="largeInput" class="form-label">Población</label>
-                                                        <input type="number" name="poblacion" step="1" value="{{ $distrito->poblacion }}"
-                                                             class="form-control">
+                                                        <input type="number" name="poblacion" step="1"
+                                                            value="{{ $distrito->poblacion }}" class="form-control">
                                                     </div>
                                                 </div>
 
@@ -83,10 +101,10 @@
 
 
                                             </div>
-                                                <div style="text-align: right;">
-                                                    <button type="submit" style="margin-right: 18px"
-                                                        class="btn btn-dark">Aceptar</button>
-                                                </div>
+                                            <div style="text-align: right;">
+                                                <button type="submit" style="margin-right: 18px"
+                                                    class="btn btn-dark">Aceptar</button>
+                                            </div>
                                         </form>
                                     </div>
 

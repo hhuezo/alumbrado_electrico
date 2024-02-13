@@ -24,6 +24,7 @@
                                     <td>Nombre</td>
                                     <td>Extensión territorial</td>
                                     <td>Poblacion</td>
+                                    <td>Municipio</td>
                                     <td>Departamento</td>
                                     <td>opciones</td>
 
@@ -36,10 +37,10 @@
                                         <td align="center">{{ $obj->id }}</td>
                                         <td>{{ $obj->codigo }}</td>
                                         <td>{{ $obj->nombre }}</td>
-                                        <td>{{ $obj->extension_territorial }}</td>
+                                        <td>{{ $obj->extension_territorial ? $obj->extension_territorial .' km2':'' }}</td>
                                         <td>{{ $obj->poblacion }}</td>
-                                        <td>{{ $obj->departamento->nombre }}</td>
-
+                                        <td>{{ $obj->municipio->nombre }}</td>
+                                        <td>{{ $obj->municipio->departamento->nombre }}</td>
                                         <td align="center">
                                             <a href="{{ url('catalogo/distrito') }}/{{ $obj->id }}/edit">
                                                 <iconify-icon icon="mdi:pencil-box" width="40"></iconify-icon>
