@@ -59,7 +59,8 @@ class CensoLuminariaController extends Controller
             if (isset($data['address'])) {
                 $api_departamento = $data['address']['state'];
                 $api_departamento = str_replace("Departamento de ", "", $api_departamento);
-                $api_municipio = $data['address']['city'] ?? $data['address']['town'] ?? $data['address']['village'] ?? $data['address']['county'];
+                $api_municipio = $data['address']['city'] ?? $data['address']['town'] ?? $data['address']['village'] ?? ($data['address']['county'] ?? null);
+
                 $api_municipio = str_replace("Municipio de ", "", $api_municipio);
                 $direccion = $data['display_name'];
 
@@ -83,8 +84,9 @@ class CensoLuminariaController extends Controller
                         }
                         else{
 
-                            $municipio_id = $municipios::select('id')->first();
-                            dd($municipio_id    );
+                            $municipio = $municipios->first();
+                            $municipio_id  = $municipio->id;
+                            $distritos = Distrito::where('municipio_id', $municipio_id)->get();
                         }
                     }
                 }
