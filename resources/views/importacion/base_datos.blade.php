@@ -1,4 +1,6 @@
-{{-- @include('sweetalert::alert', ['cdn' => 'https://cdn.jsdelivr.net/npm/sweetalert2@9'])
+@extends ('menu')
+@section('contenido')
+    @include('sweetalert::alert', ['cdn' => 'https://cdn.jsdelivr.net/npm/sweetalert2@9'])
 
     <style>
         #loading {
@@ -17,7 +19,7 @@
         }
     </style>
 
-     <div class="grid grid-cols-12 gap-5 mb-5">
+    <div class="grid grid-cols-12 gap-5 mb-5">
 
         <div class="2xl:col-span-12 lg:col-span-12 col-span-12">
             <div class="card">
@@ -62,12 +64,39 @@
                                                     alt="Cargando...">
                                             </div>
 
+
+                                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-7">
+                                                <div class="input-area relative">
+                                                    <label for="largeInput" class="form-label">Año</label>
+
+                                                    <select name="anio" class="form-control">
+                                                        @for ($i = date('Y'); $i >= 2023; $i--)
+                                                            <option value="{{ $i }}">{{ $i }}</option>
+                                                        @endfor
+                                                    </select>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-7">
+                                                <div class="input-area relative">
+                                                    <label for="largeInput" class="form-label">Mes</label>
+
+                                                    <select name="mes" class="form-control">
+                                                        @foreach ($meses as $numero => $nombre)
+                                                        <option value="{{ $numero }}" {{date('m') == $numero ? 'selected':''}}>{{ $nombre }}</option>
+                                                    @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+
                                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-7">
 
 
                                                 <div class="input-area relative">
                                                     <label for="largeInput" class="form-label">Archivo</label>
-                                                    <input type="file" name="file" accept=".xlsx,.xls"  class="form-control">
+                                                    <input type="file" name="file" accept=".xlsx,.xls"
+                                                        class="form-control">
                                                 </div>
 
 
@@ -94,10 +123,10 @@
         </div>
     </div>
 
- <!-- scripts -->
- <script src="{{ asset('assets/js/jquery-3.6.0.min.js') }}"></script>
+    <!-- scripts -->
+    <script src="{{ asset('assets/js/jquery-3.6.0.min.js') }}"></script>
 
- <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.3.4/jquery.inputmask.bundle.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.3.4/jquery.inputmask.bundle.min.js'></script>
 
 
     <script type="text/javascript">
@@ -156,9 +185,10 @@
                 $("#loading").hide();
             }
         }
-    </script> --}}
+    </script>
 
 
+@endsection
 {{-- <!DOCTYPE html>
 <html lang="en">
 
@@ -396,8 +426,11 @@
             </tr>
         </table>
     </div>
---}}
 
+
+
+
+{{--
 <!DOCTYPE html>
 <html>
 
@@ -416,37 +449,21 @@
         }
     </style>
 
-    <!-- optional: mobile support with jqueryui-touch-punch -->
+
     <script type="text/javascript"
         src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
 
-    <!-- for examples only! script to show code to user -->
-    {{-- <script type="text/javascript" src="{{ asset('pivot/show_code.js')}}"></script> --}}
+
 </head>
 
 <body>
     <script type="text/javascript">
-        // This example is the most basic usage of pivotUI()
-
         $(function() {
             $("#output").pivotUI(
-                // [{
-                //         tipo: "blue",
-                //         potencia: "circle",
-                //         ventas: 200
-                //     },
-                //     {
-                //         tipo: "red",
-                //         potencia: "triangle",
-                //         ventas: 150
-                //     }
-                //     // ... otros datos
-                // ]
                     @json($data)
                 , {
                     rows: ["Tipo"],
                     cols: @json($datafields)
-                    //["potencia", "ventas"] // Agrega "ventas" como columna adicional
                 }
             );
         });
@@ -456,4 +473,4 @@
 
 </body>
 
-</html>
+</html> --}}

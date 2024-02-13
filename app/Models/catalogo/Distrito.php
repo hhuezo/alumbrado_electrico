@@ -25,9 +25,9 @@ class Distrito extends Model
 
     protected $guarded = [];
 
-    public function departamento()
+    public function municipio()
     {
-        return $this->belongsTo(Departamento::class, 'departamento_id', 'id');
+        return $this->belongsTo(Municipio::class, 'municipio_id', 'id');
     }
 
     public function distritoId($nombre)
