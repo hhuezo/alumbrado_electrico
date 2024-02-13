@@ -12,6 +12,8 @@ use App\Models\Configuracion;
 use App\Models\control\CensoLuminaria;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Illuminate\Support\Facades\File;
 
 class CensoLuminariaController extends Controller
 {
@@ -51,6 +53,8 @@ class CensoLuminariaController extends Controller
             $id_distrito = null;
             $distritos = null;
             $direccion = null;
+            $municipios = null;
+            $municipio_id = null;
 
             if (isset($data['address'])) {
                 $api_departamento = $data['address']['state'];
@@ -63,12 +67,24 @@ class CensoLuminariaController extends Controller
                     $departamento = Departamento::where('nombre', $api_departamento)->first();
                     if ($departamento) {
                         $id_departamento = $departamento->id;
+                        $municipios =  Municipio::where('departamento_id', $id_departamento)->get();
+
                         if ($api_municipio) {
-                            $distrito = Distrito::where('departamento_id', $id_departamento)->where('nombre', $api_municipio)->first();
-                            $distritos = Distrito::where('departamento_id', $id_departamento)->get();
+                            $distrito = Distrito::select('distrito.id', 'distrito.nombre', 'distrito.municipio_id')
+                            ->join('municipio', 'municipio.id', '=', 'distrito.municipio_id')->where('municipio.departamento_id', $id_departamento)
+                            ->where('distrito.nombre', $api_municipio)->first();
+
                             if ($distrito) {
+                                $distritos = Distrito::where('municipio_id', $distrito->municipio_id)->get();
+
                                 $id_distrito = $distrito->id;
+                                $municipio_id = $distrito->municipio_id;
                             }
+                        }
+                        else{
+
+                            $municipio_id = $municipios::select('id')->first();
+                            dd($municipio_id    );
                         }
                     }
                 }
@@ -81,7 +97,7 @@ class CensoLuminariaController extends Controller
             $tipos = TipoLuminaria::where('Activo', '=', 1)->get();
             $departamentos = Departamento::get();
             $configuracion = Configuracion::first();
-            return view('control.censo_luminaria.create', compact('tipos', 'departamentos', 'distritos','configuracion', 'latitude', 'longitude', 'id_departamento', 'id_distrito','direccion'));
+            return view('control.censo_luminaria.create', compact('tipos', 'departamentos', 'distritos', 'municipios', 'configuracion', 'latitude', 'longitude', 'id_departamento', 'id_distrito', 'municipio_id', 'direccion'));
         } else {
             alert()->error('la ubicacion es incorrecta');
             return back();
@@ -95,7 +111,7 @@ class CensoLuminariaController extends Controller
 
     public function get_distritos($id)
     {
-        return Distrito::where('departamento_id', '=', $id)->get();
+        return Distrito::where('municipio_id', '=', $id)->get();
     }
 
     public function get_potencia_promedio($id)
@@ -112,6 +128,7 @@ class CensoLuminariaController extends Controller
 
     public function store(Request $request)
     {
+        $codigo = $this->getCodigo($request->distrito_id);
         $censo = new CensoLuminaria();
         $censo->tipo_luminaria_id = $request->tipo_luminaria_id;
         $censo->potencia_nominal = $request->potencia_nominal;
@@ -120,12 +137,60 @@ class CensoLuminariaController extends Controller
         $censo->distrito_id = $request->distrito_id;
         $censo->usuario_ingreso = auth()->user()->id;
         $censo->direccion = $request->direccion;
-        //$censo->decidad_luminicia = $request->decidad_luminicia;
+        $censo->codigo_luminaria = $codigo;
         $censo->latitud = $request->latitud;
         $censo->longitud = $request->longitud;
+        $censo->observacion = $request->observacion;
         $censo->save();
+
+
+        $url_en_qr =  url('/') . "/control/censo_luminaria/" . $codigo;
+
+        QrCode::format('png')->size(200)->generate($url_en_qr . '0', public_path('qr/' . $codigo . '.png'));
+        $file = public_path('qr/' . $codigo . '.png');
+
         alert()->success('El registro ha sido creado correctamente');
-        return redirect('control/censo_luminaria/');
+
+
+
+        $folderPath = public_path('qr'); // Ruta a la carpeta public/qr
+        $files = File::allFiles($folderPath);
+        $days = 1; // Número de días para considerar un archivo como antiguo
+        $timeThreshold = now()->subDays($days)->getTimestamp(); // Fecha límite para eliminar
+
+        foreach ($files as $file) {
+            if (filemtime($file) < $timeThreshold) {
+                unlink($file); // Elimina el archivo
+                $this->info("Archivo eliminado: {$file}");
+            }
+        }
+
+
+
+        return view('control.censo_luminaria.resumen', compact('censo'));
+        //return redirect('control/censo_luminaria/');
+    }
+
+
+    public function getCodigo($id)
+    {
+        $distrito = Distrito::findOrFail($id);
+        $codigo = "";
+        $max_codigo = CensoLuminaria::where('distrito_id', $id)->max('codigo_luminaria');
+
+        if (!$max_codigo) {
+            $codigo = $distrito->codigo .'00001';
+        } else {
+            $max_codigo++;
+
+            $longitud_deseada = 5; // numero de caracteres
+            // Convertir el número a una cadena y luego aplicar str_pad
+            $numero_formateado = str_pad((string)$max_codigo, $longitud_deseada, '0', STR_PAD_LEFT);
+
+            $codigo = $numero_formateado;
+        }
+
+        return  $codigo;
     }
 
     public function show($id)
@@ -145,24 +210,12 @@ class CensoLuminariaController extends Controller
         return view('control.censo_luminaria.edit', compact('censo', 'tipos', 'departamentos', 'distritos', 'potencias_promedio'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function update(Request $request, $id)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         //

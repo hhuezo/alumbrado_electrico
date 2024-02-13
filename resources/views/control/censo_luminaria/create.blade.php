@@ -61,6 +61,17 @@
                             </div>
 
                             <div class="input-area">
+                                <label for="largeInput" class="form-label">Municipio</label>
+                                <select class="form-control" id="municipio">
+                                    @foreach ($municipios as $obj)
+                                        <option value="{{ $obj->id }}"
+                                            {{ $municipio_id == $obj->id ? 'selected' : '' }}>{{ $obj->nombre }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="input-area">
                                 <label for="largeInput" class="form-label">Distrito</label>
                                 <select class="form-control" name="distrito_id" id="distrito" required>
                                     @foreach ($distritos as $obj)
@@ -105,16 +116,16 @@
                                     value="{{ old('consumo_mensual') }}" required class="form-control">
                             </div>
 
-                            {{--<div class="input-area">
-                                <label for="largeInput" class="form-label">Desidad luminicia</label>
-                                <input type="number" step="0.001" name="decidad_luminicia"
-                                    value="{{ old('decidad_luminicia') }}" class="form-control">
-                            </div>--}}
+                            <div class="input-area">
+                                <label for="largeInput" class="form-label">Observación</label>
+                                <input type="text"  name="observacion"
+                                    value="{{ old('observacion') }}" class="form-control">
+                            </div>
 
                             <div class="input-area">
                                 <label for="largeInput" class="form-label">Fecha ultimo censo</label>
                                 <input type="date" name="fecha_ultimo_censo" value="{{ old('fecha_ultimo_censo') }}"
-                                    required class="form-control">
+                                     class="form-control">
                             </div>
 
                         </div>
@@ -151,19 +162,19 @@
                 const Departamento = $(this).val();
 
 
-                $.get("{{ url('censo_luminaria/get_distritos') }}" + '/' + Departamento, function(data) {
+                $.get("{{ url('censo_luminaria/get_municipios') }}" + '/' + Departamento, function(data) {
                     console.log(data);
                     var _select = ''
                     for (var i = 0; i < data.length; i++)
                         _select += '<option value="' + data[i].id + '">' + data[i].nombre +
                         '</option>';
-                    $("#distrito").html(_select);
+                    $("#municipio").html(_select);
 
                 });
             });
 
 
-            /* $("#municipio").change(function() {
+             $("#municipio").change(function() {
                  var Municipio = $(this).val();
                  $.get("{{ url('censo_luminaria/get_distritos') }}" + '/' + Municipio, function(data) {
                      var _select = ''
@@ -173,7 +184,7 @@
 
                      $("#distrito").html(_select);
                  });
-             });*/
+             });
 
             $("#tipo_luminaria").change(function() {
                 var tipo_luminaria = $(this).val();
