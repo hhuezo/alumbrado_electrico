@@ -151,64 +151,99 @@
                             </span>
                         </a>
                     </li>
-                    @can('edit users')
-                        <li class="">
-                            <a href="#" class="navItem">
-                                <span class="flex items-center">
-                                    <iconify-icon class=" nav-icon" icon="heroicons-outline:user-group"></iconify-icon>
-                                    <span>Seguridad</span>
-                                </span>
-                                <iconify-icon class="icon-arrow" icon="heroicons-outline:chevron-right"></iconify-icon>
-                            </a>
-                            <ul class="sidebar-submenu">
-                                <li>
-                                    <a href="{{ url('seguridad/usuario') }}">Usuario</a>
-                                </li>
-                                <li>
-                                    <a href="{{ url('seguridad/role') }}">Rol</a>
-                                </li>
-                                <li>
-                                    <a href="{{ url('seguridad/permission') }}">Permisos</a>
-                                </li>
-                            </ul>
-                        </li>
+                    <li class="">
+                        <a href="#" class="navItem">
+                            <span class="flex items-center">
+                                <iconify-icon class=" nav-icon" icon="heroicons-outline:user-group"></iconify-icon>
+                                <span>Información pública</span>
+                            </span>
+                            <iconify-icon class="icon-arrow" icon="heroicons-outline:chevron-right"></iconify-icon>
+                        </a>
+                        <ul class="sidebar-submenu">
+                            <li>
+                                <a href="{{ url('importacion/base_datos') }}">Importación de censo genérico</a>
+                            </li>
+                            <li>
+                                <a href="{{ url('seguridad/role') }}">Gráficos</a>
+                            </li>
+                            <li>
+                                <a href="{{ url('seguridad/permission') }}">Estimación de factura general</a>
+                            </li>
+                            <li>
+                                <a href="{{ url('seguridad/role') }}">Evaluación de proyectos</a>
+                            </li>
+                            <li>
+                                <a href="{{ url('seguridad/role') }}">Biblioteca / Info general</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="">
+                        <a href="#" class="navItem">
+                            <span class="flex items-center">
+                                <iconify-icon class=" nav-icon" icon="heroicons-outline:user-group"></iconify-icon>
+                                <span>Elaboración censo</span>
+                            </span>
+                            <iconify-icon class="icon-arrow" icon="heroicons-outline:chevron-right"></iconify-icon>
+                        </a>
+                        <ul class="sidebar-submenu">
+                            <li>
+                                <a href="{{ url('control/censo_luminaria') }}">Creación nuevo registro</a>
+                            </li>
+                            <li>
+                                <a href="{{ url('seguridad/role') }}">Comparación censos</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="">
+                        <a href="#" class="navItem">
+                            <span class="flex items-center">
+                                <iconify-icon class=" nav-icon" icon="heroicons-outline:user-group"></iconify-icon>
+                                <span>Gestión parque AP</span>
+                            </span>
+                            <iconify-icon class="icon-arrow" icon="heroicons-outline:chevron-right"></iconify-icon>
+                        </a>
+                        <ul class="sidebar-submenu">
+                            <li>
+                                <a href="{{ url('seguridad/usuario') }}">Inventario actual AP</a>
+                            </li>
+                            <li>
+                                <a href="{{ url('seguridad/role') }}">Pendiente</a>
+                            </li>
+                        </ul>
 
-                        {{--
-                        <li class="">
-                            <a href="#" class="navItem">
-                                <span class="flex items-center">
-                                    <iconify-icon class=" nav-icon" icon="grommet-icons:document-config"
-                                        style="color: white;"></iconify-icon>
-
-                                    <span>Configuración</span>
-                                </span>
-
-                                <iconify-icon class="icon-arrow" icon="heroicons-outline:chevron-right"></iconify-icon>
-                            </a>
-                            <ul class="sidebar-submenu">
-                                <li>
-                                    <a href="{{ url('configuracion/pais') }}">País</a>
-                                </li>
-                                <li>
-                                    <a href="{{ url('configuracion/alcance') }}">Alcance</a>
-                                </li>
-                                <li>
-                                    <a href="{{ url('editor') }}">Editor de paginas</a>
-                                </li>
-
-                                <li>
-                                    <a href="{{ url('configuracion/correo') }}">Correo</a>
-                                </li>
-
-                                <li>
-                                    <a href="{{ url('publico/menu') }}">Menús</a>
-                                </li>
+                        <ul class="sidebar-submenu">
+                            <li>
+                                <a href="{{ url('seguridad/usuario') }}">Evaluación de Proyectos</a>
+                            </li>
+                            <li>
+                                <a href="{{ url('seguridad/role') }}">Informes</a>
+                            </li>
+                        </ul>
+                    </li>
 
 
+                    <li class="">
+                        <a href="#" class="navItem">
+                            <span class="flex items-center">
+                                <iconify-icon class=" nav-icon" icon="heroicons-outline:user-group"></iconify-icon>
+                                <span>Reportes y seguimiento de fallas</span>
+                            </span>
+                            <iconify-icon class="icon-arrow" icon="heroicons-outline:chevron-right"></iconify-icon>
+                        </a>
+                        <ul class="sidebar-submenu">
+                            <li>
+                                <a href="{{ url('seguridad/usuario') }}">Crear reporte de falla</a>
+                            </li>
+                            <li>
+                                <a href="{{ url('seguridad/role') }}">Listado de reportes</a>
+                            </li>
+                            <li>
+                                <a href="{{ url('seguridad/role') }}">Informes</a>
+                            </li>
+                        </ul>
+                    </li>
 
-                            </ul>
-                        </li> --}}
-                    @endcan
+
 
 
 
@@ -239,33 +274,34 @@
                         </ul>
                     </li>
 
+                    @can('edit users')
+                        <li class="">
+                            <a href="#" class="navItem">
+                                <span class="flex items-center">
+                                    <iconify-icon class=" nav-icon" icon="heroicons-outline:user-group"></iconify-icon>
+                                    <span>Seguridad</span>
+                                </span>
+                                <iconify-icon class="icon-arrow" icon="heroicons-outline:chevron-right"></iconify-icon>
+                            </a>
+                            <ul class="sidebar-submenu">
+                                <li>
+                                    <a href="{{ url('seguridad/usuario') }}">Usuario</a>
+                                </li>
+                                <li>
+                                    <a href="{{ url('seguridad/role') }}">Rol</a>
+                                </li>
+                                <li>
+                                    <a href="{{ url('seguridad/permission') }}">Permisos</a>
+                                </li>
+                            </ul>
+                        </li>
+                    @endcan
+
+
 
 
                     <li>
-                        <a href="{{ url('control/censo_luminaria') }}" class="navItem">
-                            <span class="flex items-center">
-                                <iconify-icon class=" nav-icon" icon="vaadin:records" style="color: white;"
-                                    width="15"></iconify-icon>
-                                <span>Censo luminaria</span>
-                            </span>
-                        </a>
-                    </li>
-
-
-
-
-                    <li>
-                        <a href="{{ url('importacion/base_datos') }}" class="navItem">
-                            <span class="flex items-center">
-                                <iconify-icon class=" nav-icon" icon="material-symbols:add-notes"
-                                    style="color: white;"></iconify-icon>
-                                <span>Importar base de datos</span>
-                            </span>
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="{{ url('importacion/base_datos') }}/1"  target="_blank" class="navItem">
+                        <a href="{{ url('importacion/base_datos') }}/1" target="_blank" class="navItem">
                             <span class="flex items-center">
                                 <iconify-icon class=" nav-icon" icon="material-symbols:add-notes"
                                     style="color: white;"></iconify-icon>
