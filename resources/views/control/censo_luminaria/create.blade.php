@@ -33,6 +33,12 @@
                             </ul>
                         </div>
                     @endif
+                    @if($puntosCercanos>0)
+                    <div class="alert alert-danger">
+                        <p>Existen puntos cercanos ya registrados</p>
+                    </div>
+                    <br>
+                    @endif
                     <form method="POST" action="{{ url('control/censo_luminaria') }}">
                         @csrf
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-7">
@@ -48,6 +54,7 @@
                                     class="form-control">
 
                             </div> --}}
+
 
                             <div class="input-area">
                                 <label for="largeInput" class="form-label">Departamento</label>

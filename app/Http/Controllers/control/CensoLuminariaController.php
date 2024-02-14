@@ -12,6 +12,7 @@ use App\Models\Configuracion;
 use App\Models\control\CensoLuminaria;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
+use Illuminate\Support\Facades\DB;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Facades\File;
 
@@ -43,6 +44,25 @@ class CensoLuminariaController extends Controller
             $longitude = $request->longitude;
 
 
+
+            //verificar si existe algun punto cerca
+            $radio = 10; //radio en metros a la redonda
+            // Conversión de metros a grados decimales
+            $radioEnGrados = $radio / 111.319; // Aproximadamente 1 grado = 111.319 km en el ecuador
+
+            $puntosCercanos = DB::table('censo_luminaria')->select('*')
+                // Haversine Formula
+                ->selectRaw("(6371 * acos(cos(radians(?))
+                * cos(radians(latitud))
+                * cos(radians(longitud) - radians(?))
+                + sin(radians(?))
+                * sin(radians(latitud)))) AS distancia", [$latitude, $longitude, $latitude])
+                ->havingRaw("distancia < ?", [$radioEnGrados])
+                ->count();
+
+
+
+
             $url = "https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat={$latitude}&lon={$longitude}";
 
             $client = new Client();
@@ -72,8 +92,8 @@ class CensoLuminariaController extends Controller
 
                         if ($api_municipio) {
                             $distrito = Distrito::select('distrito.id', 'distrito.nombre', 'distrito.municipio_id')
-                            ->join('municipio', 'municipio.id', '=', 'distrito.municipio_id')->where('municipio.departamento_id', $id_departamento)
-                            ->where('distrito.nombre', $api_municipio)->first();
+                                ->join('municipio', 'municipio.id', '=', 'distrito.municipio_id')->where('municipio.departamento_id', $id_departamento)
+                                ->where('distrito.nombre', $api_municipio)->first();
 
                             if ($distrito) {
                                 $distritos = Distrito::where('municipio_id', $distrito->municipio_id)->get();
@@ -81,8 +101,7 @@ class CensoLuminariaController extends Controller
                                 $id_distrito = $distrito->id;
                                 $municipio_id = $distrito->municipio_id;
                             }
-                        }
-                        else{
+                        } else {
 
                             $municipio = $municipios->first();
                             $municipio_id  = $municipio->id;
@@ -99,7 +118,8 @@ class CensoLuminariaController extends Controller
             $tipos = TipoLuminaria::where('Activo', '=', 1)->get();
             $departamentos = Departamento::get();
             $configuracion = Configuracion::first();
-            return view('control.censo_luminaria.create', compact('tipos', 'departamentos', 'distritos', 'municipios', 'configuracion', 'latitude', 'longitude', 'id_departamento', 'id_distrito', 'municipio_id', 'direccion'));
+            return view('control.censo_luminaria.create', compact('tipos', 'departamentos', 'distritos', 'municipios', 'configuracion', 'latitude', 'longitude',
+            'id_departamento', 'id_distrito', 'municipio_id', 'direccion','puntosCercanos'));
         } else {
             alert()->error('la ubicacion es incorrecta');
             return back();
@@ -181,7 +201,7 @@ class CensoLuminariaController extends Controller
         $max_codigo = CensoLuminaria::where('distrito_id', $id)->max('codigo_luminaria');
 
         if (!$max_codigo) {
-            $codigo = $distrito->codigo .'00001';
+            $codigo = $distrito->codigo . '00001';
         } else {
             $max_codigo++;
 
