@@ -3,6 +3,7 @@
 use App\Http\Controllers\catalogo\BibliotecaController;
 use App\Http\Controllers\catalogo\DistritoController;
 use App\Http\Controllers\catalogo\ReporteFallaController;
+use App\Http\Controllers\catalogo\TipoLuminariaController;
 use App\Http\Controllers\control\CensoLuminariaController;
 use App\Http\Controllers\importacion\BaseDatosController;
 use App\Http\Controllers\publico\ReporteFallaPublicoController;
@@ -43,7 +44,7 @@ Route::resource('control/censo_luminaria', CensoLuminariaController::class);
 //catalogos
 Route::post('catalogo/biblioteca/active', [BibliotecaController::class,'active']);
 Route::resource('catalogo/biblioteca', BibliotecaController::class);
-Route::resource('catalogo/biblioteca', BibliotecaController::class);
+Route::resource('catalogo/tipo_luminaria', TipoLuminariaController::class);
 
 
 Route::get('catalogo/reporte_falla/get_distrito_id/{name}', [ReporteFallaController::class,'getDistritoId']);

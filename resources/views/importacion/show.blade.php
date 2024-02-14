@@ -25,7 +25,7 @@
                 position: markers[i],
                 map: map,
                 icon: {
-                    url: "{{ asset('img/poste.png') }}",
+                    url: "{{ asset('img/') }}/" + markers[i].icono,
                     scaledSize: new google.maps.Size(45, 45)
                 }
             });

@@ -19,6 +19,7 @@ class TipoLuminaria extends Model
     protected $fillable =[
         'nombre',
         'activo',
+        'icono'
     ];
 
     protected $guarded =[

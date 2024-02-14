@@ -34,9 +34,9 @@ class BaseDatosController extends Controller
 
         return view('importacion.base_datos',compact('datafields','data'));*/
 
-        $meses = ['01' => 'Enero','02' => 'Febrero','03' => 'Marzo','04' => 'Abril','05' => 'Mayo','06' => 'Junio','07' => 'Julio','08' => 'Agosto','09' => 'Septiembre','10' => 'Octubre','11' => 'Noviembre','12' => 'Diciembre'];
+        $meses = ['01' => 'Enero', '02' => 'Febrero', '03' => 'Marzo', '04' => 'Abril', '05' => 'Mayo', '06' => 'Junio', '07' => 'Julio', '08' => 'Agosto', '09' => 'Septiembre', '10' => 'Octubre', '11' => 'Noviembre', '12' => 'Diciembre'];
 
-        return view('importacion.base_datos',compact('meses'));
+        return view('importacion.base_datos', compact('meses'));
     }
 
     public function create()
@@ -55,8 +55,8 @@ class BaseDatosController extends Controller
 
             //BaseDatosSiget::truncate();
 
-            BaseDatosSiget::where('anio',$request->anio)->where('mes',$request->mes)->delete();
-            $import = new DataBaseImport($request->anio,$request->mes);
+            BaseDatosSiget::where('anio', $request->anio)->where('mes', $request->mes)->delete();
+            $import = new DataBaseImport($request->anio, $request->mes);
             Excel::import($import, $file);
 
             alert()->success('El registro ha sido creado correctamente');
@@ -104,7 +104,12 @@ class BaseDatosController extends Controller
 
         $array_data = [];
         foreach ($censos as $censo) {
-            $array = ["lat" => $censo->latitud + 0, "lng" => $censo->longitud + 0, "shortDescription" => "Cod: " . $censo->codigo_luminaria];
+            if ($censo->tipo_luminaria->icono) {
+                $array = ["lat" => $censo->latitud + 0, "lng" => $censo->longitud + 0, "shortDescription" => "Cod: " . $censo->codigo_luminaria, "icono" => $censo->tipo_luminaria->icono];
+            } else {
+                $array = ["lat" => $censo->latitud + 0, "lng" => $censo->longitud + 0, "shortDescription" => "Cod: " . $censo->codigo_luminaria, "icono" => "poste.png"];
+            }
+
             array_push($array_data, $array);
         }
 
