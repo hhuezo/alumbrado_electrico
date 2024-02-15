@@ -5,6 +5,7 @@ use App\Http\Controllers\catalogo\DistritoController;
 use App\Http\Controllers\catalogo\ReporteFallaController;
 use App\Http\Controllers\catalogo\TipoLuminariaController;
 use App\Http\Controllers\control\CensoLuminariaController;
+use App\Http\Controllers\control\ValorMensualEnergiaController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\importacion\BaseDatosController;
 use App\Http\Controllers\publico\ReporteFallaPublicoController;
@@ -44,6 +45,7 @@ Route::get('censo_luminaria/get_distritos/{id}', [CensoLuminariaController::clas
 Route::get('censo_luminaria/get_potencia_promedio/{id}', [CensoLuminariaController::class,'get_potencia_promedio']);
 Route::get('censo_luminaria/get_consumo_mensual/{id}', [CensoLuminariaController::class,'get_consumo_mensual']);
 Route::resource('control/censo_luminaria', CensoLuminariaController::class);
+Route::resource('control/valor_mensual_energia', ValorMensualEnergiaController::class);
 
 //catalogos
 Route::post('catalogo/biblioteca/active', [BibliotecaController::class,'active']);
