@@ -45,6 +45,10 @@
                                             <a href="{{ url('control/censo_luminaria') }}/{{ $obj->id }}/edit">
                                                 <iconify-icon icon="mdi:pencil-box" width="40"></iconify-icon>
                                             </a>
+
+                                            <a href="{{ url('control/censo_luminaria') }}/{{ $obj->id }}">
+                                                <iconify-icon icon="zondicons:add-solid" width="40"></iconify-icon>
+                                            </a>
                                         </td>
                                     </tr>
 
