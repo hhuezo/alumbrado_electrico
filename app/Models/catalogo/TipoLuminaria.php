@@ -2,6 +2,7 @@
 
 namespace App\Models\catalogo;
 
+use App\Models\BaseDatosSiget;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -9,20 +10,23 @@ class TipoLuminaria extends Model
 {
     use HasFactory;
 
-    protected $table='tipo_luminaria';
+    protected $table = 'tipo_luminaria';
 
-    protected $primaryKey='id';
+    protected $primaryKey = 'id';
 
-    public $timestamps=false;
+    public $timestamps = false;
 
 
-    protected $fillable =[
+    protected $fillable = [
         'nombre',
         'activo',
         'icono'
     ];
 
-    protected $guarded =[
+    protected $guarded = [];
 
-    ];
+    public function baseDatosSiget()
+    {
+        return $this->hasMany(BaseDatosSiget::class, 'tipo_luminaria_id');
+    }
 }

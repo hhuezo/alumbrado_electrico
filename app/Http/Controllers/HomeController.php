@@ -26,13 +26,8 @@ class HomeController extends Controller
 
     public function index()
     {
-        //$data_siget = BaseDatosSiget::get();
-        //grafico por tecnologia
-        //$tipo_luminaria_array = TipoLuminaria::pluck('nombre', 'id')->toArray();
-
         $anio = BaseDatosSiget::max('anio');
-        if($anio)
-        {
+        if ($anio) {
             $mes = BaseDatosSiget::where('anio', $anio)->max('mes');
         }
 
@@ -86,88 +81,46 @@ class HomeController extends Controller
             ];
         })->all();
 
-        if ($anio && $mes) {
-            $maxPotenciaNominal = DB::table('base_datos_siget')->where('mes', $mes)->where('anio', $anio)->max('potencia_nominal');
-        } else {
-            $maxPotenciaNominal = DB::table('base_datos_siget')->max('potencia_nominal');
-        }
 
-        $rangos = [[0, 36], [37, 72], [73, 148], [149, $maxPotenciaNominal]];
+        //rangos
+        $data_rango_potencia_instalada = [];
+        $tipo_luminarias = TipoLuminaria::where('activo', '1')
+            ->withCount(['baseDatosSiget as potencias_count' => function ($query) {
+                $query->select(DB::raw('count(distinct potencia_nominal)'));
+            }])->get();
 
-        $data_potencia_instalada = [];
-
-        foreach ($rangos as $rango) {
-
-            if ($anio && $mes) {
-            $resultado = DB::table('base_datos_siget')
-                ->select(DB::raw('SUM(base_datos_siget.numero_luminarias) as total_conteo'))
-                ->whereBetween('base_datos_siget.potencia_nominal', [$rango[0], $rango[1]])
-                ->where('mes', $mes)->where('anio', $anio)
-                ->get();
-            } else {
-                $resultado = DB::table('base_datos_siget')
-                ->select(DB::raw('SUM(base_datos_siget.numero_luminarias) as total_conteo'))
-                ->whereBetween('base_datos_siget.potencia_nominal', [$rango[0], $rango[1]])
-                ->get();
-            }
-
-            // Agrega el resultado de este rango específico al array de resultados
-            $data_potencia_instalada[] = [
-                'name' => $rango[0] . ' - ' . $rango[1],
-                'y' => $resultado[0]->total_conteo + 0,
-                'drilldown' => $rango[0] . ' - ' . $rango[1]
+        foreach ($tipo_luminarias as $tipo) {
+            $data_rango_potencia_instalada[] = [
+                'name' => $tipo->nombre,
+                'y' => $tipo->potencias_count + 0,
+                'drilldown' => $tipo->nombre,
+                'id' => $tipo->id
             ];
         }
 
+        return view('home', compact('data_tipo_luminaria', 'data_numero_luminaria', 'data_rango_potencia_instalada'));
+    }
 
-        /*$resultados = DB::table('base_datos_siget')
-            ->select(DB::raw('CONCAT(FLOOR((potencia_nominal - 1) / 200) * 200, "-", FLOOR((potencia_nominal - 1) / 200) * 200 + 199) as grupo_potencia'), DB::raw('SUM(numero_luminarias) as conteo'))
-            ->groupBy(DB::raw('CONCAT(FLOOR((potencia_nominal - 1) / 200) * 200, "-", FLOOR((potencia_nominal - 1) / 200) * 200 + 199)'))
-            ->orderBy('grupo_potencia')
+
+    public function show_data($id)
+    {
+        $tipo = TipoLuminaria::findOrFail($id);
+        $tipo_nombre =  $tipo->nombre;
+        $resultados = DB::table('base_datos_siget')
+            ->select('potencia_nominal', DB::raw('sum(numero_luminarias) as cantidad'))
+            ->where('tipo_luminaria_id', $id)
+            ->groupBy('potencia_nominal')
             ->get();
 
-
-        $data_potencia_instalada = $resultados->map(function ($resultado) {
-            return [
-                "name" => $resultado->grupo_potencia,
-                "y" => $resultado->conteo + 0,
-                "drilldown" => $resultado->grupo_potencia,
+        $data_rango = [];
+        foreach ($resultados as $resultado) {
+            $data_rango[] = [
+                'name' => $resultado->potencia_nominal.' kwh',
+                'y' => $resultado->cantidad + 0,
+                'drilldown' => $resultado->potencia_nominal
             ];
-        })->all();*/
-
-
-        $i = 1;
-
-
-
-        $data_potencia_instalada_rango = null;
-        foreach ($resultados as $item) {
-
-            if (isset($rangos[$i - 1])) {
-                $rango = $rangos[$i - 1];
-
-                $resultados_rango = DB::table('base_datos_siget')
-                    ->select('base_datos_siget.potencia_nominal as potencia_nominal', DB::raw('sum(base_datos_siget.numero_luminarias) as conteo'))
-                    ->groupBy('base_datos_siget.potencia_nominal')
-                    ->orderBy('base_datos_siget.potencia_nominal')
-                    ->whereBetween('base_datos_siget.potencia_nominal', $rango)
-                    ->get();
-
-                if ($resultados_rango->count() > 0) {
-                    // Guardar el resultado en el array con el índice $i
-                    $data_potencia_instalada_rango[$i] = $resultados_rango->map(function ($resultado) {
-                        return [
-                            "name" => $resultado->potencia_nominal,
-                            "y" => (int) $resultado->conteo, // Asegurarse de que sea un entero
-                            "drilldown" => $resultado->potencia_nominal,
-                        ];
-                    })->all();
-                    $i++; // Incrementar $i para el próximo índice
-                }
-            }
         }
 
-
-        return view('home', compact('data_tipo_luminaria', 'data_numero_luminaria', 'data_potencia_instalada', 'data_potencia_instalada_rango'));
+        return view('data_potencia', compact('data_rango','tipo_nombre'));
     }
 }

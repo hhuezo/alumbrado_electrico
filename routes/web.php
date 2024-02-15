@@ -5,6 +5,7 @@ use App\Http\Controllers\catalogo\DistritoController;
 use App\Http\Controllers\catalogo\ReporteFallaController;
 use App\Http\Controllers\catalogo\TipoLuminariaController;
 use App\Http\Controllers\control\CensoLuminariaController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\importacion\BaseDatosController;
 use App\Http\Controllers\publico\ReporteFallaPublicoController;
 use App\Http\Controllers\WelcomeController;
@@ -33,6 +34,9 @@ Auth::routes();
 
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::get('home/rango_potencia_data/{id}', [HomeController::class,'show_data']);
+
 
 Route::get('control/censo_luminaria/show_map', [CensoLuminariaController::class,'show_map']);
 Route::get('censo_luminaria/get_municipios/{id}', [CensoLuminariaController::class,'get_municipios']);
