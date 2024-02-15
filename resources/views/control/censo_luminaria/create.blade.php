@@ -13,8 +13,7 @@
 
                                 <a href="{{ url('control/censo_luminaria/show_map/') }}">
                                     <button class="btn btn-dark btn-sm float-right">
-                                        <iconify-icon icon="icon-park-solid:back" style="color: white;" width="18">
-                                        </iconify-icon>
+                                        Modificar punto
                                     </button>
                                 </a>
                             </div>

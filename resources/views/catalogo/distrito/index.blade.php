@@ -23,7 +23,7 @@
                                     <td>Codigo</td>
                                     <td>Nombre</td>
                                     <td>Extensión territorial</td>
-                                    <td>Poblacion</td>
+                                    <td>Población</td>
                                     <td>Municipio</td>
                                     <td>Departamento</td>
                                     <td>opciones</td>

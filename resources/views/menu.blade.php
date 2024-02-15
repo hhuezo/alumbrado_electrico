@@ -271,6 +271,10 @@
                                 <a href="{{ url('catalogo/distrito') }}">Distritos</a>
                             </li>
 
+                            <li>
+                                <a href="{{ url('catalogo/tipo_luminaria') }}">Tipo luminaria</a>
+                            </li>
+
                         </ul>
                     </li>
 
