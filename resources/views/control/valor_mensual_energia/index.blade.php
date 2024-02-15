@@ -46,7 +46,7 @@
                                         <tr>
                                             <td align="center">{{ $obj->anio }}</td>
                                             <td align="center">{{ $meses[$obj->mes] }}</td>
-                                            <td align="right">${{ $obj->valor }}</td>
+                                            <td align="right">${{ number_format($obj->valor, 2, '.', ',') }}</td>
 
                                             <td align="center">
 

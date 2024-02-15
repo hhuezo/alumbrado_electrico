@@ -161,7 +161,7 @@
                         </a>
                         <ul class="sidebar-submenu">
                             <li>
-                                <a href="{{ url('importacion/base_datos') }}">Importación de censo genérico</a>
+                                <a href="{{ url('importacion/base_datos') }}">Importación de censo gen.</a>
                             </li>
                             <li>
                                 <a href="{{ url('seguridad/role') }}">Gráficos</a>

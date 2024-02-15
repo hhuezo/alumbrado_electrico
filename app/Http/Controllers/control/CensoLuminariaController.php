@@ -118,8 +118,20 @@ class CensoLuminariaController extends Controller
             $tipos = TipoLuminaria::where('Activo', '=', 1)->get();
             $departamentos = Departamento::get();
             $configuracion = Configuracion::first();
-            return view('control.censo_luminaria.create', compact('tipos', 'departamentos', 'distritos', 'municipios', 'configuracion', 'latitude', 'longitude',
-            'id_departamento', 'id_distrito', 'municipio_id', 'direccion','puntosCercanos'));
+            return view('control.censo_luminaria.create', compact(
+                'tipos',
+                'departamentos',
+                'distritos',
+                'municipios',
+                'configuracion',
+                'latitude',
+                'longitude',
+                'id_departamento',
+                'id_distrito',
+                'municipio_id',
+                'direccion',
+                'puntosCercanos'
+            ));
         } else {
             alert()->error('la ubicacion es incorrecta');
             return back();
@@ -183,7 +195,7 @@ class CensoLuminariaController extends Controller
         foreach ($files as $file) {
             if (filemtime($file) < $timeThreshold) {
                 unlink($file); // Elimina el archivo
-                $this->info("Archivo eliminado: {$file}");
+                //$this->info("Archivo eliminado: {$file}");
             }
         }
 
@@ -220,11 +232,56 @@ class CensoLuminariaController extends Controller
         $censo = CensoLuminaria::findOrFail($id);
         $tipos = TipoLuminaria::where('Activo', '=', 1)->get();
         $departamentos = Departamento::get();
-        $municipios = Municipio::where('departamento_id',$censo->distrito->municipio->departamento_id)->get();
+        $municipios = Municipio::where('departamento_id', $censo->distrito->municipio->departamento_id)->get();
         $distritos = Distrito::where('municipio_id', '=', $censo->distrito->municipio_id)->get();
         $potencias_promedio = PotenciaPromedio::where('tipo_luminaria_id', '=', $censo->tipo_luminaria_id)->get();
 
-        return view('control.censo_luminaria.show', compact('censo', 'tipos', 'departamentos','municipios', 'distritos', 'potencias_promedio'));
+        return view('control.censo_luminaria.show', compact('censo', 'tipos', 'departamentos', 'municipios', 'distritos', 'potencias_promedio'));
+    }
+
+
+    public function create_record(Request $request)
+    {
+        $codigo = $request->codigo_luminaria;
+        $censo = new CensoLuminaria();
+        $censo->tipo_luminaria_id = $request->tipo_luminaria_id;
+        $censo->potencia_nominal = $request->potencia_nominal;
+        $censo->consumo_mensual = $request->consumo_mensual;
+        $censo->fecha_ultimo_censo = $request->fecha_ultimo_censo;
+        $censo->distrito_id = $request->distrito_id;
+        $censo->usuario_ingreso = auth()->user()->id;
+        $censo->direccion = $request->direccion;
+        $censo->codigo_luminaria = $codigo;
+        $censo->latitud = $request->latitud;
+        $censo->longitud = $request->longitud;
+        $censo->observacion = $request->observacion;
+        $censo->save();
+
+
+        $url_en_qr =  url('/') . "/control/censo_luminaria/" . $codigo;
+
+        QrCode::format('png')->size(200)->generate($url_en_qr . '0', public_path('qr/' . $codigo . '.png'));
+        $file = public_path('qr/' . $codigo . '.png');
+
+        alert()->success('El registro ha sido creado correctamente');
+
+
+
+        $folderPath = public_path('qr'); // Ruta a la carpeta public/qr
+        $files = File::allFiles($folderPath);
+        $days = 1; // Número de días para considerar un archivo como antiguo
+        $timeThreshold = now()->subDays($days)->getTimestamp(); // Fecha límite para eliminar
+
+        foreach ($files as $file) {
+            if (filemtime($file) < $timeThreshold) {
+                unlink($file); // Elimina el archivo
+                //$this->info("Archivo eliminado: {$file}");
+            }
+        }
+
+
+
+        return view('control.censo_luminaria.resumen', compact('censo'));
     }
 
     public function edit($id)

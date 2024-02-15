@@ -10,7 +10,7 @@
                         <div class="flex-1">
                             <div class="card-title text-slate-900 dark:text-white">Censo
 
-                                <a href="{{ url('catalogo/lugar_formacion') }}">
+                                <a href="{{ url('control/censo_luminaria') }}">
                                     <button class="btn btn-dark btn-sm float-right">
                                         <iconify-icon icon="icon-park-solid:back" style="color: white;" width="18">
                                         </iconify-icon>
@@ -29,11 +29,11 @@
                             </ul>
                         </div>
                     @endif
-                    <form method="POST" action="{{ route('censo_luminaria.update', $censo->id) }}">
-                        @method('PUT')
+                    <form method="POST" action="{{ url('control/censo_luminaria/create_record') }}">
                         @csrf
-
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-7">
+
+                            <input type="hidden" name="codigo_luminaria" value="{{ $censo->codigo_luminaria }}" required class="form-control">
 
                             <div class="input-area">
                                 <label for="largeInput" class="form-label">Departamento</label>
@@ -87,9 +87,15 @@
                             <div class="input-area">
                                 <label for="largeInput" class="form-label">Potencia promedio</label>
                                 <select class="form-control" id="potencia_promedio">
+
+
+
                                     @if ($potencias_promedio->count() > 0)
-                                        <option value="{{ $obj->id }}"
-                                            {{ $censo->tipo_luminaria_id == $obj->id ? 'selected' : '' }}>{{ $obj->nombre }}</option>
+                                        @foreach ($potencias_promedio as $obj)
+                                            <option value="{{ $obj->id }}"
+                                                {{ $censo->tipo_luminaria_id == $obj->id ? 'selected' : '' }}>
+                                                {{ $obj->potencia }}</option>
+                                        @endforeach
                                     @else
                                         <option value="">No aplica</option>
                                     @endif
@@ -100,27 +106,31 @@
                             <div class="input-area">
                                 <label for="largeInput" class="form-label">Potencia nominal</label>
                                 <input type="number" step="0.001" name="potencia_nominal" id="potencia_nominal"
-                                    value="{{ old('potencia_nominal') }}" required class="form-control">
+                                    value="{{ $censo->potencia_nominal }}" class="form-control">
                             </div>
 
                             <div class="input-area">
                                 <label for="largeInput" class="form-label">Consumo mensual</label>
                                 <input type="number" step="0.001" readonly name="consumo_mensual" id="consumo_mensual"
-                                    value="{{ old('consumo_mensual') }}" required class="form-control">
+                                    value="{{ $censo->consumo_mensual }}" required class="form-control">
                             </div>
 
                             <div class="input-area">
-                                <label for="largeInput" class="form-label">Decidad luminicia</label>
-                                <input type="number" step="0.001" name="decidad_luminicia"
-                                    value="{{ old('decidad_luminicia') }}" required class="form-control">
+                                <label for="largeInput" class="form-label">Observación</label>
+                                <input type="text" name="observacion" value="{{ $censo->observacion }}"
+                                    class="form-control">
                             </div>
 
                             <div class="input-area">
                                 <label for="largeInput" class="form-label">Fecha ultimo censo</label>
                                 <input type="date" name="fecha_ultimo_censo" value="{{ old('fecha_ultimo_censo') }}"
-                                    required class="form-control">
+                                    class="form-control">
                             </div>
 
+                        </div>
+                        <div>&nbsp;</div>
+                        <div style="text-align: right;">
+                            <button type="submit" style="margin-right: 18px" class="btn btn-dark">Aceptar</button>
                         </div>
                     </form>
 
@@ -134,5 +144,108 @@
 
         </div>
     </div>
+
+    <script src="{{ asset('assets/js/jquery-3.6.0.min.js') }}"></script>
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+
+            $("#departamento").change(function() {
+                // var para la Departamento
+                const Departamento = $(this).val();
+
+
+                $.get("{{ url('censo_luminaria/get_municipios') }}" + '/' + Departamento, function(data) {
+                    console.log(data);
+                    var _select = ''
+                    for (var i = 0; i < data.length; i++)
+                        _select += '<option value="' + data[i].id + '">' + data[i].nombre +
+                        '</option>';
+                    $("#municipio").html(_select);
+
+                });
+            });
+
+
+            $("#municipio").change(function() {
+                var Municipio = $(this).val();
+                $.get("{{ url('censo_luminaria/get_distritos') }}" + '/' + Municipio, function(data) {
+                    var _select = ''
+                    for (var i = 0; i < data.length; i++)
+                        _select += '<option value="' + data[i].id + '"  >' + data[i].nombre +
+                        '</option>';
+
+                    $("#distrito").html(_select);
+                });
+            });
+
+            $("#tipo_luminaria").change(function() {
+                var tipo_luminaria = $(this).val();
+                $.get("{{ url('censo_luminaria/get_potencia_promedio') }}" + '/' + tipo_luminaria,
+                    function(data) {
+                        if (data.length === 0) {
+                            var _select = '<option value="">No aplica</option>';
+                            $("#potencia_nominal").prop("disabled", false);
+                        } else {
+                            var _select = '<option value="">Seleccione</option>'
+                            for (var i = 0; i < data.length; i++)
+                                _select += '<option value="' + data[i].id + '"  >' + data[i].potencia +
+                                '</option>';
+                        }
+                        $("#potencia_promedio").html(_select);
+                    });
+
+                document.getElementById('potencia_nominal').value = "";
+                document.getElementById('consumo_mensual').value = "";
+            });
+
+            $("#potencia_promedio").change(function() {
+                var potencia_promedio = $(this).val();
+                if (potencia_promedio == "") {
+                    document.getElementById('consumo_mensual').value = "";
+                    $("#potencia_nominal").prop("disabled", true);
+
+                } else {
+                    $.get("{{ url('censo_luminaria/get_consumo_mensual') }}" + '/' + potencia_promedio,
+                        function(data) {
+                            if (data.length === 0) {
+                                document.getElementById('consumo_mensual').value = "";
+                                $("#potencia_nominal").prop("disabled", false);
+                            } else {
+                                document.getElementById('consumo_mensual').value = data
+                                    .consumo_promedio;
+                                $("#potencia_nominal").prop("disabled", true);
+                            }
+
+                        });
+                }
+
+            });
+
+            $("#potencia_nominal").change(function() {
+                if ($(this).val() > 0) {
+                    var potencia_nominal = parseFloat($(this).val());
+
+                    // var consumo_mensual = (potencia_nominal * 360 * 0.90) / 1000;
+                    var consumo_mensual = (potencia_nominal * 360) / 1000;
+                    document.getElementById('consumo_mensual').value = consumo_mensual;
+
+                    console.log(potencia_nominal);
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'El valor ingresado no es válido'
+                    })
+                    document.getElementById('potencia_nominal').value = "";
+                }
+
+            });
+
+
+
+        });
+    </script>
 
 @endsection

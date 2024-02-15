@@ -28,15 +28,11 @@
                         <div class="flex-1">
                             <div class="card-title text-slate-900 dark:text-white">Importación de base de datos
 
-                                <a href="{{ url('catalogo/reporte_falla') }}">
-                                    <button class="btn btn-dark btn-sm float-right">
-                                        <iconify-icon icon="icon-park-solid:back" style="color: white;" width="18">
-                                        </iconify-icon>
-                                    </button>
-                                </a>
+
                             </div>
                         </div>
                     </header>
+
 
 
 
@@ -44,8 +40,12 @@
                         <div id="content_layout">
                             <div class="space-y-5">
                                 <div class="grid grid-cols-12 gap-5">
-
-                                    <div class="xl:col-span-12 col-span-12 lg:col-span-6">
+                                    <div class="xl:col-span-3 col-span-12 lg:col-span-3 ">
+                                        <div class="card p-6 h-full">
+                                            &nbsp;
+                                        </div>
+                                    </div>
+                                    <div class="xl:col-span-6 col-span-12 lg:col-span-6">
                                         @if (count($errors) > 0)
                                             <div class="alert alert-danger">
                                                 <ul>
@@ -65,50 +65,47 @@
                                             </div>
 
 
-                                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-7">
-                                                <div class="input-area relative">
-                                                    <label for="largeInput" class="form-label">Año</label>
-
-                                                    <select name="anio" class="form-control">
-                                                        @for ($i = date('Y'); $i >= 2023; $i--)
-                                                            <option value="{{ $i }}">{{ $i }}</option>
-                                                        @endfor
-                                                    </select>
+                                            <div class="card h-full">
+                                                <div class="grid pt-4 pb-3 px-4">
+                                                    <div class="input-area relative">
+                                                        <label for="largeInput" class="form-label">Año</label>
+                                                        <select name="anio" class="form-control">
+                                                            @for ($i = date('Y'); $i >= 2023; $i--)
+                                                                <option value="{{ $i }}">{{ $i }}
+                                                                </option>
+                                                            @endfor
+                                                        </select>
+                                                    </div>
+                                                    <br>
+                                                    <div class="input-area relative">
+                                                        <label for="largeInput" class="form-label">Mes</label>
+                                                        <select name="mes" class="form-control">
+                                                            @foreach ($meses as $numero => $nombre)
+                                                                <option value="{{ $numero }}"
+                                                                    {{ date('m') == $numero ? 'selected' : '' }}>
+                                                                    {{ $nombre }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <br>
+                                                    <div class="input-area relative">
+                                                        <label for="largeInput" class="form-label">Archivo</label>
+                                                        <input type="file" name="file" accept=".xlsx,.xls"
+                                                            class="form-control">
+                                                    </div>
                                                 </div>
-                                            </div>
-
-
-                                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-7">
-                                                <div class="input-area relative">
-                                                    <label for="largeInput" class="form-label">Mes</label>
-
-                                                    <select name="mes" class="form-control">
-                                                        @foreach ($meses as $numero => $nombre)
-                                                        <option value="{{ $numero }}" {{date('m') == $numero ? 'selected':''}}>{{ $nombre }}</option>
-                                                    @endforeach
-                                                    </select>
+                                                <div style="text-align: right;">
+                                                    <button type="submit" style="margin-right: 18px"
+                                                        class="btn btn-dark">Aceptar</button>
                                                 </div>
-                                            </div>
-
-                                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-7">
-
-
-                                                <div class="input-area relative">
-                                                    <label for="largeInput" class="form-label">Archivo</label>
-                                                    <input type="file" name="file" accept=".xlsx,.xls"
-                                                        class="form-control">
-                                                </div>
-
-
-                                            </div>
-
-                                            <div style="text-align: right;">
-                                                <button type="submit" style="margin-right: 18px"
-                                                    class="btn btn-dark">Aceptar</button>
                                             </div>
                                         </form>
                                     </div>
-
+                                    <div class="xl:col-span-3 col-span-12 lg:col-span-3 ">
+                                        <div class="card p-6 h-full">
+                                            &nbsp;
+                                        </div>
+                                    </div>
                                 </div>
 
                             </div>
@@ -118,6 +115,17 @@
 
                         </div>
                     </div>
+
+
+
+
+
+
+
+
+
+
+
                 </div>
             </div>
         </div>

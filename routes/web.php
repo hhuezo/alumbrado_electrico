@@ -39,6 +39,7 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::get('home/rango_potencia_data/{id}/{anio}/{mes}', [HomeController::class,'show_data']);
 
 
+Route::post('control/censo_luminaria/create_record', [CensoLuminariaController::class,'create_record']);
 Route::get('control/censo_luminaria/show_map', [CensoLuminariaController::class,'show_map']);
 Route::get('censo_luminaria/get_municipios/{id}', [CensoLuminariaController::class,'get_municipios']);
 Route::get('censo_luminaria/get_distritos/{id}', [CensoLuminariaController::class,'get_distritos']);
