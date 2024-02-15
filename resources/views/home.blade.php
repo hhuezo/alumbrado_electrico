@@ -288,7 +288,7 @@
 
         function showData(id) {
             $.ajax({
-                url: '{{ url("home/rango_potencia_data") }}/' + id,
+                url: '{{ url('home/rango_potencia_data') }}/' + id +'/'+{{$anio}}+'/'+{{$mes}},
                 type: 'GET',
                 success: function(response) {
                     // Aquí manejas la respuesta del servidor
@@ -306,8 +306,44 @@
 
     <div class="content-wrapper transition-all duration-150 " id="content_wrapper">
         <div class="page-content">
+            <form method="GET" action="{{url('home')}}">
+            <div class="card xl:col-span-2">
+                <div class="card-body flex flex-col p-4">
+                    <div class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
+                            <div class="input-area relative">
+                                <label for="largeInput" class="form-label">Año</label>
+                                <select class="form-control" name="anio">
+                                    @for ($i = date('Y'); $i >= 2023; $i--)
+                                        <option value="{{ $i }}" {{$anio == $i ? 'selected':''}}>{{ $i }}</option>
+                                    @endfor
+                                </select>
+                            </div>
+                            <div class="input-area relative">
+                                <label for="largeInput" class="form-label">Mes</label>
+                                <select class="form-control" name="mes">
+                                    @foreach ($meses as $key => $value)
+                                        <option value="{{ $key }}" {{$mes == $key ? 'selected':''}}>{{ $value }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="input-area relative">
+                                <label for="largeInput" class="form-label">&nbsp; </label>
+                                <button class="btn btn-dark btn-sm" type="submit" >Aceptar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </form>
+        </div>
+
+        <div class="page-content">
+
             <div class="transition-all duration-150 container-fluid" id="page_layout">
                 <div id="content_layout">
+
+
 
                     <div class="space-y-5">
                         <div class="grid grid-cols-12 gap-5">

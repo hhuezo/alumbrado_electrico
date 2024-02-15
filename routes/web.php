@@ -35,7 +35,7 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::get('home/rango_potencia_data/{id}', [HomeController::class,'show_data']);
+Route::get('home/rango_potencia_data/{id}/{anio}/{mes}', [HomeController::class,'show_data']);
 
 
 Route::get('control/censo_luminaria/show_map', [CensoLuminariaController::class,'show_map']);

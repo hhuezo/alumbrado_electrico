@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\BaseDatosSiget;
 use App\Models\catalogo\TipoLuminaria;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
@@ -24,13 +25,20 @@ class HomeController extends Controller
      * @return \Illuminate\Contracts\Support\Renderable
      */
 
-    public function index()
+    public function index(Request $request)
     {
-        $anio = BaseDatosSiget::max('anio');
-        if ($anio) {
-            $mes = BaseDatosSiget::where('anio', $anio)->max('mes');
+        if ($request->mes) {
+            $mes  = $request->mes;
         }
 
+        if ($request->anio) {
+            $anio  = $request->anio;
+        } else {
+            $anio = BaseDatosSiget::max('anio');
+            if ($anio) {
+                $mes = BaseDatosSiget::where('anio', $anio)->max('mes');
+            }
+        }
 
 
         if ($anio && $mes) {
@@ -85,9 +93,11 @@ class HomeController extends Controller
         //rangos
         $data_rango_potencia_instalada = [];
         $tipo_luminarias = TipoLuminaria::where('activo', '1')
-            ->withCount(['baseDatosSiget as potencias_count' => function ($query) {
-                $query->select(DB::raw('count(distinct potencia_nominal)'));
+            ->withCount(['baseDatosSiget as potencias_count' => function ($query) use ($mes, $anio) {
+                $query->select(DB::raw('count(distinct potencia_nominal)'))->where('mes', $mes)
+                ->where('anio', $anio);
             }])->get();
+
 
         foreach ($tipo_luminarias as $tipo) {
             $data_rango_potencia_instalada[] = [
@@ -98,29 +108,37 @@ class HomeController extends Controller
             ];
         }
 
-        return view('home', compact('data_tipo_luminaria', 'data_numero_luminaria', 'data_rango_potencia_instalada'));
+        $meses = ["01" => "Enero", "02" => "Febrero", "03" => "Marzo", "04" => "Abril", "05" => "Mayo", "06" => "Junio", "07" => "Julio", "08" => "Agosto", "09" => "Septiembre", "10" => "Octubre", "11" => "Noviembre", "12" => "Diciembre"];
+
+        return view('home', compact('anio', 'mes', 'data_tipo_luminaria', 'data_numero_luminaria', 'data_rango_potencia_instalada', 'meses'));
     }
 
 
-    public function show_data($id)
+    public function show_data($id,$anio,$mes)
     {
+        if ($mes >= 1 && $mes <= 9) {
+            $mes = str_pad($mes, 2, "0", STR_PAD_LEFT);
+        }
+
         $tipo = TipoLuminaria::findOrFail($id);
         $tipo_nombre =  $tipo->nombre;
         $resultados = DB::table('base_datos_siget')
             ->select('potencia_nominal', DB::raw('sum(numero_luminarias) as cantidad'))
             ->where('tipo_luminaria_id', $id)
+            ->where('mes', $mes)
+            ->where('anio', $anio)
             ->groupBy('potencia_nominal')
             ->get();
 
         $data_rango = [];
         foreach ($resultados as $resultado) {
             $data_rango[] = [
-                'name' => $resultado->potencia_nominal.' kwh',
+                'name' => $resultado->potencia_nominal . ' kwh',
                 'y' => $resultado->cantidad + 0,
                 'drilldown' => $resultado->potencia_nominal
             ];
         }
 
-        return view('data_potencia', compact('data_rango','tipo_nombre'));
+        return view('data_potencia', compact('data_rango', 'tipo_nombre'));
     }
 }
