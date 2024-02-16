@@ -178,7 +178,7 @@ class CensoLuminariaController extends Controller
         $censo->save();
 
 
-        $url_en_qr =  url('/') . "/control/censo_luminaria/" . $codigo;
+        $url_en_qr =  $codigo;
 
         QrCode::format('png')->size(200)->generate($url_en_qr . '0', public_path('qr/' . $codigo . '.png'));
         $file = public_path('qr/' . $codigo . '.png');
@@ -258,7 +258,7 @@ class CensoLuminariaController extends Controller
         $censo->save();
 
 
-        $url_en_qr =  url('/') . "/control/censo_luminaria/" . $codigo;
+        $url_en_qr =  $codigo;
 
         QrCode::format('png')->size(200)->generate($url_en_qr . '0', public_path('qr/' . $codigo . '.png'));
         $file = public_path('qr/' . $codigo . '.png');

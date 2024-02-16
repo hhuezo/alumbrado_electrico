@@ -8,6 +8,10 @@ use Illuminate\Http\Request;
 
 class ValorMensualEnergiaController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     public function index()
     {
         $valor_mesual_energia = ValorMensualEnergia::get();

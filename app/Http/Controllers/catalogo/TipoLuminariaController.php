@@ -10,6 +10,10 @@ use Illuminate\Http\Request;
 class TipoLuminariaController extends Controller
 {
 
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     public function index()
     {
         $tipos_luminaria = TipoLuminaria::get();
