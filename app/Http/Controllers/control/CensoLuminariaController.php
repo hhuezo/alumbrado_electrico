@@ -236,7 +236,10 @@ class CensoLuminariaController extends Controller
         $distritos = Distrito::where('municipio_id', '=', $censo->distrito->municipio_id)->get();
         $potencias_promedio = PotenciaPromedio::where('tipo_luminaria_id', '=', $censo->tipo_luminaria_id)->get();
 
-        return view('control.censo_luminaria.show', compact('censo', 'tipos', 'departamentos', 'municipios', 'distritos', 'potencias_promedio'));
+        $registros = CensoLuminaria::where('codigo_luminaria',$censo->codigo_luminaria)->orderBy('id','desc')->get();
+
+
+        return view('control.censo_luminaria.show', compact('censo', 'tipos', 'departamentos', 'municipios', 'distritos', 'potencias_promedio','registros'));
     }
 
 
