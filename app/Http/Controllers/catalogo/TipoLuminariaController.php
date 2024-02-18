@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\catalogo;
 
 use App\Http\Controllers\Controller;
+use App\Models\catalogo\PotenciaPromedio;
 use App\Models\catalogo\TipoLuminaria;
 use Exception;
 use Illuminate\Http\Request;
@@ -36,6 +37,22 @@ class TipoLuminariaController extends Controller
         //
     }
 
+    public function create_potencia(Request $request)
+    {
+        $conteo = PotenciaPromedio::where('tipo_luminaria_id', $request->tipo_luminaria_id)->where('potencia', $request->potencia)->count();
+        if ($conteo > 0) {
+            return back()->withErrors(['msg' => 'Ya existe un registro con ese valor']);
+        } else {
+            $potencia = new PotenciaPromedio();
+            $potencia->tipo_luminaria_id = $request->tipo_luminaria_id;
+            $potencia->potencia = $request->potencia;
+            $potencia->consumo_promedio = $request->consumo_promedio;
+            $potencia->save();
+
+            return back();
+        }
+    }
+
     public function edit($id)
     {
         $tipo_luminaria = TipoLuminaria::findOrFail($id);
@@ -48,11 +65,9 @@ class TipoLuminariaController extends Controller
 
         if ($request->hasFile('icono')) {
 
-            try{
-                unlink(public_path('img/').'/'. $tipo_luminaria->icono);
-            }
-            catch(Exception $e){
-
+            try {
+                unlink(public_path('img/') . '/' . $tipo_luminaria->icono);
+            } catch (Exception $e) {
             }
             $archivo = $request->file('icono');
             $nombreArchivo = uniqid('', true) . '.' . $archivo->getClientOriginalExtension();
@@ -70,6 +85,9 @@ class TipoLuminariaController extends Controller
 
     public function destroy($id)
     {
-        //
+        $potencia = PotenciaPromedio::findOrFail($id);
+        $potencia->delete();
+        alert()->success('El registro ha sido eliminado correctamente');
+        return back();
     }
 }

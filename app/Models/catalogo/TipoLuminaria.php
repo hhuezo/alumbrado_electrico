@@ -29,4 +29,9 @@ class TipoLuminaria extends Model
     {
         return $this->hasMany(BaseDatosSiget::class, 'tipo_luminaria_id');
     }
+
+    public function potenciaPromedio()
+    {
+        return $this->hasMany(PotenciaPromedio::class, 'tipo_luminaria_id');
+    }
 }

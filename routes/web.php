@@ -51,6 +51,7 @@ Route::resource('control/valor_mensual_energia', ValorMensualEnergiaController::
 //catalogos
 Route::post('catalogo/biblioteca/active', [BibliotecaController::class,'active']);
 Route::resource('catalogo/biblioteca', BibliotecaController::class);
+Route::post('catalogo/tipo_luminaria/create_potencia', [TipoLuminariaController::class,'create_potencia']);
 Route::resource('catalogo/tipo_luminaria', TipoLuminariaController::class);
 
 
