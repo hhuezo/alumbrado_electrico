@@ -167,7 +167,7 @@ class CensoLuminariaController extends Controller
         $censo->tipo_luminaria_id = $request->tipo_luminaria_id;
         $censo->potencia_nominal = $request->potencia_nominal;
         $censo->consumo_mensual = $request->consumo_mensual;
-        $censo->fecha_ultimo_censo = $request->fecha_ultimo_censo;
+        //$censo->fecha_ultimo_censo = $request->fecha_ultimo_censo;
         $censo->distrito_id = $request->distrito_id;
         $censo->usuario_ingreso = auth()->user()->id;
         $censo->direccion = $request->direccion;
@@ -247,7 +247,7 @@ class CensoLuminariaController extends Controller
         $censo->tipo_luminaria_id = $request->tipo_luminaria_id;
         $censo->potencia_nominal = $request->potencia_nominal;
         $censo->consumo_mensual = $request->consumo_mensual;
-        $censo->fecha_ultimo_censo = $request->fecha_ultimo_censo;
+        //$censo->fecha_ultimo_censo = $request->fecha_ultimo_censo;
         $censo->distrito_id = $request->distrito_id;
         $censo->usuario_ingreso = auth()->user()->id;
         $censo->direccion = $request->direccion;

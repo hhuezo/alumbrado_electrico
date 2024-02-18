@@ -37,7 +37,7 @@
 
                             <div class="input-area">
                                 <label for="largeInput" class="form-label">Departamento</label>
-                                <select class="form-control" id="departamento">
+                                <select class="form-control" id="departamento" readonly>
                                     @foreach ($departamentos as $obj)
                                         <option value="{{ $obj->id }}"
                                             {{ $censo->distrito->municipio->departamento_id == $obj->id ? 'selected' : '' }}>
@@ -48,7 +48,7 @@
 
                             <div class="input-area">
                                 <label for="largeInput" class="form-label">Municipio</label>
-                                <select class="form-control" id="departamento">
+                                <select class="form-control" id="departamento" readonly>
                                     @foreach ($municipios as $obj)
                                         <option value="{{ $obj->id }}"
                                             {{ $censo->distrito->municipio_id == $obj->id ? 'selected' : '' }}>
@@ -59,7 +59,7 @@
 
                             <div class="input-area">
                                 <label for="largeInput" class="form-label">Distrito</label>
-                                <select class="form-control" name="distrito_id" id="distrito">
+                                <select class="form-control" name="distrito_id" id="distrito" readonly>
                                     @foreach ($distritos as $obj)
                                         <option value="{{ $obj->id }}"
                                             {{ $censo->distrito_id == $obj->id ? 'selected' : '' }}>{{ $obj->nombre }}
@@ -67,10 +67,16 @@
                                     @endforeach
                                 </select>
                             </div>
+
+                            <div class="input-area">
+                                <label for="largeInput" class="form-label">Dirección</label>
+                                <textarea name="direccion" class="form-control"  maxlength="500" readonly >{{ $censo->direccion }}</textarea>
+                            </div>
+
                             <div class="input-area">
                                 <label for="largeInput" class="form-label">Codigo luminaria</label>
                                 <input type="text" name="codigo_luminaria" value="{{ $censo->codigo_luminaria }}"
-                                    required class="form-control">
+                                    required class="form-control" readonly>
 
                             </div>
                             <div class="input-area">
@@ -117,15 +123,15 @@
 
                             <div class="input-area">
                                 <label for="largeInput" class="form-label">Observación</label>
-                                <input type="text" name="observacion" value="{{ $censo->observacion }}"
-                                    class="form-control">
+
+                                    <textarea name="observacion" class="form-control"  maxlength="500" >{{ $censo->observacion }}</textarea>
                             </div>
 
-                            <div class="input-area">
+                            {{--<div class="input-area">
                                 <label for="largeInput" class="form-label">Fecha ultimo censo</label>
                                 <input type="date" name="fecha_ultimo_censo" value="{{ old('fecha_ultimo_censo') }}"
                                     class="form-control">
-                            </div>
+                            </div>--}}
 
                         </div>
                         <div>&nbsp;</div>

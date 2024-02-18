@@ -89,7 +89,7 @@
 
                             <div class="input-area">
                                 <label for="largeInput" class="form-label">Dirección</label>
-                                <input type="text"  name="direccion" value="{{ $direccion }}" class="form-control">
+                                <textarea name="direccion" class="form-control"  maxlength="500" >{{ $direccion }}</textarea>
                             </div>
 
 
@@ -124,15 +124,14 @@
 
                             <div class="input-area">
                                 <label for="largeInput" class="form-label">Observación</label>
-                                <input type="text"  name="observacion"
-                                    value="{{ old('observacion') }}" class="form-control">
+                                <textarea name="observacion" class="form-control"  maxlength="500" >{{ old('observacion') }}</textarea>
                             </div>
 
-                            <div class="input-area">
+                            {{--<div class="input-area">
                                 <label for="largeInput" class="form-label">Fecha ultimo censo</label>
                                 <input type="date" name="fecha_ultimo_censo" value="{{ old('fecha_ultimo_censo') }}"
                                      class="form-control">
-                            </div>
+                            </div>--}}
 
                         </div>
                         <div>&nbsp;</div>

@@ -320,7 +320,7 @@
                             <span class="flex items-center">
                                 <iconify-icon class=" nav-icon" icon="material-symbols:add-notes"
                                     style="color: white;"></iconify-icon>
-                                <span>Valor de la energia</span>
+                                <span>Precio energía mensual(kmh)</span>
                             </span>
                         </a>
                     </li>
