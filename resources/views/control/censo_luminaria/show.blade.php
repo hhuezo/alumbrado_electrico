@@ -331,7 +331,7 @@
                                                                             <h5>{{ date('d/m/Y', strtotime($registro->fecha_ingreso )) }}</h5>
                                                                             <p class="mb-0">TIPO LUMINARIA: <strong>{{$registro->tipo_luminaria->nombre  }}</strong></p>
                                                                             <p class="mb-0">CONSUMO MENSUAL: <strong>{{$registro->consumo_mensual  }} KWH</strong></p>
-                                                                            <p class="mb-0">OBSEVACIÓN: <strong>{{$registro->observacion  }}</strong></p>
+                                                                            <p class="mb-0">OBSERVACIÓN: <strong>{{$registro->observacion  }}</strong></p>
                                                                         </div>
                                                                     </div>
                                                                 </div>

@@ -187,7 +187,10 @@
                         </a>
                         <ul class="sidebar-submenu">
                             <li>
-                                <a href="{{ url('control/censo_luminaria') }}">Creación nuevo registro</a>
+                                <a href="{{ url('control/censo_luminaria/show_map') }}">Creación nuevo registro</a>
+                            </li>
+                            <li>
+                                <a href="{{ url('control/censo_luminaria') }}">Censos</a>
                             </li>
                             <li>
                                 <a href="{{ url('seguridad/role') }}">Comparación censos</a>
