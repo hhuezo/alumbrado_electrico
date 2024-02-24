@@ -20,7 +20,7 @@
                 },
                 title: {
                     align: 'left',
-                    text: 'Consumo por tipo de luminaria'
+                    text: 'Consumo por tipo de luminaria (kwh) <br>{{$meses[$mes]}} {{$anio}} '
                 },
                 subtitle: {
                     align: 'left',
@@ -54,12 +54,17 @@
                 },
 
                 tooltip: {
-                    headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-                    pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}</b>   <br/>'
+                    pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b><br/>',
+                    formatter: function() {
+                        return '<span style="font-size:11px">' + this.series.name + '</span><br>' +
+                            '<span style="color:' + this.point.color + '">' + this.point.name +
+                            '</span>: <b>' + Highcharts.numberFormat(this.point.y, 2, '.', ',') +
+                            '</b> Kwh<br/>';
+                    }
                 },
 
                 series: [{
-                    name: 'Browsers',
+                    name: '',
                     colorByPoint: true,
                     data: @json($data_tipo_luminaria)
 
@@ -72,7 +77,7 @@
                 },
                 title: {
                     align: 'left',
-                    text: 'Consumo por tipo de luminaria'
+                    text: 'Consumo por tipo de luminaria  (kwh)<br>{{$meses[$mes]}} {{$anio}} '
                 },
                 subtitle: {
                     align: 'left',
@@ -101,15 +106,22 @@
                         cursor: 'pointer',
                         dataLabels: {
                             enabled: true,
-                            format: '<b>{point.name}</b>: {point.y:.2f}'
+                            formatter: function() {
+                                return '<b>' + this.point.name + '</b>: ' + Highcharts.numberFormat(this
+                                    .point.y, 2, '.', ',');
+                            }
                         },
                         showInLegend: true
                     }
                 },
 
                 tooltip: {
-                    headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-                    pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}</b>   <br/>'
+                    pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b>',
+                    formatter: function() {
+                        return '<span style="color:' + this.point.color + '">' + this.point.name +
+                            '</span>: <b>' + Highcharts.numberFormat(this.point.y, 2, '.', ',') +
+                            ' Kwh</b>';
+                    }
                 },
 
                 series: [{
@@ -128,7 +140,7 @@
                 },
                 title: {
                     align: 'left',
-                    text: 'Conteo por tipo de luminaria'
+                    text: 'Cantidad por tipo de luminaria<br>{{$meses[$mes]}} {{$anio}}'
                 },
                 subtitle: {
                     align: 'left',
@@ -180,7 +192,7 @@
                 },
                 title: {
                     align: 'left',
-                    text: 'Conteo por tipo de luminaria'
+                    text: 'Cantidad por tipo de luminaria<br>{{$meses[$mes]}} {{$anio}}'
                 },
                 subtitle: {
                     align: 'left',
@@ -235,7 +247,7 @@
                 },
                 title: {
                     align: 'left',
-                    text: 'Conteo por potencia instalada'
+                    text: 'Potencia nominal por tecnología<br>{{$meses[$mes]}} {{$anio}}'
                 },
                 subtitle: {
                     align: 'left',
@@ -276,7 +288,7 @@
                 },
                 tooltip: {
                     headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-                    pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}</b>   <br/>'
+                    pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}</b> <br/>'
                 },
                 series: [{
                     name: 'Browsers',
@@ -288,7 +300,8 @@
 
         function showData(id) {
             $.ajax({
-                url: '{{ url('home/rango_potencia_data') }}/' + id +'/'+{{$anio}}+'/'+{{$mes}},
+                url: '{{ url('home/rango_potencia_data') }}/' + id + '/' + {{ $anio }} + '/' +
+                    {{ $mes }},
                 type: 'GET',
                 success: function(response) {
                     // Aquí manejas la respuesta del servidor
@@ -302,39 +315,39 @@
         }
     </script>
 
-
-
     <div class="content-wrapper transition-all duration-150 " id="content_wrapper">
         <div class="page-content">
-            <form method="GET" action="{{url('home')}}">
-            <div class="card xl:col-span-2">
-                <div class="card-body flex flex-col p-4">
-                    <div class="space-y-6">
-                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
-                            <div class="input-area relative">
-                                <label for="largeInput" class="form-label">Año</label>
-                                <select class="form-control" name="anio">
-                                    @for ($i = date('Y'); $i >= 2023; $i--)
-                                        <option value="{{ $i }}" {{$anio == $i ? 'selected':''}}>{{ $i }}</option>
-                                    @endfor
-                                </select>
-                            </div>
-                            <div class="input-area relative">
-                                <label for="largeInput" class="form-label">Mes</label>
-                                <select class="form-control" name="mes">
-                                    @foreach ($meses as $key => $value)
-                                        <option value="{{ $key }}" {{$mes == $key ? 'selected':''}}>{{ $value }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="input-area relative">
-                                <label for="largeInput" class="form-label">&nbsp; </label>
-                                <button class="btn btn-dark btn-sm" type="submit" >Aceptar</button>
+            <form method="GET" action="{{ url('home') }}">
+                <div class="card xl:col-span-2">
+                    <div class="card-body flex flex-col p-4">
+                        <div class="space-y-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
+                                <div class="input-area relative">
+                                    <label for="largeInput" class="form-label">Año</label>
+                                    <select class="form-control" name="anio">
+                                        @for ($i = date('Y'); $i >= 2023; $i--)
+                                            <option value="{{ $i }}" {{ $anio == $i ? 'selected' : '' }}>
+                                                {{ $i }}</option>
+                                        @endfor
+                                    </select>
+                                </div>
+                                <div class="input-area relative">
+                                    <label for="largeInput" class="form-label">Mes</label>
+                                    <select class="form-control" name="mes">
+                                        @foreach ($meses as $key => $value)
+                                            <option value="{{ $key }}" {{ $mes == $key ? 'selected' : '' }}>
+                                                {{ $value }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="input-area relative">
+                                    <label for="largeInput" class="form-label">&nbsp; </label>
+                                    <button class="btn btn-dark btn-sm" type="submit">Aceptar</button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
             </form>
         </div>
 

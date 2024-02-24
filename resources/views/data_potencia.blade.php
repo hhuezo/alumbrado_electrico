@@ -7,7 +7,7 @@
                 },
                 title: {
                     align: 'left',
-                    text: 'Luminarias por potencia ({{ $tipo_nombre }})'
+                    text: 'Luminarias por potencia ({{ $tipo_nombre }}) <br>{{$meses[$mes]}} {{$anio}}'
                 },
                 subtitle: {
                     align: 'left',
