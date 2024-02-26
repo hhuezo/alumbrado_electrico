@@ -2,6 +2,70 @@
 @section('contenido')
     @include('sweetalert::alert', ['cdn' => 'https://cdn.jsdelivr.net/npm/sweetalert2@9'])
 
+    <style>
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        /* Hide default HTML checkbox */
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        /* The slider */
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        input:checked+.slider {
+            background-color: #2196F3;
+        }
+
+        input:focus+.slider {
+            box-shadow: 0 0 1px #2196F3;
+        }
+
+        input:checked+.slider:before {
+            -webkit-transform: translateX(26px);
+            -ms-transform: translateX(26px);
+            transform: translateX(26px);
+        }
+
+        /* Rounded sliders */
+        .slider.round {
+            border-radius: 34px;
+        }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+    </style>
+
     <div class="grid grid-cols-12 gap-5 mb-5">
 
         <div class="2xl:col-span-12 lg:col-span-12 col-span-12">
@@ -98,15 +162,15 @@
                                 </select>
                             </div>
 
-                            <div class="input-area">
+                            <div class="input-area" id="div_potencia_promedio" style="display: none">
                                 <label for="largeInput" class="form-label">Potencia promedio</label>
                                 <select class="form-control" id="potencia_promedio">
                                     <option value="">Favor ingresar la potencial Nominal</option>
                                 </select>
                             </div>
 
-                            <div class="input-area">
-                                <label for="largeInput" class="form-label">Potencia nominal</label>
+                            <div class="input-area" id="div_potencia_nominal">
+                                <label for="largeInput" class="form-label">Favor ingresar la potencial Nominal</label>
                                 <input type="number" step="0.001" name="potencia_nominal" id="potencia_nominal"
                                     value="{{ old('potencia_nominal') }}" required class="form-control">
                             </div>
@@ -118,9 +182,30 @@
                             </div>
 
                             <div class="input-area">
-                                <label for="largeInput" class="form-label">Observación <span id="number_text">(0/500)</span></label>
+                                <label for="largeInput" class="form-label">Observación <span
+                                        id="number_text">(0/500)</span></label>
                                 <textarea name="observacion" id="observacion" class="form-control" maxlength="500">{{ old('observacion') }}</textarea>
                             </div>
+
+                            <div class="input-area">
+                                <label for="largeInput" class="form-label">Lampara en buenas condiciones?</label>
+                                <label class="switch">
+                                    <input type="checkbox" id="condicion_lampara" name="condicion_lampara">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+
+                            <div class="input-area" id="div_tipo_falla">
+                                <label for="largeInput" class="form-label">Tipo falla</label>
+                                <select class="form-control" name="tipo_falla_id" id="tipo_falla_id" required>
+                                    <option value="">Seleccione</option>
+                                    @foreach ($tipos_falla as $obj)
+                                        <option value="{{ $obj->id }}">{{ $obj->nombre }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+
 
                         </div>
                         <div>&nbsp;</div>
@@ -185,10 +270,22 @@
                 $.get("{{ url('censo_luminaria/get_potencia_promedio') }}" + '/' + tipo_luminaria,
                     function(data) {
                         if (data.length === 0) {
+                            $("#div_potencia_promedio").css("display", "none");
+                            $("#potencia_promedio").prop('required', false);
+
+
+                            $("#div_potencia_nominal").css("display", "block");
+                            $("#potencia_nominal").prop('required', true);
+
                             var _select =
                                 '<option value="">Favor ingresar la potencial Nominal</option>';
-                            $("#potencia_nominal").prop("disabled", false);
                         } else {
+                            $("#div_potencia_promedio").css("display", "block");
+                            $("#potencia_promedio").prop('required', true);
+
+                            $("#div_potencia_nominal").css("display", "none");
+                            $("#potencia_nominal").prop('required', false);
+
                             var _select = '<option value="">Seleccione</option>'
                             for (var i = 0; i < data.length; i++)
                                 _select += '<option value="' + data[i].id + '"  >' + data[i].potencia +
@@ -205,18 +302,15 @@
                 var potencia_promedio = $(this).val();
                 if (potencia_promedio == "") {
                     document.getElementById('consumo_mensual').value = "";
-                    $("#potencia_nominal").prop("disabled", true);
 
                 } else {
                     $.get("{{ url('censo_luminaria/get_consumo_mensual') }}" + '/' + potencia_promedio,
                         function(data) {
                             if (data.length === 0) {
                                 document.getElementById('consumo_mensual').value = "";
-                                $("#potencia_nominal").prop("disabled", false);
                             } else {
                                 document.getElementById('consumo_mensual').value = data
                                     .consumo_promedio;
-                                $("#potencia_nominal").prop("disabled", true);
                             }
 
                         });
@@ -248,6 +342,17 @@
                 var numCaracteres = $(this).val().length;
                 $("#number_text").text("(" + numCaracteres + "/500)");
             });
+
+            $("#condicion_lampara").change(function() {
+                if ($(this).is(":checked")) {
+                    $("#div_tipo_falla").css("display", "none");
+                    $("#tipo_falla_id").prop('required', false).val("");
+                } else {
+                    $("#div_tipo_falla").css("display", "block");
+                    $("#tipo_falla_id").prop('required', true);
+                }
+            });
+
 
         });
     </script>
