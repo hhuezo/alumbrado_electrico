@@ -37,6 +37,7 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::get('home/rango_potencia_data/{id}/{anio}/{mes}', [HomeController::class,'show_data']);
+Route::get('welcome/rango_potencia_data/{id}/{anio}/{mes}', [WelcomeController::class,'show_data']);
 
 
 Route::post('control/censo_luminaria/create_record', [CensoLuminariaController::class,'create_record']);
