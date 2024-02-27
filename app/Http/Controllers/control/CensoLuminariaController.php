@@ -27,7 +27,7 @@ class CensoLuminariaController extends Controller
 
     public function index()
     {
-        $censo_luminarias = CensoLuminaria::get();
+        $censo_luminarias = CensoLuminaria::groupBy('codigo_luminaria')->orderby('fecha_ingreso','desc')->get();
         return view('control.censo_luminaria.index', compact('censo_luminarias'));
     }
 

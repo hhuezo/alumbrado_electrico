@@ -45,4 +45,10 @@ class CensoLuminaria extends Model
     {
         return $this->belongsTo(Distrito::class, 'distrito_id', 'id');
     }
+
+
+    public function countCodigo($codigo)
+    {
+        return CensoLuminaria::where('codigo_luminaria',$codigo)->count();
+    }
 }

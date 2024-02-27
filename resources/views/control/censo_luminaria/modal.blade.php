@@ -1,6 +1,6 @@
 <div class="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto" aria-hidden="true" role="dialog" tabindex="-1" id="modal-delete-{{ $obj->Id }}">
 
-    <form method="POST" action="{{ route('lugar_formacion.destroy', $obj->Id) }}">
+    <form method="POST" action="{{ route('censo_luminaria.destroy', $obj->id) }}">
         @method('delete')
         @csrf
         <div class="modal-dialog relative w-auto pointer-events-none">
@@ -10,7 +10,7 @@
                 <!-- Modal header -->
                 <div class="flex items-center justify-between p-5 border-b rounded-t dark:border-slate-600 bg-danger-500">
                   <h3 class="text-base font-medium text-white dark:text-white capitalize">
-                    Deshabilitar Registro
+                    Eliminar Registro
                   </h3>
                   <button type="button" class="text-slate-400 bg-transparent hover:text-slate-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center
                                       dark:hover:bg-slate-600 dark:hover:text-white" data-bs-dismiss="modal">
@@ -24,7 +24,7 @@
                 <!-- Modal body -->
                 <div class="p-6 space-y-4">
                   <h6 class="text-base text-slate-900 dark:text-white leading-6">
-                    Confirme si desea dehabilitar el registro
+                    Confirme si desea eliminar el registro
                   </h6>
 
                 </div>

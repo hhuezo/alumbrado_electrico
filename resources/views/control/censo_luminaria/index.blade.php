@@ -49,8 +49,18 @@
                                             <a href="{{ url('control/censo_luminaria') }}/{{ $obj->id }}">
                                                 <iconify-icon icon="zondicons:add-solid" width="40"></iconify-icon>
                                             </a>
+
+                                            @if ($obj->countCodigo($obj->codigo_luminaria) == 1)
+                                            <iconify-icon data-bs-toggle="modal"
+                                            data-bs-target="#modal-delete-{{ $obj->id }}" icon="mdi:trash"
+                                            width="40"></iconify-icon>
+
+                                            @endif
+
+
                                         </td>
                                     </tr>
+                                    @include('control.censo_luminaria.modal')
 
                                     @endforeach
                                 @endif
