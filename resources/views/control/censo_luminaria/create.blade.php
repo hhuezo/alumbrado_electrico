@@ -170,7 +170,7 @@
                             </div>
 
                             <div class="input-area" id="div_potencia_nominal">
-                                <label for="largeInput" class="form-label">Favor ingresar la potencial Nominal</label>
+                                <label for="largeInput" class="form-label">Favor ingresar la potencial Nominal (Kwh)</label>
                                 <input type="number" step="0.001" name="potencia_nominal" id="potencia_nominal"
                                     value="{{ old('potencia_nominal') }}" required class="form-control">
                             </div>
@@ -188,7 +188,7 @@
                             </div>
 
                             <div class="input-area">
-                                <label for="largeInput" class="form-label">Lampara en buenas condiciones?</label>
+                                <label for="largeInput" class="form-label">¿Está la lámpara en buenas condiciones?</label>
                                 <label class="switch">
                                     <input type="checkbox" id="condicion_lampara" name="condicion_lampara">
                                     <span class="slider round"></span>

@@ -317,6 +317,12 @@
 
     <div class="content-wrapper transition-all duration-150 " id="content_wrapper">
         <div class="page-content">
+            <header class="flex mb-5 items-center border-b border-slate-100 dark:border-slate-700 pb-5 -mx-6 px-6">
+                <div class="flex-1">
+                    <div class="card-title text-slate-900 dark:text-white">Censo genérico
+                    </div>
+                </div>
+            </header>
             <form method="GET" action="{{ url('home') }}">
                 <div class="card xl:col-span-2">
                     <div class="card-body flex flex-col p-4">
