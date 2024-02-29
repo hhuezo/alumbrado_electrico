@@ -10,14 +10,12 @@
             height: 34px;
         }
 
-        /* Hide default HTML checkbox */
         .switch input {
             opacity: 0;
             width: 0;
             height: 0;
         }
 
-        /* The slider */
         .slider {
             position: absolute;
             cursor: pointer;
@@ -26,7 +24,6 @@
             right: 0;
             bottom: 0;
             background-color: #ccc;
-            -webkit-transition: .4s;
             transition: .4s;
         }
 
@@ -38,7 +35,6 @@
             left: 4px;
             bottom: 4px;
             background-color: white;
-            -webkit-transition: .4s;
             transition: .4s;
         }
 
@@ -51,12 +47,9 @@
         }
 
         input:checked+.slider:before {
-            -webkit-transform: translateX(26px);
-            -ms-transform: translateX(26px);
             transform: translateX(26px);
         }
 
-        /* Rounded sliders */
         .slider.round {
             border-radius: 34px;
         }
@@ -64,9 +57,64 @@
         .slider.round:before {
             border-radius: 50%;
         }
-    </style>
 
+        /* Estilos para las etiquetas Sí y No */
+        .switch-label {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #fff;
+            font-size: 14px;
+        }
+
+        .switch-label.yes {
+            left: 5px;
+            color: #ffff;
+            display: none;
+            font-size: 14px;
+            font-weight: bold;
+            /* Inicialmente oculto */
+        }
+
+        .switch-label.no {
+            right: 5px;
+            color: #000000;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        /* Ocultar 'No' y mostrar 'Sí' cuando el interruptor está activo */
+        input:checked~.switch-label.yes {
+            display: block;
+            /* Mostrar 'Sí' */
+        }
+
+        input:checked~.switch-label.no {
+            display: none;
+            /* Ocultar 'No' */
+        }
+
+        /* Asegurarse de que 'No' se muestre cuando el interruptor no está activo */
+        input:not(:checked)~.switch-label.no {
+            display: block;
+        }
+
+        input:not(:checked)~.switch-label.yes {
+            display: none;
+            /* Ocultar 'Sí' cuando no está activo */
+        }
+
+        .alert-yellow {
+            color: #856404;
+            background-color: #fff3cd;
+            border-color: #ffeeba;
+        }
+    </style>
     <div class="grid grid-cols-12 gap-5 mb-5">
+
+
+
+
 
         <div class="2xl:col-span-12 lg:col-span-12 col-span-12">
             <div class="card">
@@ -97,11 +145,13 @@
                         </div>
                     @endif
                     @if ($puntosCercanos > 0)
-                        <div class="alert alert-warning">
-                            <p style="font-size: 16px"><iconify-icon icon="ph:warning-fill" width="24"
-                                    height="24"></iconify-icon> Existen puntos cercanos ya registrados. Por favor
-                                verifica</p>
+                        <div class="alert alert-yellow">
+                            <p style="font-size: 16px">
+                                <iconify-icon icon="ph:warning-fill" width="24" height="24"></iconify-icon> Existen
+                                puntos cercanos ya registrados. Por favor verifica
+                            </p>
                         </div>
+
                         <br>
                     @endif
                     <form method="POST" action="{{ url('control/censo_luminaria') }}">
@@ -161,6 +211,9 @@
                                     @endforeach
                                 </select>
                             </div>
+                            <div class="input-area">
+
+                            </div>
 
                             <div class="input-area" id="div_potencia_promedio" style="display: none">
                                 <label for="largeInput" class="form-label">Potencia promedio</label>
@@ -181,17 +234,17 @@
                                     value="{{ old('consumo_mensual') }}" required class="form-control">
                             </div>
 
-                            <div class="input-area">
-                                <label for="largeInput" class="form-label">Observación <span
-                                        id="number_text">(0/500)</span></label>
-                                <textarea name="observacion" id="observacion" class="form-control" maxlength="500">{{ old('observacion') }}</textarea>
-                            </div>
+
 
                             <div class="input-area">
-                                <label for="largeInput" class="form-label">¿Está la lámpara en buenas condiciones?</label>
+                                <label for="condicion_lampara" class="form-label">¿Está la lámpara en buenas
+                                    condiciones?</label>
                                 <label class="switch">
                                     <input type="checkbox" id="condicion_lampara" name="condicion_lampara">
                                     <span class="slider round"></span>
+
+                                    <span class="switch-label yes">&nbsp;Sí</span> <!-- Etiqueta para "Sí" -->
+                                    <span class="switch-label no">No</span> <!-- Etiqueta para "No" -->
                                 </label>
                             </div>
 
@@ -207,6 +260,13 @@
 
 
 
+                        </div>
+
+                        <div>&nbsp;</div>
+                        <div class="input-area">
+                            <label for="largeInput" class="form-label">Observación <span
+                                    id="number_text">(0/500)</span></label>
+                            <textarea name="observacion" id="observacion" class="form-control" maxlength="500">{{ old('observacion') }}</textarea>
                         </div>
                         <div>&nbsp;</div>
                         <div style="text-align: right;">
@@ -357,7 +417,12 @@
         });
     </script>
 
-
+    <script>
+        function updateSwitchText(element) {
+            var switchText = document.getElementById("switchText");
+            switchText.innerText = element.checked ? "Sí" : "No";
+        }
+    </script>
 
 
 
