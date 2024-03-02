@@ -3,6 +3,7 @@
 use App\Http\Controllers\catalogo\BibliotecaController;
 use App\Http\Controllers\catalogo\DistritoController;
 use App\Http\Controllers\catalogo\ReporteFallaController;
+use App\Http\Controllers\catalogo\TipoFallaController;
 use App\Http\Controllers\catalogo\TipoLuminariaController;
 use App\Http\Controllers\control\CensoLuminariaController;
 use App\Http\Controllers\control\ValorMensualEnergiaController;
@@ -54,6 +55,7 @@ Route::post('catalogo/biblioteca/active', [BibliotecaController::class,'active']
 Route::resource('catalogo/biblioteca', BibliotecaController::class);
 Route::post('catalogo/tipo_luminaria/create_potencia', [TipoLuminariaController::class,'create_potencia']);
 Route::resource('catalogo/tipo_luminaria', TipoLuminariaController::class);
+Route::resource('catalogo/tipo_falla', TipoFallaController::class);
 
 
 Route::get('catalogo/reporte_falla/get_distrito_id/{name}', [ReporteFallaController::class,'getDistritoId']);
