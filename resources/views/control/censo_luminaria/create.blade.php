@@ -218,20 +218,20 @@
                             </div>
 
                             <div class="input-area" id="div_potencia_promedio" style="display: none">
-                                <label for="largeInput" class="form-label">Potencia promedio</label>
+                                <label for="largeInput" class="form-label">Potencia promedio (Vatio)</label>
                                 <select class="form-control" id="potencia_promedio">
                                     <option value="">Favor ingresar la potencia Nominal</option>
                                 </select>
                             </div>
 
                             <div class="input-area" id="div_potencia_nominal">
-                                <label for="largeInput" class="form-label">Favor ingresar la potencial Nominal (Kwh)</label>
+                                <label for="largeInput" class="form-label">Favor ingresar la potencial Nominal (Vatio)</label>
                                 <input type="number" step="0.001" name="potencia_nominal" id="potencia_nominal"
                                     value="{{ old('potencia_nominal') }}" required class="form-control">
                             </div>
 
                             <div class="input-area">
-                                <label for="largeInput" class="form-label">Consumo mensual</label>
+                                <label for="largeInput" class="form-label">Consumo mensual (Kwh)</label>
                                 <input type="number" step="0.001" name="consumo_mensual" id="consumo_mensual"
                                     value="{{ old('consumo_mensual') }}" required class="form-control">
                             </div>
