@@ -203,6 +203,11 @@
 
 
 
+                        </div>
+                        <br>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-7">
+
                             <div class="input-area">
                                 <label for="largeInput" class="form-label">Tipo luminaria</label>
                                 <select class="form-control" name="tipo_luminaria_id" id="tipo_luminaria">
@@ -211,14 +216,11 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="input-area">
-
-                            </div>
 
                             <div class="input-area" id="div_potencia_promedio" style="display: none">
                                 <label for="largeInput" class="form-label">Potencia promedio</label>
                                 <select class="form-control" id="potencia_promedio">
-                                    <option value="">Favor ingresar la potencial Nominal</option>
+                                    <option value="">Favor ingresar la potencia Nominal</option>
                                 </select>
                             </div>
 
@@ -233,8 +235,9 @@
                                 <input type="number" step="0.001" name="consumo_mensual" id="consumo_mensual"
                                     value="{{ old('consumo_mensual') }}" required class="form-control">
                             </div>
-
-
+                        </div>
+                        <br>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-7">
 
                             <div class="input-area">
                                 <label for="condicion_lampara" class="form-label">¿Está la lámpara en buenas
