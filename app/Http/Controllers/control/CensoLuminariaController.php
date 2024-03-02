@@ -316,6 +316,9 @@ class CensoLuminariaController extends Controller
 
     public function destroy($id)
     {
-        //
+        $censo = CensoLuminaria::findOrFail($id);
+        $censo->delete();
+        alert()->success('El registro ha sido eliminado correctamente');
+        return back();
     }
 }
