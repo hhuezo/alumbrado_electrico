@@ -278,6 +278,11 @@
                                 <a href="{{ url('catalogo/tipo_luminaria') }}">Tipo luminaria</a>
                             </li>
 
+
+                            <li>
+                                <a href="{{ url('catalogo/tipo_falla') }}">Tipos de falla</a>
+                            </li>
+
                         </ul>
                     </li>
 
