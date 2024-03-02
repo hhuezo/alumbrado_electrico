@@ -15,10 +15,10 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             // Autenticación exitosa, devuelve un token de acceso
             $token = auth()->user()->createToken('API Token')->accessToken;
-            return response()->json(['mensaje' => 'Credenciales correctas','user' => auth()->user()], 200);
+            return response()->json(['value'=> 0,'mensaje' => 'Credenciales correctas','user' => auth()->user()], 200);
         } else {
             // Credenciales inválidas, devuelve un mensaje de error
-            return response()->json(['mensaje' => 'Credenciales incorrectas','user' => null], 401);
+            return response()->json(['value'=> 0,'mensaje' => 'Credenciales incorrectas','user' => null], 401);
         }
     }
 
