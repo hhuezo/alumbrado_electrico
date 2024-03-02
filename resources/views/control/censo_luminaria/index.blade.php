@@ -42,21 +42,19 @@
                                             <td align="center">{{ $obj->consumo_mensual }} (kWh)</td>
                                             <td>{{ $obj->distrito->nombre }}</td>
                                             <td align="center">
-                                                {{--  <a href="{{ url('control/censo_luminaria') }}/{{ $obj->id }}/edit">
-                                                <iconify-icon icon="mdi:pencil-box" width="40"></iconify-icon>
-                                            </a> --}}
 
                                                 <a href="{{ url('control/censo_luminaria') }}/{{ $obj->id }}">
                                                     <button class="btn inline-flex justify-center btn-primary">
-                                                        <iconify-icon icon="ic:outline-remove-red-eye" width="24" height="24"></iconify-icon>
+                                                        <iconify-icon icon="ic:outline-remove-red-eye" width="24"
+                                                            height="24"></iconify-icon>
                                                     </button>
                                                 </a>
 
                                                 @if ($obj->countCodigo($obj->codigo_luminaria) == 1)
-                                                    <button class="btn inline-flex justify-center btn-danger">
-                                                        <iconify-icon data-bs-toggle="modal"
-                                                            data-bs-target="#modal-delete-{{ $obj->id }}"
-                                                            icon="mdi:trash" width="24"></iconify-icon>
+                                                    <button class="btn inline-flex justify-center btn-danger"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#modal-delete-{{ $obj->id }}">
+                                                        <iconify-icon icon="mdi:trash" width="24"></iconify-icon>
                                                     </button>
                                                 @else
                                                     <button
@@ -64,11 +62,6 @@
                                                         disabled="disabled"><iconify-icon icon="mdi:trash"
                                                             width="24"></iconify-icon> </button>
                                                 @endif
-
-
-                                                {{--   @if ($obj->countCodigo($obj->codigo_luminaria) == 1)
-                                            @endif --}}
-
 
                                             </td>
                                         </tr>
