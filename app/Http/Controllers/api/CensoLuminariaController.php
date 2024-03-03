@@ -7,6 +7,7 @@ use App\Models\catalogo\Departamento;
 use App\Models\catalogo\Distrito;
 use App\Models\catalogo\Municipio;
 use App\Models\catalogo\PotenciaPromedio;
+use App\Models\catalogo\TipoFalla;
 use App\Models\catalogo\TipoLuminaria;
 use App\Models\control\CensoLuminaria;
 use Exception;
@@ -46,8 +47,9 @@ class CensoLuminariaController extends Controller
         }
 
         $departamentos = Departamento::get();
+        $tipos_falla = TipoFalla::where('activo',1)->get();
 
-        $response = ["departamentos" => $departamentos,"municipios" => $municipios, "distritos" => $distritos, "tipos" => $tipos];
+        $response = ["departamentos" => $departamentos,"municipios" => $municipios, "distritos" => $distritos, "tipos" => $tipos, "tipos_falla" => $tipos_falla];
 
         return $response;
     }
