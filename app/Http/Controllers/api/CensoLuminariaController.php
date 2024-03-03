@@ -83,13 +83,17 @@ class CensoLuminariaController extends Controller
            // Validar y asignar consumo_mensual
             $censo->consumo_mensual = !empty($request->consumo_mensual) ? $request->consumo_mensual : null;
 
+            $censo->tipo_falla_id = !empty($request->tipo_falla) ? $request->tipo_falla : null;
+
             $censo->consumo_mensual = $request->consumo_mensual;
             $censo->fecha_ultimo_censo = $request->fecha_ultimo_censo;
-            //$censo->usuario_ingreso = auth()->user()->id;
+            $censo->usuario = auth()->user()->id;
             //$censo->codigo_luminaria = $request->codigo_luminaria;
             $censo->direccion = $request->direccion;
             $censo->latitud = $request->latitud;
             $censo->longitud = $request->longitud;
+            $censo->observacion = $request->observacion;
+            $censo->condicion_lampara = $request->condicion_lampara;
             $censo->save();
 
             $response = ["value" => 1, "mensaje" => "Registro ingresado correctamente"];
