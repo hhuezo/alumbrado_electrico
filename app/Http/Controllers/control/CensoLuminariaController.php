@@ -27,7 +27,7 @@ class CensoLuminariaController extends Controller
 
     public function index()
     {
-        $censo_luminarias = CensoLuminaria::groupBy('codigo_luminaria')->orderby('id','desc')->get();
+        $censo_luminarias = CensoLuminaria::groupBy('codigo_luminaria')->orderby('id', 'desc')->get();
         return view('control.censo_luminaria.index', compact('censo_luminarias'));
     }
 
@@ -240,7 +240,7 @@ class CensoLuminariaController extends Controller
     {
         $censo = CensoLuminaria::findOrFail($id);
         $codigo = $censo->codigo_luminaria;
-        $censo = CensoLuminaria::where('codigo_luminaria',$codigo)->orderBy('id','desc')->first();
+        $censo = CensoLuminaria::where('codigo_luminaria', $codigo)->orderBy('id', 'desc')->first();
         $tipos = TipoLuminaria::where('Activo', '=', 1)->get();
         $departamentos = Departamento::get();
         $municipios = Municipio::where('departamento_id', $censo->distrito->municipio->departamento_id)->get();
@@ -251,7 +251,7 @@ class CensoLuminariaController extends Controller
         $tipos_falla = TipoFalla::where('activo', '1')->get();
 
 
-        return view('control.censo_luminaria.show', compact('censo', 'tipos', 'departamentos', 'municipios', 'distritos', 'potencias_promedio', 'registros','tipos_falla'));
+        return view('control.censo_luminaria.show', compact('censo', 'tipos', 'departamentos', 'municipios', 'distritos', 'potencias_promedio', 'registros', 'tipos_falla'));
     }
 
 
@@ -276,7 +276,11 @@ class CensoLuminariaController extends Controller
         } else {
             $censo->condicion_lampara = 0;
         }
-        $censo->tipo_falla_id = $request->tipo_falla_id;
+        if ($request->tipo_falla_id != null) {
+            $censo->tipo_falla_id = $request->tipo_falla_id;
+        } else {
+            $censo->tipo_falla_id = null;
+        }
         $censo->save();
 
 
