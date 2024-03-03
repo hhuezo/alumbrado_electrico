@@ -40,7 +40,7 @@ class ReporteFallaController extends Controller
     {
         $municipios = Municipio::where('departamento_id', '=', $id)->get();
 
-        return ["distritos" => $municipios];
+        return ["municipios" => $municipios];
     }
 
 
