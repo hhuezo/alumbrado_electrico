@@ -33,13 +33,20 @@ class CensoLuminariaController extends Controller
     {
 
         $tipos = TipoLuminaria::where('Activo', '=', 1)->get();
+        if($distrito_id == 0)
+        {
+            $municipios = Municipio::where('departamento_id',$departamento_id)->get();
+            $primerMunicipio = Municipio::where('departamento_id', $departamento_id)->first();
+            $distritos = Distrito::where('municipio_id',$primerMunicipio->municipio_id)->get();
+        }
+        else{
+            $distrito = Distrito::findOrFail($distrito_id);
+            $distritos = Distrito::where('municipio_id',$distrito->municipio_id)->get();
+            $municipios = Municipio::where('departamento_id',$departamento_id)->get();
+        }
 
-        $distrito = Distrito::findOrFail($distrito_id);
-        $distritos = Distrito::where('municipio_id',$distrito->municipio_id)->get();
-        $municipios = Municipio::where('departamento_id',$departamento_id)->get();
         $departamentos = Departamento::get();
 
-        //dd($distritos,$municipios,$departamentos);
         $response = ["departamentos" => $departamentos,"municipios" => $municipios, "distritos" => $distritos, "tipos" => $tipos];
 
         return $response;
