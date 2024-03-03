@@ -37,7 +37,7 @@ class CensoLuminariaController extends Controller
         {
             $municipios = Municipio::where('departamento_id',$departamento_id)->get();
             $primerMunicipio = Municipio::where('departamento_id', $departamento_id)->first();
-            $distritos = Distrito::where('municipio_id',$primerMunicipio->municipio_id)->get();
+            $distritos = Distrito::where('municipio_id',$primerMunicipio->id)->get();
         }
         else{
             $distrito = Distrito::findOrFail($distrito_id);
