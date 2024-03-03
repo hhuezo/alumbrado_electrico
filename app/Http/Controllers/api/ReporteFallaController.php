@@ -5,6 +5,7 @@ namespace App\Http\Controllers\api;
 use App\Http\Controllers\Controller;
 use App\Models\catalogo\Departamento;
 use App\Models\catalogo\Distrito;
+use App\Models\catalogo\Municipio;
 use App\Models\catalogo\TipoFalla;
 use App\Models\control\ReporteFalla;
 use Exception;
@@ -34,9 +35,18 @@ class ReporteFallaController extends Controller
     }
 
 
+
+    public function getMunicipios($id)
+    {
+        $municipios = Municipio::where('departamento_id', '=', $id)->get();
+
+        return ["distritos" => $municipios];
+    }
+
+
     public function getDistritos($id)
     {
-        $distritos = Distrito::where('departamento_id', '=', $id)->get();
+        $distritos = Distrito::where('municipio_id', '=', $id)->get();
 
         return ["distritos" => $distritos];
     }
