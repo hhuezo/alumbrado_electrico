@@ -27,7 +27,7 @@ class CensoLuminariaController extends Controller
 
     public function index()
     {
-        $censo_luminarias = CensoLuminaria::groupBy('codigo_luminaria')->orderby('fecha_ingreso','desc')->get();
+        $censo_luminarias = CensoLuminaria::groupBy('codigo_luminaria')->orderby('id','desc')->get();
         return view('control.censo_luminaria.index', compact('censo_luminarias'));
     }
 
@@ -239,6 +239,8 @@ class CensoLuminariaController extends Controller
     public function show($id)
     {
         $censo = CensoLuminaria::findOrFail($id);
+        $codigo = $censo->codigo_luminaria;
+        $censo = CensoLuminaria::where('codigo_luminaria',$codigo)->orderBy('id','desc')->first();
         $tipos = TipoLuminaria::where('Activo', '=', 1)->get();
         $departamentos = Departamento::get();
         $municipios = Municipio::where('departamento_id', $censo->distrito->municipio->departamento_id)->get();
@@ -246,9 +248,10 @@ class CensoLuminariaController extends Controller
         $potencias_promedio = PotenciaPromedio::where('tipo_luminaria_id', '=', $censo->tipo_luminaria_id)->get();
 
         $registros = CensoLuminaria::where('codigo_luminaria', $censo->codigo_luminaria)->orderBy('id', 'desc')->get();
+        $tipos_falla = TipoFalla::where('activo', '1')->get();
 
 
-        return view('control.censo_luminaria.show', compact('censo', 'tipos', 'departamentos', 'municipios', 'distritos', 'potencias_promedio', 'registros'));
+        return view('control.censo_luminaria.show', compact('censo', 'tipos', 'departamentos', 'municipios', 'distritos', 'potencias_promedio', 'registros','tipos_falla'));
     }
 
 
@@ -256,10 +259,11 @@ class CensoLuminariaController extends Controller
     {
         $codigo = $request->codigo_luminaria;
         $censo = new CensoLuminaria();
+
+
         $censo->tipo_luminaria_id = $request->tipo_luminaria_id;
         $censo->potencia_nominal = $request->potencia_nominal;
         $censo->consumo_mensual = $request->consumo_mensual;
-        //$censo->fecha_ultimo_censo = $request->fecha_ultimo_censo;
         $censo->distrito_id = $request->distrito_id;
         $censo->usuario_ingreso = auth()->user()->id;
         $censo->direccion = $request->direccion;
@@ -267,6 +271,12 @@ class CensoLuminariaController extends Controller
         $censo->latitud = $request->latitud;
         $censo->longitud = $request->longitud;
         $censo->observacion = $request->observacion;
+        if ($request->condicion_lampara != null) {
+            $censo->condicion_lampara = 1;
+        } else {
+            $censo->condicion_lampara = 0;
+        }
+        $censo->tipo_falla_id = $request->tipo_falla_id;
         $censo->save();
 
 

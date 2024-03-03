@@ -19,6 +19,7 @@
                                     class="flex mb-5 items-center border-b border-slate-100 dark:border-slate-700 pb-5 -mx-6 px-6">
                                     <div class="flex-1">
                                         <div class="card-title text-slate-900 dark:text-white">Censo
+                                            {{ $censo->codigo_luminaria }}
                                             <a href="{{ url('control/censo_luminaria') }}">
                                                 <button class="btn btn-dark btn-sm float-right">
                                                     <iconify-icon icon="icon-park-solid:back" style="color: white;"
@@ -68,6 +69,8 @@
                                                         <input type="hidden" name="codigo_luminaria"
                                                             value="{{ $censo->codigo_luminaria }}" required
                                                             class="form-control">
+                                                            <input type="hidden" name="latitud" value="{{ $censo->latitud }}" class="form-control">
+                                                            <input type="hidden" name="longitud" value="{{ $censo->longitud }}" class="form-control">
 
                                                         <div class="input-area">
                                                             <label for="largeInput" class="form-label">Departamento</label>
@@ -109,14 +112,17 @@
                                                             <textarea name="direccion" class="form-control" maxlength="500" readonly>{{ $censo->direccion }}</textarea>
                                                         </div>
 
-                                                        <div class="input-area">
+                                                        {{--  <div class="input-area">
                                                             <label for="largeInput" class="form-label">Codigo
                                                                 luminaria</label>
                                                             <input type="text" name="codigo_luminaria"
                                                                 value="{{ $censo->codigo_luminaria }}" required
                                                                 class="form-control" readonly>
 
-                                                        </div>
+                                                        </div> --}}
+                                                    </div>
+                                                    <br>
+                                                    <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-7">
                                                         <div class="input-area">
                                                             <label for="largeInput" class="form-label">Tipo
                                                                 luminaria</label>
@@ -129,10 +135,11 @@
                                                                 @endforeach
                                                             </select>
                                                         </div>
+                                                        <div class="input-area" id="div_potencia_promedio"
+                                                            style="display: {{$censo->tipo_luminaria->potenciaPromedio->count() == 0 ? 'none':'block'}}">
 
-                                                        <div class="input-area">
                                                             <label for="largeInput" class="form-label">Potencia
-                                                                promedio</label>
+                                                                promedio  (Vatio)</label>
                                                             <select class="form-control" id="potencia_promedio">
 
 
@@ -144,15 +151,14 @@
                                                                             {{ $obj->potencia }}</option>
                                                                     @endforeach
                                                                 @else
-                                                                    <option value="">No aplica</option>
+                                                                    <option value="">Favor ingresar la potencia Nominal</option>
                                                                 @endif
 
                                                             </select>
                                                         </div>
 
-                                                        <div class="input-area">
-                                                            <label for="largeInput" class="form-label">Potencia
-                                                                nominal</label>
+                                                        <div class="input-area" id="div_potencia_nominal"  style="display: {{$censo->tipo_luminaria->potenciaPromedio->count() > 0 ? 'none':'block'}}">
+                                                            <label for="largeInput" class="form-label">Favor ingresar la potencial Nominal (Vatio)</label>
                                                             <input type="number" step="0.001" name="potencia_nominal"
                                                                 id="potencia_nominal"
                                                                 value="{{ $censo->potencia_nominal }}"
@@ -167,18 +173,50 @@
                                                                 value="{{ $censo->consumo_mensual }}" required
                                                                 class="form-control">
                                                         </div>
+                                                    </div>
+                                                    <br>
+                                                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-7">
 
                                                         <div class="input-area">
-                                                            <label for="largeInput" class="form-label">Observación</label>
+                                                            <label for="condicion_lampara" class="form-label">¿Está la lámpara en buenas
+                                                                condiciones?</label>
+                                                            <label class="switch">
+                                                                <input type="checkbox" {{$censo->condicion_lampara == 1 ? 'checked':''}} id="condicion_lampara" name="condicion_lampara">
+                                                                <span class="slider round"></span>
 
-                                                            <textarea name="observacion" class="form-control" maxlength="500">{{ $censo->observacion }}</textarea>
+                                                                <span class="switch-label yes">&nbsp;Sí</span> <!-- Etiqueta para "Sí" -->
+                                                                <span class="switch-label no">No</span> <!-- Etiqueta para "No" -->
+                                                            </label>
+                                                        </div>
+
+                                                        <div class="input-area" id="div_tipo_falla" style="display: {{$censo->condicion_lampara == 1 ? 'none':'' }} " >
+                                                            <label for="largeInput" class="form-label">Tipo falla</label>
+                                                            <select class="form-control" name="tipo_falla_id" id="tipo_falla_id" required>
+                                                                <option value="">Seleccione</option>
+                                                                @foreach ($tipos_falla as $obj)
+                                                                    <option value="{{ $obj->id }}" {{$censo->tipo_falla_id == $obj->id ? 'selected':''}}>{{ $obj->nombre }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+
+
+
+                                                    </div>
+                                                    <br>
+                                                    <div class="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-7">
+
+                                                        <div class="input-area">
+                                                            <label for="largeInput" class="form-label">Observación <span
+                                                                id="number_text">({{strlen($censo->observacion)}}/500)</span></label>
+
+                                                            <textarea name="observacion" id="observacion" class="form-control" maxlength="500">{{ $censo->observacion }}</textarea>
                                                         </div>
 
                                                         {{-- <div class="input-area">
-                                <label for="largeInput" class="form-label">Fecha ultimo censo</label>
-                                <input type="date" name="fecha_ultimo_censo" value="{{ old('fecha_ultimo_censo') }}"
-                                    class="form-control">
-                            </div> --}}
+                                                            <label for="largeInput" class="form-label">Fecha ultimo censo</label>
+                                                            <input type="date" name="fecha_ultimo_censo" value="{{ old('fecha_ultimo_censo') }}"
+                                                                class="form-control">
+                                                        </div> --}}
 
                                                     </div>
                                                     <div>&nbsp;</div>
@@ -323,15 +361,24 @@
                                                 <section style="background-color: #F0F2F5;">
                                                     <div class="container py-5">
                                                         <div class="main-timeline">
-                                                            @php($i=1)
+                                                            @php($i = 1)
                                                             @foreach ($registros as $registro)
-                                                                <div class="timeline {{$i%2==0 ? 'left':'right'}} ">
+                                                                <div
+                                                                    class="timeline {{ $i % 2 == 0 ? 'left' : 'right' }} ">
                                                                     <div class="card">
                                                                         <div class="card-body p-4">
-                                                                            <h5>{{ date('d/m/Y', strtotime($registro->fecha_ingreso )) }}</h5>
-                                                                            <p class="mb-0">TIPO LUMINARIA: <strong>{{$registro->tipo_luminaria->nombre  }}</strong></p>
-                                                                            <p class="mb-0">CONSUMO MENSUAL: <strong>{{$registro->consumo_mensual  }} KWH</strong></p>
-                                                                            <p class="mb-0">OBSERVACIÓN: <strong>{{$registro->observacion  }}</strong></p>
+                                                                            <h5>{{ date('d/m/Y', strtotime($registro->fecha_ingreso)) }}
+                                                                            </h5>
+                                                                            <p class="mb-0">TIPO LUMINARIA:
+                                                                                <strong>{{ $registro->tipo_luminaria->nombre }}</strong>
+                                                                            </p>
+                                                                            <p class="mb-0">CONSUMO MENSUAL:
+                                                                                <strong>{{ $registro->consumo_mensual }}
+                                                                                    KWH</strong>
+                                                                            </p>
+                                                                            <p class="mb-0">OBSERVACIÓN:
+                                                                                <strong>{{ $registro->observacion }}</strong>
+                                                                            </p>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -370,6 +417,8 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
+            // $("#tipo_luminaria").change();
+
 
             $("#departamento").change(function() {
                 // var para la Departamento
@@ -405,9 +454,22 @@
                 $.get("{{ url('censo_luminaria/get_potencia_promedio') }}" + '/' + tipo_luminaria,
                     function(data) {
                         if (data.length === 0) {
-                            var _select = '<option value="">No aplica</option>';
-                            $("#potencia_nominal").prop("disabled", false);
+                            $("#div_potencia_promedio").css("display", "none");
+                            $("#potencia_promedio").prop('required', false);
+
+
+                            $("#div_potencia_nominal").css("display", "block");
+                            $("#potencia_nominal").prop('required', true);
+
+                            var _select =
+                                '<option value="">Favor ingresar la potencial Nominal</option>';
                         } else {
+                            $("#div_potencia_promedio").css("display", "block");
+                            $("#potencia_promedio").prop('required', true);
+
+                            $("#div_potencia_nominal").css("display", "none");
+                            $("#potencia_nominal").prop('required', false);
+
                             var _select = '<option value="">Seleccione</option>'
                             for (var i = 0; i < data.length; i++)
                                 _select += '<option value="' + data[i].id + '"  >' + data[i].potencia +
@@ -463,7 +525,20 @@
 
             });
 
+            $("#observacion").keyup(function() {
+                var numCaracteres = $(this).val().length;
+                $("#number_text").text("(" + numCaracteres + "/500)");
+            });
 
+            $("#condicion_lampara").change(function() {
+                if ($(this).is(":checked")) {
+                    $("#div_tipo_falla").css("display", "none");
+                    $("#tipo_falla_id").prop('required', false).val("");
+                } else {
+                    $("#div_tipo_falla").css("display", "block");
+                    $("#tipo_falla_id").prop('required', true);
+                }
+            });
 
         });
     </script>
