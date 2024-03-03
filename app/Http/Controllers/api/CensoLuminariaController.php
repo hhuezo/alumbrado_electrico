@@ -29,12 +29,18 @@ class CensoLuminariaController extends Controller
         return $response;
     }
 
-    public function get_data_create($departamento)
+    public function get_data_create($departamento_id,$distrito_id)
     {
+
         $tipos = TipoLuminaria::where('Activo', '=', 1)->get();
+
+        $distrito = Distrito::findOrFail($distrito_id);
+        $distritos = Distrito::where('municipio_id',$distrito->municipio_id)->get();
+        $municipios = Municipio::where('departamento_id',$departamento_id)->get();
         $departamentos = Departamento::get();
-        $distritos = Distrito::where('departamento_id',$departamento)->get();
-        $response = ["departamentos" => $departamentos, "tipos" => $tipos, "distritos" => $distritos];
+
+        //dd($distritos,$municipios,$departamentos);
+        $response = ["departamentos" => $departamentos,"municipios" => $municipios, "distritos" => $distritos, "tipos" => $tipos];
 
         return $response;
     }
