@@ -29,6 +29,7 @@ Route::post('/logout', [AuthController::class,'logout']);
 
 
 Route::get('api_get_distrito_id/{name}', [ReporteFallaController::class,'getDistritoId']);
+Route::get('api_get_municipio_id/{id}', [ReporteFallaController::class,'getMunicipioId']);
 Route::get('api_get_departamento_id/{name}', [ReporteFallaController::class,'getDepartamentoId']);
 Route::get('api_get_municipios/{id}', [ReporteFallaController::class,'getMunicipios']);
 Route::get('api_get_distritos/{id}', [ReporteFallaController::class,'getDistritos']);

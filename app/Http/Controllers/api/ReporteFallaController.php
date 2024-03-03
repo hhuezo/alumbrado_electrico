@@ -79,7 +79,7 @@ class ReporteFallaController extends Controller
                 $ruta = public_path("docs/" . $nombre);
                 file_put_contents($ruta, $decodedImage);
 
-                $reporte_falla->url_foto = $nombre ;
+                $reporte_falla->url_foto = $nombre;
             }
 
             $reporte_falla->save();
@@ -102,6 +102,19 @@ class ReporteFallaController extends Controller
         $departamentoId = $departamentoModel->getDepartamentoId($nombreFinal);
 
         return response()->json(['departamentoId' => $departamentoId]);
+    }
+
+    public function getMunicipioId($distrito_id)
+    {
+        if ($distrito_id != 0) {
+            $distrito = Distrito::findOrFail($distrito_id);
+
+            $municipioId = $distrito->municipio_id;
+        } else {
+            $municipioId = 0;
+        }
+
+        return response()->json(['municipioId' => $municipioId]);
     }
 
     public function getDistritoId($name)
