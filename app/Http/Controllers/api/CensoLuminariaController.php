@@ -75,19 +75,22 @@ class CensoLuminariaController extends Controller
 
     public function store(Request $request)
     {
+
+
         try {
+            $codigo = $this->getCodigo($request->distrito_id);
             $censo = new CensoLuminaria();
             $censo->distrito_id = $request->distrito_id;
             $censo->tipo_luminaria_id = $request->tipo_luminaria_id;
+            $censo->codigo_luminaria = $codigo;
 
            // Validar y asignar consumo_mensual
             $censo->consumo_mensual = !empty($request->consumo_mensual) ? $request->consumo_mensual : null;
 
             $censo->tipo_falla_id = !empty($request->tipo_falla) ? $request->tipo_falla : null;
 
-            $censo->consumo_mensual = $request->consumo_mensual;
-            $censo->fecha_ultimo_censo = $request->fecha_ultimo_censo;
-            $censo->usuario = auth()->user()->id;
+
+            $censo->usuario_creacion = $request->usuario;
             //$censo->codigo_luminaria = $request->codigo_luminaria;
             $censo->direccion = $request->direccion;
             $censo->latitud = $request->latitud;
@@ -96,7 +99,7 @@ class CensoLuminariaController extends Controller
             $censo->condicion_lampara = $request->condicion_lampara;
             $censo->save();
 
-            $response = ["value" => 1, "mensaje" => "Registro ingresado correctamente"];
+            $response = ["value" => 1, "mensaje" => "Registro ingresado correctamente", "codigo"=>$codigo];
         } catch (Exception $e) {
             $errorMessage = $e->getMessage();
             // Loguear el error si es necesario
@@ -107,6 +110,27 @@ class CensoLuminariaController extends Controller
         }
 
         return $response;
+    }
+
+    public function getCodigo($id)
+    {
+        $distrito = Distrito::findOrFail($id);
+        $codigo = "";
+        $max_codigo = CensoLuminaria::where('distrito_id', $id)->max('codigo_luminaria');
+
+        if (!$max_codigo) {
+            $codigo = $distrito->codigo . '00001';
+        } else {
+            $max_codigo++;
+
+            $longitud_deseada = 5; // numero de caracteres
+            // Convertir el número a una cadena y luego aplicar str_pad
+            $numero_formateado = str_pad((string)$max_codigo, $longitud_deseada, '0', STR_PAD_LEFT);
+
+            $codigo = $numero_formateado;
+        }
+
+        return  $codigo;
     }
 
     public function show($id)
