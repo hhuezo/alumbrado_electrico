@@ -10,6 +10,7 @@ use App\Models\catalogo\PotenciaPromedio;
 use App\Models\catalogo\TipoFalla;
 use App\Models\catalogo\TipoLuminaria;
 use App\Models\control\CensoLuminaria;
+use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -30,7 +31,7 @@ class CensoLuminariaController extends Controller
         return $response;
     }
 
-    public function get_data_create($departamento_id, $distrito_id, $latitude, $longitude)
+    public function get_data_create($departamento_id, $distrito_id, $latitude, $longitude,$usuario_id)
     {
 
         //verificar si existe algun punto cerca
@@ -62,15 +63,43 @@ class CensoLuminariaController extends Controller
         $departamentos = Departamento::get();
         $tipos_falla = TipoFalla::where('activo', 1)->get();
 
+
+        $id_distrito_valido = true;
+        $user = User::findOrFail(auth()->user()->id);
+        $role_id = $user->user_rol->pluck('id')->toArray();
+
+        if (in_array(3, $role_id) || in_array(4, $role_id)) {
+            $distritos_id = $user->distritos->pluck('id')->toArray();
+            $municipios = $user->get_municipios($user->id);
+            $distritos = Distrito::whereIn('id', $distritos_id)->get();
+            $departamentos = $user->get_departamentos($user->id);
+
+            if($distrito_id != null)
+            {
+                if(!in_array($distrito_id,$distritos_id ))
+                {
+                    $id_distrito_valido = false;
+                }
+            }
+        }
+
         $response = [
             "departamentos" => $departamentos, "municipios" => $municipios, "distritos" => $distritos,
-            "tipos" => $tipos, "tipos_falla" => $tipos_falla, 'puntosCercanos' => $puntosCercanos
+            "tipos" => $tipos, "tipos_falla" => $tipos_falla, 'puntosCercanos' => $puntosCercanos,'id_distrito_valido'=>$id_distrito_valido
         ];
 
         return $response;
     }
 
+    public function get_municipios($id)
+    {
+        return Municipio::where('departamento_id', '=', $id)->orderBy('nombre')->get();
+    }
 
+    public function get_distritos($id)
+    {
+        return Distrito::where('municipio_id', '=', $id)->get();
+    }
 
     public function get_potencia_promedio($id)
     {
