@@ -135,14 +135,14 @@ class ReporteFallaController extends Controller
         {
             $distrito = Distrito::findOrfail($distrito);
 
-            $distritos = Distrito::where('municipio_id',$distrito->municipio_id)->get();
+            $distritos = Distrito::where('municipio_id',$distrito->municipio_id)->select("id","nombre")->get();
 
-            $municipios = Municipio::where('departamento_id',$distrito->municipio->departamento_id)->get();
+            $municipios = Municipio::where('departamento_id',$distrito->municipio->departamento_id)->select("id","nombre")->get();
         }
         else{
-            $municipios = Municipio::where('departamento_id',$departamento)->get();
+            $municipios = Municipio::where('departamento_id',$departamento)->select("id","nombre")->get();
             $municipio  = Municipio::where('departamento_id',$departamento)->first();
-            $distritos = Distrito::where('municipio_id',$municipio->id)->get();
+            $distritos = Distrito::where('municipio_id',$municipio->id)->select("id","nombre")->get();
         }
 
         $response = ["value" => "1", "mensaje" => "ok","distritos"=>$distritos,"municipios"=>$municipios];
