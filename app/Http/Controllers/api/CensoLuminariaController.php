@@ -30,8 +30,23 @@ class CensoLuminariaController extends Controller
         return $response;
     }
 
-    public function get_data_create($departamento_id,$distrito_id)
+    public function get_data_create($departamento_id,$distrito_id,$latitude,$longitude)
     {
+
+        //verificar si existe algun punto cerca
+        $radio = 10; //radio en metros a la redonda
+        // Conversión de metros a grados decimales
+        $radioEnGrados = $radio / 111.319; // Aproximadamente 1 grado = 111.319 km en el ecuador
+
+        $puntosCercanos = DB::table('censo_luminaria')->select('*')
+            // Haversine Formula
+            ->selectRaw("(6371 * acos(cos(radians(?))
+            * cos(radians(latitud))
+            * cos(radians(longitud) - radians(?))
+            + sin(radians(?))
+            * sin(radians(latitud)))) AS distancia", [$latitude, $longitude, $latitude])
+            ->havingRaw("distancia < ?", [$radioEnGrados])
+            ->count();
 
         $tipos = TipoLuminaria::where('Activo', '=', 1)->get();
         if($distrito_id == 0)
@@ -49,7 +64,8 @@ class CensoLuminariaController extends Controller
         $departamentos = Departamento::get();
         $tipos_falla = TipoFalla::where('activo',1)->get();
 
-        $response = ["departamentos" => $departamentos,"municipios" => $municipios, "distritos" => $distritos, "tipos" => $tipos, "tipos_falla" => $tipos_falla];
+        $response = ["departamentos" => $departamentos,"municipios" => $municipios, "distritos" => $distritos,
+        "tipos" => $tipos, "tipos_falla" => $tipos_falla,'puntosCercanos'=>$puntosCercanos];
 
         return $response;
     }
