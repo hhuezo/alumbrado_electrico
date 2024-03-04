@@ -47,6 +47,7 @@ Route::get('welcome/rango_potencia_data/{id}/{anio}/{mes}', [WelcomeController::
 Route::resource('seguridad/permission', PermissionController::class);
 Route::post('seguridad/permission/update_permission', [PermissionController::class, 'update_permission']);
 Route::post('seguridad/user/attach_distrito', [UsuarioController::class, 'attach_distrito']);
+Route::post('seguridad/user/dettach_distrito', [UsuarioController::class, 'dettach_distrito']);
 Route::post('seguridad/user/attach_roles', [UsuarioController::class, 'attach_roles']);
 Route::post('seguridad/user/dettach_roles', [UsuarioController::class, 'dettach_roles']);
 Route::resource('seguridad/user', UsuarioController::class);

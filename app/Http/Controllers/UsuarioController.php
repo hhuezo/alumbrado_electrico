@@ -50,8 +50,6 @@ class UsuarioController extends Controller
 
         ];
 
-
-
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'password' => ['required', 'string', 'max:255'],
@@ -63,10 +61,9 @@ class UsuarioController extends Controller
         $user->name = $request->name;
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
-        //$user->status = 1;
         $user->save();
         alert()->success('se han sido Agragado correctamente');
-        return back();
+        return redirect('seguridad/user/' . $user->id . '/edit');
     }
 
 
@@ -86,7 +83,7 @@ class UsuarioController extends Controller
 
 
 
-            return view('seguridad.user.edit', compact('usuarios', 'roles', 'rol_no_asignados','departamentos'));
+            return view('seguridad.user.edit', compact('usuarios', 'roles', 'rol_no_asignados', 'departamentos'));
         } else {
             alert()->error('Usuario No Autorizado');
             return back();
@@ -100,7 +97,7 @@ class UsuarioController extends Controller
         $usuarios = User::findOrFail($id);
         $usuarios->name = $request->name;
         $usuarios->email = $request->email;
-        if($request->password != ''){
+        if ($request->password != '') {
             $usuarios->password = Hash::make($request->password);
         }
         //$usuarios->status = 1;
@@ -137,6 +134,16 @@ class UsuarioController extends Controller
         alert()->success('El registro ha sido agregado correctamente');
         return back();
     }
+
+    public function dettach_distrito(Request $request)
+    {
+        $usuario = User::findOrFail($request->usuario_id);
+        $usuario->distritos()->detach($request->distrito_id);
+        alert()->success('El registro ha sido agregado correctamente');
+        return back();
+    }
+
+
 
     public function destroy($id)
     {
