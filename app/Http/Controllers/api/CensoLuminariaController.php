@@ -18,7 +18,6 @@ class CensoLuminariaController extends Controller
 {
     public function index()
     {
-        //
     }
 
     public function create()
@@ -31,7 +30,7 @@ class CensoLuminariaController extends Controller
         return $response;
     }
 
-    public function get_data_create($departamento_id,$distrito_id,$latitude,$longitude)
+    public function get_data_create($departamento_id, $distrito_id, $latitude, $longitude)
     {
 
         //verificar si existe algun punto cerca
@@ -50,23 +49,23 @@ class CensoLuminariaController extends Controller
             ->count();
 
         $tipos = TipoLuminaria::where('Activo', '=', 1)->get();
-        if($distrito_id == 0)
-        {
-            $municipios = Municipio::where('departamento_id',$departamento_id)->get();
+        if ($distrito_id == 0) {
+            $municipios = Municipio::where('departamento_id', $departamento_id)->get();
             $primerMunicipio = Municipio::where('departamento_id', $departamento_id)->first();
-            $distritos = Distrito::where('municipio_id',$primerMunicipio->id)->get();
-        }
-        else{
+            $distritos = Distrito::where('municipio_id', $primerMunicipio->id)->get();
+        } else {
             $distrito = Distrito::findOrFail($distrito_id);
-            $distritos = Distrito::where('municipio_id',$distrito->municipio_id)->get();
-            $municipios = Municipio::where('departamento_id',$departamento_id)->get();
+            $distritos = Distrito::where('municipio_id', $distrito->municipio_id)->get();
+            $municipios = Municipio::where('departamento_id', $departamento_id)->get();
         }
 
         $departamentos = Departamento::get();
-        $tipos_falla = TipoFalla::where('activo',1)->get();
+        $tipos_falla = TipoFalla::where('activo', 1)->get();
 
-        $response = ["departamentos" => $departamentos,"municipios" => $municipios, "distritos" => $distritos,
-        "tipos" => $tipos, "tipos_falla" => $tipos_falla,'puntosCercanos'=>$puntosCercanos];
+        $response = [
+            "departamentos" => $departamentos, "municipios" => $municipios, "distritos" => $distritos,
+            "tipos" => $tipos, "tipos_falla" => $tipos_falla, 'puntosCercanos' => $puntosCercanos
+        ];
 
         return $response;
     }
@@ -101,7 +100,7 @@ class CensoLuminariaController extends Controller
             $censo->tipo_luminaria_id = $request->tipo_luminaria_id;
             $censo->codigo_luminaria = $codigo;
 
-           // Validar y asignar consumo_mensual
+            // Validar y asignar consumo_mensual
             $censo->consumo_mensual = !empty($request->consumo_mensual) ? $request->consumo_mensual : null;
 
             $censo->tipo_falla_id = !empty($request->tipo_falla) ? $request->tipo_falla : null;
@@ -116,7 +115,7 @@ class CensoLuminariaController extends Controller
             $censo->condicion_lampara = $request->condicion_lampara;
             $censo->save();
 
-            $response = ["value" => 1, "mensaje" => "Registro ingresado correctamente", "codigo"=>$codigo];
+            $response = ["value" => 1, "mensaje" => "Registro ingresado correctamente", "codigo" => $codigo];
         } catch (Exception $e) {
             $errorMessage = $e->getMessage();
             // Loguear el error si es necesario
@@ -152,7 +151,45 @@ class CensoLuminariaController extends Controller
 
     public function show($id)
     {
-        //
+        try{
+            $censos = DB::table('censo_luminaria')
+            ->join('tipo_luminaria as tipo', 'censo_luminaria.tipo_luminaria_id', '=', 'tipo.id')
+            ->join('distrito', 'censo_luminaria.distrito_id', '=', 'distrito.id')
+            ->join('municipio', 'distrito.municipio_id', '=', 'municipio.id')
+            ->join('departamento', 'municipio.departamento_id', '=', 'departamento.id')
+            ->select(
+                'censo_luminaria.id',
+                'censo_luminaria.codigo_luminaria',
+                'tipo.nombre as tipo_luminaria',
+                'censo_luminaria.potencia_nominal',
+                'censo_luminaria.latitud',
+                'censo_luminaria.longitud',
+                DB::raw("DATE_FORMAT(censo_luminaria.fecha_creacion, '%d/%m/%Y') as fecha"),
+                'distrito.nombre as distrito',
+                'departamento.nombre as departamento',
+                'censo_luminaria.direccion',
+                'censo_luminaria.observacion'
+            )
+            ->where('censo_luminaria.usuario_ingreso', $id)
+            ->get();
+
+            if($censos)
+            {
+                $response = ["value" => 1, "mensaje" => "ok", "censos" => $censos];
+            }
+            else{
+                $response = ["value" => 0, "mensaje" => "error", "censos" => null];
+            }
+
+
+        }
+        catch(Exception $e)
+        {
+            $response = ["value" => 0, "mensaje" => "error", "censos" => null];
+        }
+
+            return  $response;
+
     }
 
     public function edit($id)
