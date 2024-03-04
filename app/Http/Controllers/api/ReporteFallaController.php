@@ -147,7 +147,7 @@ class ReporteFallaController extends Controller
 
         $response = ["value" => "1", "mensaje" => "ok","distritos"=>$distritos,"municipios"=>$municipios];
 
-        return response()->json([$response]);
+        return response()->json(['response' => $response]);
     }
 
 
