@@ -70,6 +70,62 @@
 
                 <header class="flex mb-5 items-center border-b border-slate-100 dark:border-slate-700 pb-5 -mx-6 px-6">
                     <div class="flex-1">
+                        <div class="card-title text-slate-900 dark:text-white">Disttritos
+                            <button class="btn inline-flex justify-center btn-outline-dark float-right"
+                            data-bs-toggle="modal" data-bs-target="#modal-add-distrito">Agregar distrito
+                        </div>
+                    </div>
+                </header>
+                &nbsp;&nbsp;
+
+                @if ($usuarios->distritos->count() > 0)
+                <div style="width: 98%;margin-left:1%;">
+                    <div class="overflow-x-auto -mx-6 dashcode-data-table">
+
+                        <div class="inline-block min-w-full align-middle">
+                            <div class="overflow-hidden ">
+                                <table class="min-w-full divide-y divide-slate-100 table-fixed dark:divide-slate-700 data-table">
+                                    <thead class=" bg-slate-200 dark:bg-slate-700">
+                                        <tr>
+                                            <th scope="col" class=" table-th ">Id</th>
+                                            <th scope="col" class=" table-th ">Rol</th>
+                                            <th scope="col" class=" table-th ">opciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="bg-white divide-y divide-slate-100 dark:bg-slate-800 dark:divide-slate-700">
+
+                                        @foreach ($usuarios->distritos as $obj)
+
+                                        <tr>
+                                            <td class="table-td ">{{ $obj->id }}</td>
+                                            <td class="table-td ">{{ $obj->nombre }}</td>
+                                            <td class="table-td ">
+                                                <iconify-icon icon="mdi:delete-circle" class="danger" width="40" data-bs-toggle="modal" data-bs-target="#modal-delete-{{ $obj->id }}"></iconify-icon>
+
+                                            </td>
+                                        </tr>
+                                        @include('seguridad.user.modal')
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                                @endif
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @include('seguridad.user.agregar_distrito')
+    </div>
+
+    <div class="2xl:col-span-12 lg:col-span-12 col-span-12">
+        <div class="card">
+            <div class="card-body flex flex-col p-6">
+
+                <header class="flex mb-5 items-center border-b border-slate-100 dark:border-slate-700 pb-5 -mx-6 px-6">
+                    <div class="flex-1">
                         <div class="card-title text-slate-900 dark:text-white">Roles
                             <button class="btn inline-flex justify-center btn-outline-dark float-right" data-bs-toggle="modal" data-bs-target="#modal-add-{{ $usuarios->id }}">Agregar rol
                         </div>

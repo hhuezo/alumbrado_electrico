@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\catalogo\Departamento;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Role;
@@ -81,8 +82,11 @@ class UsuarioController extends Controller
 
             $rol_no_asignados = Role::whereNotIn('id', $rolArray)->get();
 
+            $departamentos = Departamento::get();
 
-            return view('seguridad.user.edit', compact('usuarios', 'roles', 'rol_no_asignados'));
+
+
+            return view('seguridad.user.edit', compact('usuarios', 'roles', 'rol_no_asignados','departamentos'));
         } else {
             alert()->error('Usuario No Autorizado');
             return back();
@@ -99,8 +103,8 @@ class UsuarioController extends Controller
         if($request->password != ''){
             $usuarios->password = Hash::make($request->password);
         }
-        $usuarios->status = 1;
-        $usuarios->region_id = $request->region_id;
+        //$usuarios->status = 1;
+        //$usuarios->region_id = $request->region_id;
         $usuarios->update();
         alert()->success('se han sido Actualizado correctamente');
         return back();
@@ -122,6 +126,15 @@ class UsuarioController extends Controller
         $roles = Role::findOrFail($request->role_id);
         $roles->user_has_role()->detach($request->model_id);
         alert()->error('El registro ha sido eliminado correctamente');
+        return back();
+    }
+
+
+    public function attach_distrito(Request $request)
+    {
+        $usuario = User::findOrFail($request->usuario_id);
+        $usuario->distritos()->attach($request->distrito_id);
+        alert()->success('El registro ha sido agregado correctamente');
         return back();
     }
 

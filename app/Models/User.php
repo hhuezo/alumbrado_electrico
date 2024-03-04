@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Models\catalogo\Distrito;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -47,5 +49,10 @@ class User extends Authenticatable
     public function user_rol()
     {
         return $this->belongsToMany(Role::class, 'model_has_roles', 'model_id');
+    }
+
+    public function distritos()
+    {
+        return $this->belongsToMany(Distrito::class, 'users_has_distrito');
     }
 }
