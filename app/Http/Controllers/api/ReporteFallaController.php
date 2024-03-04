@@ -8,6 +8,7 @@ use App\Models\catalogo\Distrito;
 use App\Models\catalogo\Municipio;
 use App\Models\catalogo\TipoFalla;
 use App\Models\control\ReporteFalla;
+use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -127,6 +128,32 @@ class ReporteFallaController extends Controller
 
         return response()->json(['distritoId' => $distritoId]);
     }
+
+    public function getDistritoUsuario($name, $usuario_id)
+    {
+        $id_distrito_valido = true;
+        $nombreSinDistrito = str_replace("Municipio de", "", $name);
+        $nombreFinal = trim($nombreSinDistrito);
+
+        $distritoModel = new Distrito();
+        $distritoId = $distritoModel->distritoId($nombreFinal);
+
+        $user = User::findOrFail($usuario_id);
+        $role_id = $user->user_rol->pluck('id')->toArray();
+
+        if (in_array(3, $role_id) || in_array(4, $role_id)) {
+
+            $distritos_id = $user->distritos->pluck('id')->toArray();
+
+            if (!in_array($distritoId, $distritos_id)) {
+                $id_distrito_valido = false;
+            }
+        }
+
+        return response()->json(['distritoId' => $distritoId,'id_distrito_valido'=>$id_distrito_valido]);
+    }
+
+
 
 
     public function show($id)
