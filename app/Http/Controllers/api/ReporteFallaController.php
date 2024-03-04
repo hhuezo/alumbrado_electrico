@@ -129,6 +129,28 @@ class ReporteFallaController extends Controller
         return response()->json(['distritoId' => $distritoId]);
     }
 
+    public function data_distrito($distrito,$departamento)
+    {
+        if($distrito>0)
+        {
+            $distrito = Distrito::findOrfail($distrito);
+
+            $distritos = Distrito::where('municipio_id',$distrito->municipio_id)->get();
+
+            $municipios = Municipio::where('departamento_id',$distrito->municipio->departamento_id)->get();
+        }
+        else{
+            $municipios = Municipio::where('departamento_id',$departamento)->get();
+            $municipio  = Municipio::where('departamento_id',$departamento)->first();
+            $distritos = Distrito::where('municipio_id',$municipio->id)->get();
+        }
+
+        $response = ["value" => "1", "mensaje" => "ok","distritos"=>$distritos,"municipios"=>$municipios];
+
+        return response()->json(['response' => $response]);
+    }
+
+
     public function getDistritoUsuario($name, $usuario_id)
     {
         $id_distrito_valido = true;
