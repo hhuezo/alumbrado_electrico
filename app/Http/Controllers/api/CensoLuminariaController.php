@@ -12,6 +12,7 @@ use App\Models\catalogo\TipoLuminaria;
 use App\Models\control\CensoLuminaria;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CensoLuminariaController extends Controller
 {
