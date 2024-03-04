@@ -297,7 +297,7 @@
                             </a>
                             <ul class="sidebar-submenu">
                                 <li>
-                                    <a href="{{ url('seguridad/usuario') }}">Usuario</a>
+                                    <a href="{{ url('seguridad/user') }}">Usuario</a>
                                 </li>
                                 <li>
                                     <a href="{{ url('seguridad/role') }}">Rol</a>

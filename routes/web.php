@@ -9,7 +9,10 @@ use App\Http\Controllers\control\CensoLuminariaController;
 use App\Http\Controllers\control\ValorMensualEnergiaController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\importacion\BaseDatosController;
+use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\publico\ReporteFallaPublicoController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
 
@@ -39,6 +42,18 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::get('home/rango_potencia_data/{id}/{anio}/{mes}', [HomeController::class,'show_data']);
 Route::get('welcome/rango_potencia_data/{id}/{anio}/{mes}', [WelcomeController::class,'show_data']);
+
+
+Route::resource('seguridad/permission', PermissionController::class);
+Route::post('seguridad/permission/update_permission', [PermissionController::class, 'update_permission']);
+Route::post('seguridad/user/attach_roles', [UsuarioController::class, 'attach_roles']);
+Route::post('seguridad/user/dettach_roles', [UsuarioController::class, 'dettach_roles']);
+Route::resource('seguridad/user', UsuarioController::class);
+Route::resource('seguridad/role', RoleController::class);
+Route::post('seguridad/role/unlink_permission', [RoleController::class, 'unlink_permission']);
+Route::post('seguridad/role/link_permission', [RoleController::class, 'link_permission']);
+
+
 
 
 Route::post('control/censo_luminaria/create_record', [CensoLuminariaController::class,'create_record']);
