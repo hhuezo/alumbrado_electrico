@@ -2,8 +2,8 @@
 
     <form method="POST" action="{{ url('seguridad/role/unlink_permission') }}">
           @csrf
-          <input type="text" name="role_id" value="{{$role->id}}">
-          <input type="text" name="permission_id" value="{{$obj->id}}">
+          <input type="hidden" name="role_id" value="{{$role->id}}">
+          <input type="hidden" name="permission_id" value="{{$obj->id}}">
         <div class="modal-dialog relative w-auto pointer-events-none">
             <div class="modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-white bg-clip-padding
                           rounded-md outline-none text-current">

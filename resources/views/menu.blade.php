@@ -151,140 +151,149 @@
                             </span>
                         </a>
                     </li>
-                    <li class="">
-                        <a href="#" class="navItem">
-                            <span class="flex items-center">
-                                <iconify-icon class=" nav-icon" icon="heroicons-outline:user-group"></iconify-icon>
-                                <span>Información pública</span>
-                            </span>
-                            <iconify-icon class="icon-arrow" icon="heroicons-outline:chevron-right"></iconify-icon>
-                        </a>
-                        <ul class="sidebar-submenu">
-                            <li>
-                                <a href="{{ url('importacion/base_datos') }}">Importación de censo gen.</a>
-                            </li>
-                            <li>
-                                <a href="{{ url('seguridad/role') }}">Gráficos</a>
-                            </li>
-                            <li>
-                                <a href="{{ url('seguridad/permission') }}">Estimación de factura general</a>
-                            </li>
-                            <li>
-                                <a href="{{ url('seguridad/role') }}">Evaluación de proyectos</a>
-                            </li>
-                            <li>
-                                <a href="{{ url('seguridad/role') }}">Biblioteca / Info general</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="">
-                        <a href="#" class="navItem">
-                            <span class="flex items-center">
-                                <iconify-icon class=" nav-icon" icon="heroicons-outline:user-group"></iconify-icon>
-                                <span>Elaboración censo</span>
-                            </span>
-                            <iconify-icon class="icon-arrow" icon="heroicons-outline:chevron-right"></iconify-icon>
-                        </a>
-                        <ul class="sidebar-submenu">
-                            <li>
-                                <a href="{{ url('control/censo_luminaria/show_map') }}">Creación nuevo registro</a>
-                            </li>
-                            <li>
-                                <a href="{{ url('control/censo_luminaria') }}">Censos</a>
-                            </li>
-                            <li>
-                                <a href="{{ url('seguridad/role') }}">Comparación censos</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="">
-                        <a href="#" class="navItem">
-                            <span class="flex items-center">
-                                <iconify-icon class=" nav-icon" icon="heroicons-outline:user-group"></iconify-icon>
-                                <span>Gestión parque AP</span>
-                            </span>
-                            <iconify-icon class="icon-arrow" icon="heroicons-outline:chevron-right"></iconify-icon>
-                        </a>
-                        <ul class="sidebar-submenu">
-                            <li>
-                                <a href="{{ url('seguridad/usuario') }}">Inventario actual AP</a>
-                            </li>
-                            <li>
-                                <a href="{{ url('seguridad/role') }}">Pendiente</a>
-                            </li>
-                        </ul>
-
-                        <ul class="sidebar-submenu">
-                            <li>
-                                <a href="{{ url('seguridad/usuario') }}">Evaluación de Proyectos</a>
-                            </li>
-                            <li>
-                                <a href="{{ url('seguridad/role') }}">Informes</a>
-                            </li>
-                        </ul>
-                    </li>
+                    @can('read menu informacion publica')
+                        <li class="">
 
 
-                    <li class="">
-                        <a href="#" class="navItem">
-                            <span class="flex items-center">
-                                <iconify-icon class=" nav-icon" icon="heroicons-outline:user-group"></iconify-icon>
-                                <span>Reportes y seguimiento de fallas</span>
-                            </span>
-                            <iconify-icon class="icon-arrow" icon="heroicons-outline:chevron-right"></iconify-icon>
-                        </a>
-                        <ul class="sidebar-submenu">
-                            <li>
-                                <a href="{{ url('seguridad/usuario') }}">Crear reporte de falla</a>
-                            </li>
-                            <li>
-                                <a href="{{ url('seguridad/role') }}">Listado de reportes</a>
-                            </li>
-                            <li>
-                                <a href="{{ url('seguridad/role') }}">Informes</a>
-                            </li>
-                        </ul>
-                    </li>
+                            <a href="#" class="navItem">
+                                <span class="flex items-center">
+                                    <iconify-icon class=" nav-icon" icon="heroicons-outline:user-group"></iconify-icon>
+                                    <span>Información pública</span>
+                                </span>
+                                <iconify-icon class="icon-arrow" icon="heroicons-outline:chevron-right"></iconify-icon>
+                            </a>
+                            <ul class="sidebar-submenu">
+                                <li>
+                                    <a href="{{ url('importacion/base_datos') }}">Importación de censo gen.</a>
+                                </li>
+                                <li>
+                                    <a href="#">Gráficos</a>
+                                </li>
+                                <li>
+                                    <a href="#">Estimación de factura general</a>
+                                </li>
+                                <li>
+                                    <a href="#">Evaluación de proyectos</a>
+                                </li>
+                                <li>
+                                    <a href="#">Biblioteca / Info general</a>
+                                </li>
+                            </ul>
+                        </li>
+                    @endcan
+
+                    @can('read menu elaboracion censo')
+                        <li class="">
+                            <a href="#" class="navItem">
+                                <span class="flex items-center">
+                                    <iconify-icon class=" nav-icon" icon="heroicons-outline:user-group"></iconify-icon>
+                                    <span>Elaboración censo</span>
+                                </span>
+                                <iconify-icon class="icon-arrow" icon="heroicons-outline:chevron-right"></iconify-icon>
+                            </a>
+                            <ul class="sidebar-submenu">
+                                <li>
+                                    <a href="{{ url('control/censo_luminaria/show_map') }}">Creación nuevo registro</a>
+                                </li>
+                                <li>
+                                    <a href="{{ url('control/censo_luminaria') }}">Censos</a>
+                                </li>
+                                <li>
+                                    <a href="#">Comparación censos</a>
+                                </li>
+                            </ul>
+                        </li>
+                    @endcan
+
+                    @can('read menu gestion parque')
+                        <li class="">
+                            <a href="#" class="navItem">
+                                <span class="flex items-center">
+                                    <iconify-icon class=" nav-icon" icon="heroicons-outline:user-group"></iconify-icon>
+                                    <span>Gestión parque AP</span>
+                                </span>
+                                <iconify-icon class="icon-arrow" icon="heroicons-outline:chevron-right"></iconify-icon>
+                            </a>
+                            <ul class="sidebar-submenu">
+                                <li>
+                                    <a href="#">Inventario actual AP</a>
+                                </li>
+                                <li>
+                                    <a href="#">Pendiente</a>
+                                </li>
+                            </ul>
+
+                            <ul class="sidebar-submenu">
+                                <li>
+                                    <a href="{{ url('seguridad/usuario') }}">Evaluación de Proyectos</a>
+                                </li>
+                                <li>
+                                    <a href="#">Informes</a>
+                                </li>
+                            </ul>
+                        </li>
+                    @endcan
+
+                    @can('read menu fallas')
+                        <li class="">
+                            <a href="#" class="navItem">
+                                <span class="flex items-center">
+                                    <iconify-icon class=" nav-icon" icon="heroicons-outline:user-group"></iconify-icon>
+                                    <span>Reportes y seguimiento de fallas</span>
+                                </span>
+                                <iconify-icon class="icon-arrow" icon="heroicons-outline:chevron-right"></iconify-icon>
+                            </a>
+                            <ul class="sidebar-submenu">
+                                <li>
+                                    <a href="{{ url('seguridad/usuario') }}">Crear reporte de falla</a>
+                                </li>
+                                <li>
+                                    <a href="{{ url('seguridad/role') }}">Listado de reportes</a>
+                                </li>
+                                <li>
+                                    <a href="{{ url('seguridad/role') }}">Informes</a>
+                                </li>
+                            </ul>
+                        </li>
+                    @endcan
 
 
 
 
+                    @can('read menu catalogo')
+                        <li class="">
+                            <a href="#" class="navItem">
+                                <span class="flex items-center">
+                                    <iconify-icon class=" nav-icon" icon="heroicons-outline:clipboard-list">
+                                    </iconify-icon>
+                                    <span>Catalogos</span>
+                                </span>
+                                <iconify-icon class="icon-arrow" icon="heroicons-outline:chevron-right"></iconify-icon>
+                            </a>
+                            <ul class="sidebar-submenu">
+                                <li>
+                                    <a href="{{ url('catalogo/biblioteca') }}">Biblioteca</a>
+                                </li>
+
+                                <li>
+                                    <a href="{{ url('catalogo/reporte_falla') }}">Reporte falla</a>
+                                </li>
+                                <li>
+                                    <a href="{{ url('catalogo/distrito') }}">Distritos</a>
+                                </li>
+
+                                <li>
+                                    <a href="{{ url('catalogo/tipo_luminaria') }}">Tipo luminaria</a>
+                                </li>
 
 
-                    <li class="">
-                        <a href="#" class="navItem">
-                            <span class="flex items-center">
-                                <iconify-icon class=" nav-icon" icon="heroicons-outline:clipboard-list">
-                                </iconify-icon>
-                                {{-- <span>Verificar Usuarios</span>
-                                <iconify-icon class=" nav-icon" icon="heroicons-outline:user"></iconify-icon> --}}
-                                <span>Catalogos</span>
-                            </span>
-                            <iconify-icon class="icon-arrow" icon="heroicons-outline:chevron-right"></iconify-icon>
-                        </a>
-                        <ul class="sidebar-submenu">
-                            <li>
-                                <a href="{{ url('catalogo/biblioteca') }}">Biblioteca</a>
-                            </li>
+                                <li>
+                                    <a href="{{ url('catalogo/tipo_falla') }}">Tipos de falla</a>
+                                </li>
 
-                            <li>
-                                <a href="{{ url('catalogo/reporte_falla') }}">Reporte falla</a>
-                            </li>
-                            <li>
-                                <a href="{{ url('catalogo/distrito') }}">Distritos</a>
-                            </li>
-
-                            <li>
-                                <a href="{{ url('catalogo/tipo_luminaria') }}">Tipo luminaria</a>
-                            </li>
-
-
-                            <li>
-                                <a href="{{ url('catalogo/tipo_falla') }}">Tipos de falla</a>
-                            </li>
-
-                        </ul>
-                    </li>
+                            </ul>
+                        </li>
+                    @endcan
 
                     @can('edit users')
                         <li class="">
@@ -311,28 +320,29 @@
 
 
 
+                    @can('menu mapa')
+                        <li>
+                            <a href="{{ url('importacion/base_datos') }}/1" target="_blank" class="navItem">
+                                <span class="flex items-center">
+                                    <iconify-icon class=" nav-icon" icon="material-symbols:add-notes"
+                                        style="color: white;"></iconify-icon>
+                                    <span>Visualizar mapa</span>
+                                </span>
+                            </a>
+                        </li>
+                    @endcan
 
-                    <li>
-                        <a href="{{ url('importacion/base_datos') }}/1" target="_blank" class="navItem">
-                            <span class="flex items-center">
-                                <iconify-icon class=" nav-icon" icon="material-symbols:add-notes"
-                                    style="color: white;"></iconify-icon>
-                                <span>Visualizar mapa</span>
-                            </span>
-                        </a>
-                    </li>
-
-
-                    <li>
-                        <a href="{{ url('control/valor_mensual_energia') }}" class="navItem">
-                            <span class="flex items-center">
-                                <iconify-icon class=" nav-icon" icon="material-symbols:add-notes"
-                                    style="color: white;"></iconify-icon>
-                                <span>Precio energía mensual(kmh)</span>
-                            </span>
-                        </a>
-                    </li>
-
+                    @can('menu precio energia')
+                        <li>
+                            <a href="{{ url('control/valor_mensual_energia') }}" class="navItem">
+                                <span class="flex items-center">
+                                    <iconify-icon class=" nav-icon" icon="material-symbols:add-notes"
+                                        style="color: white;"></iconify-icon>
+                                    <span>Precio energía mensual(kmh)</span>
+                                </span>
+                            </a>
+                        </li>
+                    @endcan
 
 
 

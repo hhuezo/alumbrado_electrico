@@ -11,6 +11,7 @@ use App\Models\catalogo\TipoFalla;
 use App\Models\catalogo\TipoLuminaria;
 use App\Models\Configuracion;
 use App\Models\control\CensoLuminaria;
+use App\Models\User;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\DB;
@@ -27,7 +28,17 @@ class CensoLuminariaController extends Controller
 
     public function index()
     {
-        $censo_luminarias = CensoLuminaria::groupBy('codigo_luminaria')->orderby('id', 'desc')->get();
+        $user = User::findOrFail(auth()->user()->id);
+        $role_id = $user->user_rol->pluck('id')->toArray();
+
+        if (in_array(1, $role_id) || in_array(2, $role_id)) {
+            $censo_luminarias = CensoLuminaria::groupBy('codigo_luminaria')->orderby('id', 'desc')->get();
+        } else {
+            $distritos_id = $user->distritos->pluck('id')->toArray();
+
+            $censo_luminarias = CensoLuminaria::whereIn('distrito_id', $distritos_id)->groupBy('codigo_luminaria')->orderby('id', 'desc')->get();
+        }
+
         return view('control.censo_luminaria.index', compact('censo_luminarias'));
     }
 
@@ -76,6 +87,7 @@ class CensoLuminariaController extends Controller
             $direccion = null;
             $municipios = null;
             $municipio_id = null;
+            $id_distrito_valido = 1;
 
             if (isset($data['address'])) {
                 $api_departamento = $data['address']['state'];
@@ -121,6 +133,26 @@ class CensoLuminariaController extends Controller
             $configuracion = Configuracion::first();
             $tipos_falla = TipoFalla::where('activo', '1')->get();
 
+            $user = User::findOrFail(auth()->user()->id);
+            $role_id = $user->user_rol->pluck('id')->toArray();
+
+            if (in_array(3, $role_id) || in_array(4, $role_id)) {
+                $distritos_id = $user->distritos->pluck('id')->toArray();
+                $municipios = $user->get_municipios($user->id);
+                $distritos = Distrito::whereIn('id', $distritos_id)->get();
+                $departamentos = $user->get_departamentos($user->id);
+
+                if($id_distrito != null)
+                {
+                    if(!in_array($id_distrito,$distritos_id ))
+                    {
+                        $id_distrito_valido = false;
+                    }
+                }
+            }
+
+
+
             return view('control.censo_luminaria.create', compact(
                 'tipos',
                 'departamentos',
@@ -134,7 +166,8 @@ class CensoLuminariaController extends Controller
                 'municipio_id',
                 'direccion',
                 'puntosCercanos',
-                'tipos_falla'
+                'tipos_falla',
+                'id_distrito_valido'
             ));
         } else {
             alert()->error('la ubicacion es incorrecta');

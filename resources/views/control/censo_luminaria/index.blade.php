@@ -20,7 +20,7 @@
                         <table id="myTable" class="display" cellspacing="0" width="100%">
                             <thead>
                                 <tr class="td-table">
-
+                                    <td style="text-align: center">#</td>
                                     <td style="text-align: center">Codigo</td>
                                     <td style="text-align: center">Tipo luminaria</td>
                                     <td style="text-align: center">Fecha</td>
@@ -32,8 +32,10 @@
                             </thead>
                             <tbody>
                                 @if ($censo_luminarias->count() > 0)
+                                    @php($i = 1)
                                     @foreach ($censo_luminarias as $obj)
                                         <tr>
+                                            <td align="center">{{ $i }}</td>
                                             <td align="center">{{ $obj->codigo_luminaria }}</td>
                                             <td>{{ $obj->tipo_luminaria->nombre }}</td>
 
@@ -65,6 +67,7 @@
 
                                             </td>
                                         </tr>
+                                        @php($i++)
                                         @include('control.censo_luminaria.modal')
                                     @endforeach
                                 @endif

@@ -109,6 +109,12 @@
             background-color: #fff3cd;
             border-color: #ffeeba;
         }
+
+        .alert-red {
+            color: #f4efef;
+            background-color: #e27171;
+            border-color: #ffeeba;
+        }
     </style>
     <div class="grid grid-cols-12 gap-5 mb-5">
 
@@ -149,6 +155,16 @@
                             <p style="font-size: 16px">
                                 <iconify-icon icon="ph:warning-fill" width="24" height="24"></iconify-icon> Existen
                                 puntos cercanos ya registrados. Por favor verifica
+                            </p>
+                        </div>
+
+                        <br>
+                    @endif
+                    @if ($id_distrito_valido == false)
+                        <div class="alert alert-red">
+                            <p style="font-size: 16px">
+                                <iconify-icon icon="ph:warning-fill" width="24" height="24"></iconify-icon>
+                                El distrito de la ubicación no corresponde los permitidos para su usuario.
                             </p>
                         </div>
 
@@ -225,7 +241,8 @@
                             </div>
 
                             <div class="input-area" id="div_potencia_nominal">
-                                <label for="largeInput" class="form-label">Favor ingresar la potencial Nominal (Vatio)</label>
+                                <label for="largeInput" class="form-label">Favor ingresar la potencial Nominal
+                                    (Vatio)</label>
                                 <input type="number" step="0.001" name="potencia_nominal" id="potencia_nominal"
                                     value="{{ old('potencia_nominal') }}" required class="form-control">
                             </div>

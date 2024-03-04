@@ -4,7 +4,9 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Models\catalogo\Departamento;
 use App\Models\catalogo\Distrito;
+use App\Models\catalogo\Municipio;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -54,5 +56,24 @@ class User extends Authenticatable
     public function distritos()
     {
         return $this->belongsToMany(Distrito::class, 'users_has_distrito');
+    }
+
+    public function get_municipios($id)
+    {
+        $user = User::findOrFail($id);
+        $distritos_id = $user->distritos->pluck('municipio_id')->toArray();
+        $distritos_id_uniques = array_unique($distritos_id);
+        $municipios =  Municipio::whereIn('id',$distritos_id_uniques)->get();
+        return $municipios;
+    }
+
+    public function get_departamentos($id)
+    {
+        $user = User::findOrFail($id);
+        $municipios_id = $user->distritos->pluck('municipio_id')->toArray();
+        $municipios_id_uniques = array_unique($municipios_id);
+        $departamentos_array =  Municipio::whereIn('id',$municipios_id_uniques)->pluck('departamento_id')->toArray();
+        $departamentos = Departamento::whereIn('id',$departamentos_array)->get();
+        return $departamentos;
     }
 }
