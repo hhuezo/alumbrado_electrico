@@ -65,7 +65,7 @@ class CensoLuminariaController extends Controller
 
 
         $id_distrito_valido = true;
-        $user = User::findOrFail(auth()->user()->id);
+        $user = User::findOrFail($usuario_id);
         $role_id = $user->user_rol->pluck('id')->toArray();
 
         if (in_array(3, $role_id) || in_array(4, $role_id)) {
