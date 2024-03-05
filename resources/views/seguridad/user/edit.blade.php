@@ -95,7 +95,7 @@
                                     <a href="#tabs-home"
                                         class="nav-link w-full block font-medium text-sm font-Inter leading-tight capitalize border-x-0 border-t-0 border-b border-transparent px-4 pb-2 my-2 hover:border-transparent focus:border-transparent active dark:text-slate-300"
                                         id="tabs-home-tab" data-bs-toggle="pill" data-bs-target="#tabs-home" role="tab"
-                                        aria-controls="tabs-home" aria-selected="true">Disttritos</a>
+                                        aria-controls="tabs-home" aria-selected="true">Distritos</a>
                                 </li>
                                 <li class="nav-item" role="presentation">
                                     <a href="#tabs-profile"
