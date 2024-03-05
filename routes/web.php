@@ -3,6 +3,7 @@
 use App\Http\Controllers\catalogo\BibliotecaController;
 use App\Http\Controllers\catalogo\DistritoController;
 use App\Http\Controllers\catalogo\ReporteFallaController;
+use App\Http\Controllers\control\ReporteFallaController as ControlReporteFallaController;
 use App\Http\Controllers\catalogo\TipoFallaController;
 use App\Http\Controllers\catalogo\TipoLuminariaController;
 use App\Http\Controllers\control\CensoLuminariaController;
@@ -78,6 +79,7 @@ Route::resource('catalogo/tipo_falla', TipoFallaController::class);
 Route::get('catalogo/reporte_falla/get_distrito_id/{name}', [ReporteFallaController::class,'getDistritoId']);
 Route::get('catalogo/reporte_falla/get_departamento_id/{name}', [ReporteFallaController::class,'getDepartamentoId']);
 Route::resource('catalogo/distrito', DistritoController::class);
+Route::resource('reporte_falla', ControlReporteFallaController::class);
 
 
 

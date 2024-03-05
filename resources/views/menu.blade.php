@@ -245,13 +245,13 @@
                             </a>
                             <ul class="sidebar-submenu">
                                 <li>
-                                    <a href="{{ url('seguridad/usuario') }}">Crear reporte de falla</a>
+                                    <a href="{{ url('publico/reporte_falla_publico') }}">Crear reporte de falla</a>
                                 </li>
                                 <li>
-                                    <a href="{{ url('seguridad/role') }}">Listado de reportes</a>
+                                    <a href="{{ url('reporte_falla') }}">Listado de reportes</a>
                                 </li>
                                 <li>
-                                    <a href="{{ url('seguridad/role') }}">Informes</a>
+                                    <a href="#">Informes</a>
                                 </li>
                             </ul>
                         </li>
