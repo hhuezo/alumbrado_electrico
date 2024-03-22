@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\control;
 
 use App\Http\Controllers\Controller;
+use App\Models\catalogo\Compañia;
 use App\Models\control\ValorMensualEnergia;
 use Illuminate\Http\Request;
 
@@ -21,7 +22,8 @@ class ValorMensualEnergiaController extends Controller
     }
     public function create()
     {
-        //
+        $compañias = Compañia::where('activo',1)->get();
+        return view('control.valor_mensual_energia.create',compact('compañias'));
     }
 
     public function store(Request $request)

@@ -7,7 +7,10 @@
         <header class=" card-header noborder">
             <h4 class="card-title">Valor de la energia
             </h4>
-            <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#modal-create">Nuevo</button>
+            {{-- data-bs-toggle="modal" data-bs-target="#modal-create" --}}
+            <a href="{{url('control/valor_mensual_energia/create')}}">
+            <button class="btn btn-dark" >Nuevo</button>
+            </a>
 
         </header>
 
