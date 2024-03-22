@@ -55,7 +55,7 @@
                                                 </ul>
                                             </div>
                                         @endif
-                                        <form method="POST" action="{{ url('catalogo/biblioteca') }}"
+                                        <form method="POST" action="{{ url('control/valor_mensual_energia') }}"
                                             enctype="multipart/form-data">
                                             @csrf
                                             <div class="card h-full">
@@ -64,15 +64,15 @@
                                                     <div class="grid pt-4 pb-3 px-4">
                                                         <div class="input-area relative">
                                                             <label for="largeInput" class="form-label">Fecha inicio</label>
-                                                            <input type="date" name="titulo" value="{{ old('titulo') }}"
+                                                            <input type="date" name="fecha_inicio" value="{{ old('fecha_inicio') }}"
                                                                 required class="form-control">
                                                         </div>
                                                     </div>
                                                     <div class="grid pt-4 pb-3 px-4">
                                                         <div class="input-area relative">
                                                             <label for="largeInput" class="form-label">Fecha final</label>
-                                                            <input type="date" name="descripcion"
-                                                                value="{{ old('descripcion') }}" required
+                                                            <input type="date" name="fecha_final"
+                                                                value="{{ old('fecha_final') }}" required
                                                                 class="form-control">
                                                         </div>
                                                     </div>
@@ -91,15 +91,15 @@
                                                         <tr>
                                                             <td class="editable">Cargo de comercialización: Cargo fijo</td>
                                                             @foreach ($compañias as $compañia)
-                                                                <td id="1-{{ $compañia->id }}" contenteditable="true"
-                                                                    class="editable">
+                                                                <td id="comercializacion_{{ $compañia->id }}"
+                                                                    contenteditable="true" class="editable">
                                                                 </td>
                                                             @endforeach
                                                         </tr>
                                                         <tr>
                                                             <td class="editable">Cargo de energia: Cargo variable</td>
                                                             @foreach ($compañias as $compañia)
-                                                                <td id="2-{{ $compañia->id }}" contenteditable="true"
+                                                                <td id="energia_{{ $compañia->id }}" contenteditable="true"
                                                                     class="editable">
                                                                 </td>
                                                             @endforeach
@@ -107,13 +107,34 @@
                                                         <tr>
                                                             <td class="editable">Cargo de Distribución: Cargo variable</td>
                                                             @foreach ($compañias as $compañia)
-                                                                <td id="3-{{ $compañia->id }}" contenteditable="true"
-                                                                    class="editable">
+                                                                <td id="distribucion_{{ $compañia->id }}"
+                                                                    contenteditable="true" class="editable">
                                                                 </td>
                                                             @endforeach
                                                         </tr>
                                                         <!-- Agrega más filas según sea necesario -->
                                                     </table>
+                                                </div>
+
+                                                <div id="div_form">
+                                                    @foreach ($compañias as $compañia)
+                                                        <input type="text"
+                                                            id="compania_comercializacion_{{ $compañia->id }}"
+                                                            name="compania_comercializacion_{{ $compañia->id }}">
+                                                        <input type="text" name="compania_energia_{{ $compañia->id }}"
+                                                            id="compania_energia_{{ $compañia->id }}"
+                                                            placeholder="compania_energia_{{ $compañia->id }}">
+                                                        <input type="text"
+                                                            name="compania_distribucion_{{ $compañia->id }}"
+                                                            id="compania_distribucion_{{ $compañia->id }}"
+                                                            placeholder="compania_distribucion_{{ $compañia->id }}">
+                                                    @endforeach
+                                                </div>
+
+                                                <div>&nbsp;</div>
+                                                <div style="text-align: right;">
+                                                    <button type="submit" style="margin-right: 18px"
+                                                        class="btn btn-dark">Aceptar</button>
                                                 </div>
                                         </form>
                                     </div>
@@ -151,6 +172,7 @@
                         // Mueve el cursor al final (útil para navegadores que reubican el cursor al principio después de la limpieza)
                         setCaretAtEnd(e.target);
                     }
+                    updateInputs(cell.id);
                 });
             });
         });
@@ -164,6 +186,12 @@
             selection.removeAllRanges();
             selection.addRange(range);
             element.focus();
+        }
+
+        function updateInputs(id) {
+            var $input = $("#" + id).text().replace(/,/g, '');
+            var input_final = $("#compania_" + id).val($input);
+            console.log(id, $input, input_final);
         }
     </script>
 
