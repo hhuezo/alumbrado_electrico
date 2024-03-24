@@ -396,6 +396,8 @@
         </div>
 
         <div class="flex flex-col justify-between min-h-screen">
+
+
             <div>
                 <!-- BEGIN: Header -->
                 <!-- BEGIN: Header -->
@@ -474,8 +476,61 @@
                         </div>
                     </div>
 
+
+
+
+                    <br>
+                    <div class=" md:flex justify-between items-center">
+                        <div>
+
+
+
+                            <!-- BEGIN: Breadcrumb -->
+                            <div class="mb-5">
+                                <ul class="m-0 p-0 list-none">
+
+                                </ul>
+                            </div>
+                            <!-- END: BreadCrumb -->
+                        </div>
+                        <div class="flex flex-wrap ">
+                            <ul class="nav nav-pills flex items-center flex-wrap list-none pl-0 mr-4" id="pills-tabVertical"
+                                role="tablist">
+                                <li class="nav-item flex-grow text-center" role="presentation">
+                                    <button
+                                        class="btn inline-flex justify-center btn-white dark:bg-slate-700 dark:text-slate-300 m-1 active"
+                                        id="pills-grid-tab" data-bs-toggle="pill" data-bs-target="#pills-grid"
+                                        role="tab" aria-controls="pills-grid" aria-selected="true">
+                                        <span class="flex items-center">
+                                            <iconify-icon class="text-xl ltr:mr-2 rtl:ml-2"
+                                                icon="heroicons-outline:view-grid"></iconify-icon>
+                                            <span>Nacional</span>
+                                        </span>
+                                    </button>
+
+                                </li>
+                            </ul>
+                            <button
+                                class="btn inline-flex justify-center btn-white dark:bg-slate-700 dark:text-slate-300 m-1 ">
+                                <span class="flex items-center">
+                                    <iconify-icon class="text-xl ltr:mr-2 rtl:ml-2"
+                                        icon="heroicons-outline:filter"></iconify-icon>
+                                    <span>Departamental</span>
+                                </span>
+                            </button>
+
+                        </div>
+                    </div>
+
+
+
+
+
+
+
                     <!-- END: Header -->
                     <div class="content-wrapper transition-all duration-150" id="content_wrapper">
+
                         <div class="page-content">
                             <div class="transition-all duration-150 container-fluid" id="page_layout">
                                 <div id="content_layout">

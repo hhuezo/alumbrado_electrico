@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 
 class WelcomeController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $biblioteca = Biblioteca::where('activo', '=', '1')->get();
 
