@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\catalogo;
 
 use App\Http\Controllers\Controller;
+use App\Models\catalogo\Compania;
 use App\Models\catalogo\Distrito;
 use Illuminate\Http\Request;
 
@@ -15,6 +16,8 @@ class DistritoController extends Controller
     public function index()
     {
         $distritos = Distrito::get();
+
+
         return view('catalogo.distrito.index', compact('distritos'));
     }
 
@@ -25,7 +28,15 @@ class DistritoController extends Controller
 
     public function store(Request $request)
     {
-        //
+        $distrito = Distrito::findOrFail($request->distrito_id);
+        $compania = $distrito->companias->where('id', $request->compania_id)->first();
+
+        if ($compania) {
+            $distrito->companias()->detach($request->compania_id);
+        } else {
+            $distrito->companias()->attach($request->compania_id);
+        }
+        return $compania;
     }
 
     public function show($id)
@@ -36,7 +47,17 @@ class DistritoController extends Controller
     public function edit($id)
     {
         $distrito = Distrito::findOrFail($id);
-        return view('catalogo.distrito.edit', compact('distrito'));
+        $companias = Compania::where('activo', 1)->get();
+        foreach ($companias as $compania) {
+            $registro = $compania->distritos->where('id', $id)->first();
+           if ($registro) {
+                $compania->in_distrito = 1;
+            } else {
+                $compania->in_distrito = 0;
+            }
+        }
+
+        return view('catalogo.distrito.edit', compact('distrito', 'companias'));
     }
 
 

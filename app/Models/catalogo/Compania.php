@@ -20,4 +20,9 @@ class Compania extends Model
         'nombre',
         'activo',
     ];
+
+    public function distritos()
+    {
+        return $this->belongsToMany(Distrito::class, 'distrito_has_compania', 'compania_id', 'distrito_id');
+    }
 }

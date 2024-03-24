@@ -43,64 +43,56 @@
 
                                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-7">
 
-                                                <div class="grid pt-4 pb-3 px-4">
-                                                    <div class="input-area relative">
-                                                        <label for="largeInput" class="form-label">Codigo</label>
-                                                        <input type="text" value="{{ $distrito->codigo }}" readonly
-                                                            class="form-control">
-                                                    </div>
-                                                </div>
-                                                <div class="grid pt-4 pb-3 px-4">
-                                                    <div class="input-area relative">
-                                                        <label for="largeInput" class="form-label">Distrito</label>
-                                                        <input type="text" value="{{ $distrito->nombre }}" readonly
-                                                            class="form-control">
-                                                    </div>
-                                                </div>
-                                                <div class="grid pt-4 pb-3 px-4">
-                                                    <div class="input-area relative">
-                                                        <label for="largeInput" class="form-label">Municipio</label>
-                                                        <input type="text" value="{{ $distrito->municipio->nombre }}"
-                                                            class="form-control" readonly>
-                                                    </div>
-                                                </div>
-                                                <div class="grid pt-4 pb-3 px-4">
-                                                    <div class="input-area relative">
-                                                        <label for="largeInput" class="form-label">Departamento</label>
-                                                        <input type="text"
-                                                            value="{{ $distrito->municipio->departamento->nombre }}"
-                                                            class="form-control" readonly>
-                                                    </div>
-                                                </div>
-                                                <div class="grid pt-4 pb-3 px-4">
-                                                    <div class="input-area">
-                                                        <label for="largeInput" class="form-label">Extension
-                                                            territorial</label>
-                                                        <div class="relative">
-                                                            <input type="number" name="extension_territorial"
-                                                                step="0.01"
-                                                                value="{{ $distrito->extension_territorial }}"
-                                                                class="form-control !pl-12">
-                                                            <span
-                                                                class="absolute left-0 top-1/2 -translate-y-1/2 w-9 h-full border-r border-r-slate-200 dark:border-r-slate-700 flex items-center justify-center">
-                                                                km2
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </div>
 
-                                                <div class="grid pt-4 pb-3 px-4">
-                                                    <div class="input-area relative">
-                                                        <label for="largeInput" class="form-label">Población</label>
-                                                        <input type="number" name="poblacion" step="1"
-                                                            value="{{ $distrito->poblacion }}" class="form-control">
-                                                    </div>
+                                                <div class="input-area relative">
+                                                    <label for="largeInput" class="form-label">Codigo</label>
+                                                    <input type="text" value="{{ $distrito->codigo }}" readonly
+                                                        class="form-control">
                                                 </div>
 
 
+                                                <div class="input-area relative">
+                                                    <label for="largeInput" class="form-label">Distrito</label>
+                                                    <input type="text" value="{{ $distrito->nombre }}" readonly
+                                                        class="form-control">
+                                                </div>
+
+                                                <div class="input-area relative">
+                                                    <label for="largeInput" class="form-label">Municipio</label>
+                                                    <input type="text" value="{{ $distrito->municipio->nombre }}"
+                                                        class="form-control" readonly>
+                                                </div>
+
+                                                <div class="input-area relative">
+                                                    <label for="largeInput" class="form-label">Departamento</label>
+                                                    <input type="text"
+                                                        value="{{ $distrito->municipio->departamento->nombre }}"
+                                                        class="form-control" readonly>
+                                                </div>
+
+                                                <div class="input-area">
+                                                    <label for="largeInput" class="form-label">Extension
+                                                        territorial</label>
+                                                    <div class="relative">
+                                                        <input type="number" name="extension_territorial" step="0.01"
+                                                            value="{{ $distrito->extension_territorial }}"
+                                                            class="form-control !pl-12">
+                                                        <span
+                                                            class="absolute left-0 top-1/2 -translate-y-1/2 w-9 h-full border-r border-r-slate-200 dark:border-r-slate-700 flex items-center justify-center">
+                                                            km2
+                                                        </span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="input-area relative">
+                                                    <label for="largeInput" class="form-label">Población</label>
+                                                    <input type="number" name="poblacion" step="1"
+                                                        value="{{ $distrito->poblacion }}" class="form-control">
+                                                </div>
 
 
                                             </div>
+                                            <br>
                                             <div style="text-align: right;">
                                                 <button type="submit" style="margin-right: 18px"
                                                     class="btn btn-dark">Aceptar</button>
@@ -112,16 +104,79 @@
 
                             </div>
 
-
-
-
                         </div>
                     </div>
 
                 </div>
             </div>
+
+
+
         </div>
     </div>
 
+    <div class="card">
+        <header class=" card-header noborder">
+            <h4 class="card-title">Compañias
+            </h4>
+        </header>
+        <div class="card-body px-6 pb-6">
+            <div class="overflow-x-auto -mx-6">
+                <div class="inline-block min-w-full align-middle">
+                    <div class="overflow-hidden ">
+                        <table class="min-w-full divide-y divide-slate-100 table-fixed dark:divide-slate-700">
+                            <thead class="bg-slate-200 dark:bg-slate-700">
+                                <tr>
+
+                                    <th scope="col" class=" table-th ">
+                                        Compañia
+                                    </th>
+
+                                    <th scope="col" class=" table-th ">
+
+                                    </th>
+
+
+
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-slate-100 dark:bg-slate-800 dark:divide-slate-700">
+
+                                @foreach ($companias as $obj)
+                                    <tr class="even:bg-slate-50 dark:even:bg-slate-700">
+                                        <td class="table-td">{{ $obj->nombre }} </td>
+                                        <td class="table-td"><label class="switch">
+                                                <input type="checkbox" onchange="enviarDatos({{$distrito->id}}, {{$obj->id}})" {{ $obj->in_distrito == 1 ? 'checked' : '' }} )>
+                                                <span class="slider round"></span>
+                                            </label></td>
+                                    </tr>
+                                @endforeach
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function enviarDatos(distrito_id, compania_id) {
+
+
+            // Objeto con los datos a enviar
+            var data = {
+                _token: '{{ csrf_token() }}',
+                distrito_id: distrito_id,
+                compania_id: compania_id
+            };
+
+            // Enviar la solicitud POST
+            $.post('{{ url('catalogo/distrito') }}', data, function(response) {
+                // Manejar la respuesta del servidor si es necesario
+                console.log(response);
+            });
+        }
+    </script>
 
 @endsection

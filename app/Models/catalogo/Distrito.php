@@ -32,11 +32,15 @@ class Distrito extends Model
 
     public function distritoId($nombre)
     {
-        $distrito = Distrito::where('nombre','=',$nombre)->first();
-        if($distrito)
-        {
+        $distrito = Distrito::where('nombre', '=', $nombre)->first();
+        if ($distrito) {
             return $distrito->id;
         }
         return 0;
+    }
+
+    public function companias()
+    {
+        return $this->belongsToMany(Compania::class, 'distrito_has_compania', 'distrito_id', 'compania_id');
     }
 }
