@@ -7,6 +7,7 @@ use App\Models\catalogo\Compania;
 use App\Models\control\ValorEnergia;
 use App\Models\control\ValorEnergiaDetalle;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 
 class ValorEnergiaController extends Controller
@@ -17,10 +18,8 @@ class ValorEnergiaController extends Controller
     }
     public function index()
     {
-        $valor_mesual_energia = ValorEnergia::get();
-        $meses = ["01" => "Enero", "02" => "Febrero", "03" => "Marzo", "04" => "Abril", "05" => "Mayo", "06" => "Junio", "07" => "Julio", "08" => "Agosto", "09" => "Septiembre", "10" => "Octubre", "11" => "Noviembre", "12" => "Diciembre"];
-
-        return view('control.valor_mensual_energia.index', compact('valor_mesual_energia', 'meses'));
+        $valor_energia = ValorEnergia::get();
+        return view('control.valor_mensual_energia.index', compact('valor_energia'));
     }
     public function create()
     {
@@ -30,7 +29,9 @@ class ValorEnergiaController extends Controller
 
     public function store(Request $request)
     {
+        DB::beginTransaction();
 
+        try {
         $valor_energia = new ValorEnergia();
         //$valor_energia->mes = $request->mes;
         $valor_energia->fecha_inicio = $request->fecha_inicio;
@@ -70,23 +71,14 @@ class ValorEnergiaController extends Controller
             $detalle->save();
         }
 
-        alert()->success('El registro ha sido creado correctamente');
-        return Redirect::to('control/valor_mensual_energia');
-
-        /*$valor_mesual_energia = ValorEnergia::where('mes', $request->mes)->where('anio', $request->anio)->get();
-        if ($valor_mesual_energia->count() > 0) {
-            $errors = new \Illuminate\Support\MessageBag;
-            $errors->add('error', 'Existen registros para el mes y año especificados.');
-            return back()->withErrors($errors);
-        } else {
-            $valor_mesual_energia = new ValorEnergia();
-            $valor_mesual_energia->mes = $request->mes;
-            $valor_mesual_energia->anio = $request->anio;
-            $valor_mesual_energia->valor = $request->valor;
-            $valor_mesual_energia->save();
+        DB::commit();
+            alert()->success('El registro ha sido actualizado correctamente');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            alert()->error('Ocurrió un error al intentar actualizar el registro.');
         }
-        alert()->success('El registro ha sido creado correctamente');
-        return back();*/
+
+        return Redirect::to('control/valor_mensual_energia');
     }
 
     public function show($id)
@@ -97,33 +89,86 @@ class ValorEnergiaController extends Controller
 
     public function edit($id)
     {
-        //
+        $compañias = Compania::where('activo', 1)->get();
+        $valor_energia =  ValorEnergia::findOrFail($id);
+
+        return view('control.valor_mensual_energia.edit', compact('valor_energia', 'compañias'));
     }
+
 
     public function update(Request $request, $id)
     {
-        $valor_mesual_energia = ValorEnergia::where('mes', $request->mes)->where('anio', $request->anio)->where('id', '<>', $id)->get();
-        if ($valor_mesual_energia->count() > 0) {
-            $errors = new \Illuminate\Support\MessageBag;
-            $errors->add('error', 'Existen registros para el mes y año especificados.');
-            return back()->withErrors($errors);
-        } else {
+        DB::beginTransaction();
 
-            $valor_mesual_energia = ValorEnergia::findOrFail($id);
-            $valor_mesual_energia->mes = $request->mes;
-            $valor_mesual_energia->anio = $request->anio;
-            $valor_mesual_energia->valor = $request->valor;
-            $valor_mesual_energia->save();
+        try {
+            $valor_energia = ValorEnergia::findOrFail($id);
+            $valor_energia->fecha_inicio = $request->fecha_inicio;
+            $valor_energia->fecha_final = $request->fecha_final;
+            $valor_energia->save();
+
+            ValorEnergiaDetalle::where('valor_energia_id', $id)->delete();
+
+            $companias = Compania::where('activo', 1)->get();
+
+            foreach ($companias as $compania) {
+                $valor = $request->input("compania_comercializacion_" . $compania->id);
+                $detalle = new ValorEnergiaDetalle();
+                $detalle->valor_energia_id = $valor_energia->id;
+                $detalle->compania_id = $compania->id;
+                $detalle->tipo = 1;
+                $detalle->valor = $valor;
+                $detalle->save();
+
+                $valor = $request->input("compania_energia_" . $compania->id);
+                $detalle = new ValorEnergiaDetalle();
+                $detalle->valor_energia_id = $valor_energia->id;
+                $detalle->compania_id = $compania->id;
+                $detalle->tipo = 2;
+                $detalle->valor = $valor;
+                $detalle->save();
+
+                $valor = $request->input("compania_distribucion_" . $compania->id);
+                $detalle = new ValorEnergiaDetalle();
+                $detalle->valor_energia_id = $valor_energia->id;
+                $detalle->compania_id = $compania->id;
+                $detalle->tipo = 3;
+                $detalle->valor = $valor;
+                $detalle->save();
+            }
+
+            DB::commit();
+            alert()->success('El registro ha sido actualizado correctamente');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            alert()->error('Ocurrió un error al intentar actualizar el registro.');
         }
-        alert()->success('El registro ha sido modificado correctamente');
-        return back();
+
+        return Redirect::to('control/valor_mensual_energia');
     }
+
+
+
 
     public function destroy($id)
     {
-        $valor_mesual_energia = ValorEnergia::findOrFail($id);
-        $valor_mesual_energia->delete();
-        alert()->success('El registro ha sido eliminado correctamente');
+        DB::beginTransaction(); // Comienza la transacción
+
+        try {
+            // Primero, intenta eliminar los detalles asociados
+            ValorEnergiaDetalle::where('valor_energia_id', $id)->delete();
+
+            $valor_mesual_energia = ValorEnergia::findOrFail($id);
+            $valor_mesual_energia->delete();
+
+            DB::commit();
+
+            alert()->success('El registro ha sido eliminado correctamente');
+        } catch (\Exception $e) {
+            DB::rollBack(); // Si ocurre un error, revierte los cambios
+
+            alert()->error('Ocurrió un error al intentar eliminar el registro.');
+        }
+
         return back();
     }
 }

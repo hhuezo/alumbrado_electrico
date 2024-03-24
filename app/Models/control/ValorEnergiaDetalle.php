@@ -20,9 +20,17 @@ class ValorEnergiaDetalle extends Model
         'compania_id',
         'valor_energia_id',
         'valor',
+        'tipo'
     ];
 
     protected $guarded =[
 
     ];
+
+    public function valor_energia()
+    {
+        return $this->belongsTo(ValorEnergia::class);
+    }
+
+
 }

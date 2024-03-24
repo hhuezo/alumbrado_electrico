@@ -26,9 +26,9 @@
                 <div class="card-body flex flex-col p-6">
                     <header class="flex mb-5 items-center border-b border-slate-100 dark:border-slate-700 pb-5 -mx-6 px-6">
                         <div class="flex-1">
-                            <div class="card-title text-slate-900 dark:text-white">Biblioteca
+                            <div class="card-title text-slate-900 dark:text-white">Valo de la energía
 
-                                <a href="{{ url('catalogo/biblioteca') }}">
+                                <a href="{{ url('control/valor_mensual_energia') }}">
                                     <button class="btn btn-dark btn-sm float-right">
                                         <iconify-icon icon="icon-park-solid:back" style="color: white;" width="18">
                                         </iconify-icon>
@@ -116,7 +116,7 @@
                                                     </table>
                                                 </div>
 
-                                                <div id="div_form">
+                                                <div id="div_form" style="display: none">
                                                     @foreach ($compañias as $compañia)
                                                         <input type="text"
                                                             id="compania_comercializacion_{{ $compañia->id }}"

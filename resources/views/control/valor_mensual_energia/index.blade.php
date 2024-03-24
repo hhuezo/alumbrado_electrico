@@ -36,32 +36,35 @@
                             <thead>
                                 <tr class="td-table">
 
-                                    <td style="text-align: center">Año</td>
-                                    <td style="text-align: center">Mes</td>
+                                    <td style="text-align: center">Fecha inicio</td>
+                                    <td style="text-align: center">Fecha final</td>
                                     <td style="text-align: center">Valor</td>
                                     <td style="text-align: center">opciones</td>
 
                                 </tr>
                             </thead>
                             <tbody>
-                                @if ($valor_mesual_energia->count() > 0)
-                                    @foreach ($valor_mesual_energia as $obj)
+                                @if ($valor_energia->count() > 0)
+                                    @foreach ($valor_energia as $obj)
                                         <tr>
-                                            <td align="center">{{ $obj->anio }}</td>
-                                            <td align="center">{{ $meses[$obj->mes] }}</td>
-                                            <td align="right">${{ number_format($obj->valor, 2, '.', ',') }}</td>
+                                            <td>{{ $obj->fecha_inicio ?  date('d/m/Y', strtotime($obj->fecha_inicio)) : '' }}</td>
+                                            <td>{{ $obj->fecha_inicio ?  date('d/m/Y', strtotime($obj->fecha_final)) : '' }}</td>
+                                            <td align="right">${{ number_format($obj->suma_valor_detalle, 2, '.', ',') }}</td>
 
                                             <td align="center">
-
+                                                <a href="{{url('control/valor_mensual_energia')}}/{{$obj->id}}/edit"
+                                                <button>
                                                 <iconify-icon icon="mdi:pencil-box" width="40" data-bs-toggle="modal" data-bs-target="#modal-edit-{{$obj->id}}"></iconify-icon>
+                                                </button>
+                                                </a>
 
-
+                                                <button>
                                                 <iconify-icon data-bs-toggle="modal"
                                                 data-bs-target="#modal-delete-{{ $obj->id }}" icon="mdi:trash"
                                                 width="40"></iconify-icon>
+                                            </button>
                                             </td>
                                         </tr>
-                                        @include('control.valor_mensual_energia.modal_edit')
                                         @include('control.valor_mensual_energia.modal')
                                     @endforeach
                                 @endif
@@ -75,6 +78,5 @@
         </div>
     </div>
 
-    @include('control.valor_mensual_energia.modal_create')
 
 @endsection
