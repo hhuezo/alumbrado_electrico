@@ -64,8 +64,9 @@
                                                     <div class="grid pt-4 pb-3 px-4">
                                                         <div class="input-area relative">
                                                             <label for="largeInput" class="form-label">Fecha inicio</label>
-                                                            <input type="date" name="fecha_inicio" value="{{ old('fecha_inicio') }}"
-                                                                required class="form-control">
+                                                            <input type="date" name="fecha_inicio"
+                                                                value="{{ old('fecha_inicio') }}" required
+                                                                class="form-control">
                                                         </div>
                                                     </div>
                                                     <div class="grid pt-4 pb-3 px-4">
@@ -157,6 +158,35 @@
         </div>
     </div>
     <script>
+        $(document).ready(function() {
+            // Función para sumar meses a una fecha
+            function sumarMeses(fecha, meses) {
+                var d = new Date(fecha);
+                d.setMonth(d.getMonth() + meses);
+                var month = '' + (d.getMonth() + 1);
+                var day = '' + d.getDate();
+                var year = d.getFullYear();
+
+                if (month.length < 2)
+                    month = '0' + month;
+                if (day.length < 2)
+                    day = '0' + day;
+
+                return [year, month, day].join('-');
+            }
+
+            // Detectar el cambio en el campo de fecha de inicio
+            $('input[name="fecha_inicio"]').change(function() {
+                var fechaInicio = $(this).val();
+                var fechaFinal = sumarMeses(fechaInicio, 3);
+                $('input[name="fecha_final"]').val(fechaFinal);
+            });
+        });
+
+
+
+
+
         document.addEventListener('DOMContentLoaded', function() {
             // Selecciona todas las celdas editables
             var editableCells = document.querySelectorAll('#editableTable td.editable[contenteditable="true"]');

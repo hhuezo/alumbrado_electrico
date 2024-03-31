@@ -38,7 +38,6 @@
 
                                     <td style="text-align: center">Fecha inicio</td>
                                     <td style="text-align: center">Fecha final</td>
-                                    <td style="text-align: center">Valor</td>
                                     <td style="text-align: center">opciones</td>
 
                                 </tr>
@@ -49,7 +48,6 @@
                                         <tr>
                                             <td>{{ $obj->fecha_inicio ?  date('d/m/Y', strtotime($obj->fecha_inicio)) : '' }}</td>
                                             <td>{{ $obj->fecha_inicio ?  date('d/m/Y', strtotime($obj->fecha_final)) : '' }}</td>
-                                            <td align="right">${{ number_format($obj->suma_valor_detalle, 2, '.', ',') }}</td>
 
                                             <td align="center">
                                                 <a href="{{url('control/valor_mensual_energia')}}/{{$obj->id}}/edit"

@@ -55,7 +55,8 @@
                                                 </ul>
                                             </div>
                                         @endif
-                                        <form method="POST" action="{{ route('valor_mensual_energia.update', $valor_energia->id) }}">
+                                        <form method="POST"
+                                            action="{{ route('valor_mensual_energia.update', $valor_energia->id) }}">
                                             @method('PUT')
                                             @csrf
 
@@ -65,8 +66,9 @@
                                                     <div class="grid pt-4 pb-3 px-4">
                                                         <div class="input-area relative">
                                                             <label for="largeInput" class="form-label">Fecha inicio</label>
-                                                            <input type="date" name="fecha_inicio" value="{{ $valor_energia->fecha_inicio }}"
-                                                                required class="form-control">
+                                                            <input type="date" name="fecha_inicio"
+                                                                value="{{ $valor_energia->fecha_inicio }}" required
+                                                                class="form-control">
                                                         </div>
                                                     </div>
                                                     <div class="grid pt-4 pb-3 px-4">
@@ -94,7 +96,7 @@
                                                             @foreach ($compañias as $compañia)
                                                                 <td id="comercializacion_{{ $compañia->id }}"
                                                                     contenteditable="true" class="editable">
-                                                                    {{$valor_energia->getValorCompania($valor_energia->id, $compañia->id, 1)}}
+                                                                    {{ $valor_energia->getValorCompania($valor_energia->id, $compañia->id, 1) }}
                                                                 </td>
                                                             @endforeach
                                                         </tr>
@@ -103,7 +105,7 @@
                                                             @foreach ($compañias as $compañia)
                                                                 <td id="energia_{{ $compañia->id }}" contenteditable="true"
                                                                     class="editable">
-                                                                    {{$valor_energia->getValorCompania($valor_energia->id, $compañia->id, 2)}}
+                                                                    {{ $valor_energia->getValorCompania($valor_energia->id, $compañia->id, 2) }}
                                                                 </td>
                                                             @endforeach
                                                         </tr>
@@ -112,7 +114,7 @@
                                                             @foreach ($compañias as $compañia)
                                                                 <td id="distribucion_{{ $compañia->id }}"
                                                                     contenteditable="true" class="editable">
-                                                                    {{$valor_energia->getValorCompania($valor_energia->id, $compañia->id, 3)}}
+                                                                    {{ $valor_energia->getValorCompania($valor_energia->id, $compañia->id, 3) }}
                                                                 </td>
                                                             @endforeach
                                                         </tr>
@@ -125,19 +127,19 @@
                                                         <input type="text"
                                                             id="compania_comercializacion_{{ $compañia->id }}"
                                                             name="compania_comercializacion_{{ $compañia->id }}"
-                                                            value="{{$valor_energia->getValorCompania($valor_energia->id, $compañia->id, 1)}}"
-                                                            >
+                                                            value="{{ $valor_energia->getValorCompania($valor_energia->id, $compañia->id, 1) }}">
 
 
                                                         <input type="text" name="compania_energia_{{ $compañia->id }}"
-                                                            id="compania_energia_{{ $compañia->id }}"  value="{{$valor_energia->getValorCompania($valor_energia->id, $compañia->id, 2)}}"
-                                                           >
+                                                            id="compania_energia_{{ $compañia->id }}"
+                                                            value="{{ $valor_energia->getValorCompania($valor_energia->id, $compañia->id, 2) }}">
 
 
 
                                                         <input type="text"
-                                                            name="compania_distribucion_{{ $compañia->id }}"  id="compania_distribucion_{{ $compañia->id }}"
-                                                            value="{{$valor_energia->getValorCompania($valor_energia->id, $compañia->id, 3)}}">
+                                                            name="compania_distribucion_{{ $compañia->id }}"
+                                                            id="compania_distribucion_{{ $compañia->id }}"
+                                                            value="{{ $valor_energia->getValorCompania($valor_energia->id, $compañia->id, 3) }}">
                                                     @endforeach
                                                 </div>
 
@@ -167,6 +169,30 @@
         </div>
     </div>
     <script>
+        $(document).ready(function() {
+            // Función para sumar meses a una fecha
+            function sumarMeses(fecha, meses) {
+                var d = new Date(fecha);
+                d.setMonth(d.getMonth() + meses);
+                var month = '' + (d.getMonth() + 1);
+                var day = '' + d.getDate();
+                var year = d.getFullYear();
+
+                if (month.length < 2)
+                    month = '0' + month;
+                if (day.length < 2)
+                    day = '0' + day;
+
+                return [year, month, day].join('-');
+            }
+
+            // Detectar el cambio en el campo de fecha de inicio
+            $('input[name="fecha_inicio"]').change(function() {
+                var fechaInicio = $(this).val();
+                var fechaFinal = sumarMeses(fechaInicio, 3);
+                $('input[name="fecha_final"]').val(fechaFinal);
+            });
+        });
         document.addEventListener('DOMContentLoaded', function() {
             // Selecciona todas las celdas editables
             var editableCells = document.querySelectorAll('#editableTable td.editable[contenteditable="true"]');
