@@ -230,7 +230,6 @@
 
 
 
-
                     @if ($opcion == 1)
                         <div class="page-content" id="div_nacional">
                             <div class="transition-all duration-150 container-fluid" id="page_layout">
@@ -682,13 +681,16 @@
                                     <!-- END: BreadCrumb -->
                                 </div>
                                 <div class="flex flex-wrap ">
-                                    <ul class="nav nav-pills flex items-center flex-wrap list-none pl-0 mr-4" id="pills-tabVertical"
-                                        role="tablist">
-                                        <select class="form-control" name="departamento" id="departamento">
+                                    <ul class="nav nav-pills flex items-center flex-wrap list-none pl-0 mr-4"
+                                        id="pills-tabVertical" role="tablist">
+                                        <select class="form-control" name="departamento" id="departamento"
+                                            onchange="get_data_dep(this.value)">
                                             @foreach ($departamentos as $departamento)
-                                                <option value="{{$departamento->id}}">{{$departamento->nombre}}</option>
+                                                <option value="{{ $departamento->id }}"
+                                                    {{ $departamento_id == $departamento->id ? 'selected' : '' }}>
+                                                    {{ $departamento->nombre }}</option>
                                             @endforeach
-                                           </select>
+                                        </select>
                                     </ul>
 
 
@@ -708,8 +710,7 @@
                                             <div class="card xl:col-span-2">
                                                 <div class="card-body flex flex-col p-4">
                                                     <div class="space-y-6">
-                                                        <div
-                                                            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
+                                                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
                                                             <div class="input-area relative">
                                                                 <label for="largeInput" class="form-label">Año</label>
                                                                 <select class="form-control" name="anio">
@@ -1110,8 +1111,7 @@
 
                             function showData(id) {
                                 $.ajax({
-                                    url: '{{ url('welcome/rango_potencia_data') }}/' + id + '/' + {{ $anio }} + '/' +
-                                        {{ $mes }},
+                                    url: '{{ url('welcome/rango_potencia_data') }}/' + id + '/' + {{ $anio }} + '/' + {{ $mes }} + '?departamento_id=' + {{$departamento_id}},
                                     type: 'GET',
                                     success: function(response) {
                                         // Aquí manejas la respuesta del servidor
@@ -1147,6 +1147,12 @@
         <script src="{{ asset('assets/js/app.js') }}"></script>
 
 
+        <script>
+            function get_data_dep(id) {
+                var url = "{{ url('/') }}?opcion=2&departamento=" + id;
+                window.location.href = url;
+            }
+        </script>
 
     </body>
 
