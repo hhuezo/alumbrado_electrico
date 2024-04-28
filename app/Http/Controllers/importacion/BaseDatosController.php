@@ -8,6 +8,7 @@ use App\Models\BaseDatosSiget;
 use App\Models\Configuracion;
 use App\Models\control\CensoLuminaria;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Validation\ValidationException;
 use PhpOffice\PhpSpreadsheet\IOFactory;
@@ -48,6 +49,36 @@ class BaseDatosController extends Controller
     }
 
     public function store(Request $request)
+    {
+        try {
+            $file = $request->file('file');
+            $spreadsheet = IOFactory::load($file);
+            $sheetCount = $spreadsheet->getSheetCount();
+            if ($sheetCount != 1) {
+                return back()->withErrors(['file' => 'El documento debe tener una sola hoja']);
+            }
+
+            BaseDatosSiget::where('anio', $request->anio)->where('mes', $request->mes)->delete();
+            $import = new DataBaseImport($request->anio, $request->mes);
+            Excel::import($import, $file);
+
+            DB::table('base_datos_siget as b')
+                ->join('compania as c', 'b.compania', '=', 'c.nombre')
+                ->whereNull('b.compania_id')
+                ->orWhere('b.compania_id', '')
+                ->update(['b.compania_id' => DB::raw('c.id')]);
+
+
+            alert()->success('El registro ha sido creado correctamente');
+            return back();
+        } catch (\Exception $e) {
+            // Capturar y mostrar el error 500
+            return back()->withErrors(['file' => $e->getMessage()])->withInput();
+        }
+    }
+
+
+    /*public function store(Request $request)
     {
         try {
             $file = $request->file('file');
@@ -98,8 +129,8 @@ class BaseDatosController extends Controller
             }
         }
 
-        return back();*/
-    }
+        return back();
+    }*/
 
     public function show($id)
     {

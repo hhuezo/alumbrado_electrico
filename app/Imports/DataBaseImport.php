@@ -6,7 +6,6 @@ use App\Models\BaseDatosSiget;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-
 class DataBaseImport implements ToModel, WithHeadingRow
 {
     private $rowNumber = 0;
@@ -17,11 +16,12 @@ class DataBaseImport implements ToModel, WithHeadingRow
     {
         $this->anio = $anio;
         $this->mes = $mes;
+
     }
 
     public function model(array $row)
     {
-        if ($this->rowNumber == 0) {
+        /* if ($this->rowNumber == 0) {
             $this->validateHeaders($row);
         } else {
             $errors = [];
@@ -57,19 +57,31 @@ class DataBaseImport implements ToModel, WithHeadingRow
                 $errorMessages = implode(' ', $errors);
                 throw new \Exception($errorMessages);
 
-            }
+            }*/
 
+        if ($this->rowNumber > 0) {
             return new BaseDatosSiget([
-                'municipio_id'     => $row['2'],
-                'municipio'     => $row['3'],
-                'tipo_luminaria_id'     => $row['4'],
-                'potencia_nominal'     => $row['5'],
-                'consumo_mensual'     => $row['6'],
-                'numero_luminarias'     => $row['7'],
+                'compania'     => $row['2'],
+                'municipio_id'     => $row['3'],
+                'distrito'     => $row['4'],
+                'municipio'     => $row['5'],
+                'area'     => $row['7'],
+                'poblacion'     => $row['8'],
+                'tipo_luminaria_id'     => $row['9'],
+                'potencia_nominal'     => $row['11'],
+                'consumo_mensual'     => $row['12'],
+                'numero_luminarias'     => $row['13'],
+                'fecha_ultimo_censo'     => $row['14'],
+                'total_pagar'     => $row['15'],
+                'cargo_comercializacion'     => $row['16'],
+                'cargo_distribucion'     => $row['17'],
+                'cargo_energia'     => $row['18'],
+                'cargo_tasa_municipal'     => $row['19'],
                 'anio'     => $this->anio,
                 'mes'     => $this->mes
             ]);
         }
+        //}
 
         $this->rowNumber++;
 

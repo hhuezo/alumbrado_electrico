@@ -10,7 +10,7 @@
             display: none;
         }
     </style>
-
+    @if($verificacion_data > 0)
     <script>
         $(document).ready(function() {
             // consumo por tipo luminaria
@@ -314,7 +314,7 @@
             });
         }
     </script>
-
+    @endif
     <div class="content-wrapper transition-all duration-150 " id="content_wrapper">
         <div class="page-content">
             <header class="flex mb-5 items-center border-b border-slate-100 dark:border-slate-700 pb-5 -mx-6 px-6">
@@ -356,7 +356,7 @@
                 </div>
             </form>
         </div>
-
+        @if($verificacion_data > 0)
         <div class="page-content">
 
             <div class="transition-all duration-150 container-fluid" id="page_layout">
@@ -421,5 +421,6 @@
                 </div>
             </div>
         </div>
+        @endif
     </div>
 @endsection

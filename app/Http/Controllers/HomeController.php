@@ -27,6 +27,10 @@ class HomeController extends Controller
 
     public function index(Request $request)
     {
+        $verificacion_data = BaseDatosSiget::count('id');
+
+        $mes = null;
+        $anio = null;
         if ($request->mes) {
             $mes  = $request->mes;
         }
@@ -40,81 +44,90 @@ class HomeController extends Controller
             }
         }
 
+        if ($verificacion_data > 0) {
 
-        if ($anio && $mes) {
-            $resultados = DB::table('base_datos_siget')
-                ->join('tipo_luminaria', 'base_datos_siget.tipo_luminaria_id', '=', 'tipo_luminaria.id')
-                ->where('mes', $mes)
-                ->where('anio', $anio)
-                ->select('tipo_luminaria.nombre as tipo', DB::raw('SUM(base_datos_siget.consumo_mensual * numero_luminarias) as consumo_mensual'))
-                ->groupBy('tipo_luminaria.nombre')
-                ->get();
-        } else {
-            // Si no hay valores válidos para $anio y $mes, ejecutar la consulta sin esas condiciones
-            $resultados = DB::table('base_datos_siget')
-                ->join('tipo_luminaria', 'base_datos_siget.tipo_luminaria_id', '=', 'tipo_luminaria.id')
-                ->select('tipo_luminaria.nombre as tipo', DB::raw('SUM(base_datos_siget.consumo_mensual * numero_luminarias) as consumo_mensual'))
-                ->groupBy('tipo_luminaria.nombre')
-                ->get();
+
+
+
+            if ($anio && $mes) {
+                $resultados = DB::table('base_datos_siget')
+                    ->join('tipo_luminaria', 'base_datos_siget.tipo_luminaria_id', '=', 'tipo_luminaria.id')
+                    ->where('mes', $mes)
+                    ->where('anio', $anio)
+                    ->select('tipo_luminaria.nombre as tipo', DB::raw('SUM(base_datos_siget.consumo_mensual * numero_luminarias) as consumo_mensual'))
+                    ->groupBy('tipo_luminaria.nombre')
+                    ->get();
+            } else {
+                // Si no hay valores válidos para $anio y $mes, ejecutar la consulta sin esas condiciones
+                $resultados = DB::table('base_datos_siget')
+                    ->join('tipo_luminaria', 'base_datos_siget.tipo_luminaria_id', '=', 'tipo_luminaria.id')
+                    ->select('tipo_luminaria.nombre as tipo', DB::raw('SUM(base_datos_siget.consumo_mensual * numero_luminarias) as consumo_mensual'))
+                    ->groupBy('tipo_luminaria.nombre')
+                    ->get();
+            }
+
+            $data_tipo_luminaria = $resultados->map(function ($resultado) {
+                return [
+                    "name" => $resultado->tipo,
+                    "y" => $resultado->consumo_mensual + 0,
+                    "drilldown" => $resultado->tipo,
+                ];
+            })->all();
+            if ($anio && $mes) {
+                $resultados = DB::table('base_datos_siget')
+                    ->join('tipo_luminaria', 'base_datos_siget.tipo_luminaria_id', '=', 'tipo_luminaria.id')
+                    ->where('mes', $mes)
+                    ->where('anio', $anio)
+                    ->select('tipo_luminaria.nombre as tipo', DB::raw('sum(base_datos_siget.numero_luminarias) as conteo'))
+                    ->groupBy('tipo_luminaria.nombre')
+                    ->get();
+            } else {
+                $resultados = DB::table('base_datos_siget')
+                    ->join('tipo_luminaria', 'base_datos_siget.tipo_luminaria_id', '=', 'tipo_luminaria.id')
+                    ->select('tipo_luminaria.nombre as tipo', DB::raw('sum(base_datos_siget.numero_luminarias) as conteo'))
+                    ->groupBy('tipo_luminaria.nombre')
+                    ->get();
+            }
+
+            $data_numero_luminaria = $resultados->map(function ($resultado) {
+                return [
+                    "name" => $resultado->tipo,
+                    "y" => $resultado->conteo + 0,
+                    "drilldown" => $resultado->tipo,
+                ];
+            })->all();
+
+
+            //rangos
+            $data_rango_potencia_instalada = [];
+            $tipo_luminarias = TipoLuminaria::where('activo', '1')
+                ->withCount(['baseDatosSiget as potencias_count' => function ($query) use ($mes, $anio) {
+                    $query->select(DB::raw('count(distinct potencia_nominal)'))->where('mes', $mes)
+                        ->where('anio', $anio);
+                }])->get();
+
+
+            foreach ($tipo_luminarias as $tipo) {
+                $data_rango_potencia_instalada[] = [
+                    'name' => $tipo->nombre,
+                    'y' => $tipo->potencias_count + 0,
+                    'drilldown' => $tipo->nombre,
+                    'id' => $tipo->id
+                ];
+            }
         }
-
-        $data_tipo_luminaria = $resultados->map(function ($resultado) {
-            return [
-                "name" => $resultado->tipo,
-                "y" => $resultado->consumo_mensual + 0,
-                "drilldown" => $resultado->tipo,
-            ];
-        })->all();
-        if ($anio && $mes) {
-            $resultados = DB::table('base_datos_siget')
-                ->join('tipo_luminaria', 'base_datos_siget.tipo_luminaria_id', '=', 'tipo_luminaria.id')
-                ->where('mes', $mes)
-                ->where('anio', $anio)
-                ->select('tipo_luminaria.nombre as tipo', DB::raw('sum(base_datos_siget.numero_luminarias) as conteo'))
-                ->groupBy('tipo_luminaria.nombre')
-                ->get();
-        } else {
-            $resultados = DB::table('base_datos_siget')
-                ->join('tipo_luminaria', 'base_datos_siget.tipo_luminaria_id', '=', 'tipo_luminaria.id')
-                ->select('tipo_luminaria.nombre as tipo', DB::raw('sum(base_datos_siget.numero_luminarias) as conteo'))
-                ->groupBy('tipo_luminaria.nombre')
-                ->get();
+        else{
+            $data_tipo_luminaria = null;
+            $data_numero_luminaria = null;
+            $data_rango_potencia_instalada = null;
         }
-
-        $data_numero_luminaria = $resultados->map(function ($resultado) {
-            return [
-                "name" => $resultado->tipo,
-                "y" => $resultado->conteo + 0,
-                "drilldown" => $resultado->tipo,
-            ];
-        })->all();
-
-
-        //rangos
-        $data_rango_potencia_instalada = [];
-        $tipo_luminarias = TipoLuminaria::where('activo', '1')
-            ->withCount(['baseDatosSiget as potencias_count' => function ($query) use ($mes, $anio) {
-                $query->select(DB::raw('count(distinct potencia_nominal)'))->where('mes', $mes)
-                ->where('anio', $anio);
-            }])->get();
-
-
-        foreach ($tipo_luminarias as $tipo) {
-            $data_rango_potencia_instalada[] = [
-                'name' => $tipo->nombre,
-                'y' => $tipo->potencias_count + 0,
-                'drilldown' => $tipo->nombre,
-                'id' => $tipo->id
-            ];
-        }
-
         $meses = ["01" => "Enero", "02" => "Febrero", "03" => "Marzo", "04" => "Abril", "05" => "Mayo", "06" => "Junio", "07" => "Julio", "08" => "Agosto", "09" => "Septiembre", "10" => "Octubre", "11" => "Noviembre", "12" => "Diciembre"];
 
-        return view('home', compact('anio', 'mes', 'data_tipo_luminaria', 'data_numero_luminaria', 'data_rango_potencia_instalada', 'meses'));
+        return view('home', compact('anio', 'mes', 'data_tipo_luminaria', 'data_numero_luminaria', 'data_rango_potencia_instalada', 'meses','verificacion_data'));
     }
 
 
-    public function show_data($id,$anio,$mes)
+    public function show_data($id, $anio, $mes)
     {
         if ($mes >= 1 && $mes <= 9) {
             $mes = str_pad($mes, 2, "0", STR_PAD_LEFT);
@@ -140,6 +153,6 @@ class HomeController extends Controller
         }
         $meses = ["01" => "Enero", "02" => "Febrero", "03" => "Marzo", "04" => "Abril", "05" => "Mayo", "06" => "Junio", "07" => "Julio", "08" => "Agosto", "09" => "Septiembre", "10" => "Octubre", "11" => "Noviembre", "12" => "Diciembre"];
 
-        return view('data_potencia', compact('data_rango', 'tipo_nombre','anio','mes','meses'));
+        return view('data_potencia', compact('data_rango', 'tipo_nombre', 'anio', 'mes', 'meses'));
     }
 }

@@ -22,9 +22,22 @@ class BaseDatosSiget extends Model
         'potencia_nominal',
         'consumo_mensual',
         'numero_luminarias',
-        'anio',
         'mes',
+        'anio',
+        'compania_id',
+        'fecha_ultimo_censo',
+        'total_pagar',
+        'cargo_comercializacion',
+        'cargo_distribucion',
+        'cargo_energia',
+        'cargo_tasa_municipal',
+        'compania',
+        'distrito_id',
+        'distrito',
+        'area',
+        'tecnologia',
     ];
+
 
     protected $guarded = [];
 
