@@ -20,7 +20,8 @@ class Distrito extends Model
         'nombre',
         'municipio_id',
         'extension_territorial',
-        'poblacion'
+        'poblacion',
+        'codigo'
     ];
 
     protected $guarded = [];
