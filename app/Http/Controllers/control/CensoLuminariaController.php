@@ -13,6 +13,7 @@ use App\Models\catalogo\TipoLuminaria;
 use App\Models\Configuracion;
 use App\Models\control\CensoLuminaria;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\DB;
@@ -199,6 +200,21 @@ class CensoLuminariaController extends Controller
     {
         return PotenciaPromedio::findOrFail($id);
     }
+
+
+    public function get_companias($id)
+    {
+        try{
+            $distrito = Distrito::findOrFail($id);
+            return $distrito->companias;
+        }
+        catch(Exception $e)
+        {
+            return null;
+        }
+
+    }
+
 
 
 

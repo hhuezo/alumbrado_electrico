@@ -258,7 +258,7 @@
 
                             <div class="input-area">
                                 <label for="largeInput" class="form-label">Comapñia</label>
-                                <select class="form-control" name="compania_id" id="compania_id" required>
+                                <select class="form-control" name="compania_id" id="compania" required>
                                     <option value="">Seleccione</option>
                                     @foreach ($companias as $obj)
                                         <option value="{{ $obj->id }}">{{ $obj->nombre }}</option>
@@ -326,6 +326,8 @@
     <script type="text/javascript">
         $(document).ready(function() {
 
+            $("#distrito").change();
+
             $("#departamento").change(function() {
                 // var para la Departamento
                 const Departamento = $(this).val();
@@ -346,12 +348,24 @@
             $("#municipio").change(function() {
                 var Municipio = $(this).val();
                 $.get("{{ url('censo_luminaria/get_distritos') }}" + '/' + Municipio, function(data) {
-                    var _select = ''
+                    var _select = '<option value="">SELECCIONE</option>'
                     for (var i = 0; i < data.length; i++)
                         _select += '<option value="' + data[i].id + '"  >' + data[i].nombre +
                         '</option>';
 
                     $("#distrito").html(_select);
+                });
+            });
+
+            $("#distrito").change(function() {
+                var distrito = $(this).val();
+                $.get("{{ url('censo_luminaria/get_companias') }}" + '/' + distrito, function(data) {
+                    var _select = ''
+                    for (var i = 0; i < data.length; i++)
+                        _select += '<option value="' + data[i].id + '"  >' + data[i].nombre +
+                        '</option>';
+
+                    $("#compania").html(_select);
                 });
             });
 
@@ -442,7 +456,6 @@
                     $("#tipo_falla_id").prop('required', true);
                 }
             });
-
 
         });
     </script>

@@ -62,6 +62,7 @@ Route::post('seguridad/role/link_permission', [RoleController::class, 'link_perm
 Route::post('control/censo_luminaria/create_record', [CensoLuminariaController::class,'create_record']);
 Route::get('control/censo_luminaria/show_map', [CensoLuminariaController::class,'show_map']);
 Route::get('censo_luminaria/get_municipios/{id}', [CensoLuminariaController::class,'get_municipios']);
+Route::get('censo_luminaria/get_companias/{id}', [CensoLuminariaController::class,'get_companias']);
 Route::get('censo_luminaria/get_distritos/{id}', [CensoLuminariaController::class,'get_distritos']);
 Route::get('censo_luminaria/get_potencia_promedio/{id}', [CensoLuminariaController::class,'get_potencia_promedio']);
 Route::get('censo_luminaria/get_consumo_mensual/{id}', [CensoLuminariaController::class,'get_consumo_mensual']);
