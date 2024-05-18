@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\control;
 
 use App\Http\Controllers\Controller;
+use App\Models\catalogo\Compania;
 use App\Models\catalogo\Departamento;
 use App\Models\catalogo\Distrito;
 use App\Models\catalogo\Municipio;
@@ -89,6 +90,8 @@ class CensoLuminariaController extends Controller
             $municipio_id = null;
             $id_distrito_valido = 1;
 
+            $companias = Compania::where('activo',1)->get();
+
             if (isset($data['address'])) {
                 $api_departamento = $data['address']['state'];
                 $api_departamento = str_replace("Departamento de ", "", $api_departamento);
@@ -109,6 +112,7 @@ class CensoLuminariaController extends Controller
                                 ->where('distrito.nombre', $api_municipio)->first();
 
                             if ($distrito) {
+                                $companias = $distrito->companias;
                                 $distritos = Distrito::where('municipio_id', $distrito->municipio_id)->get();
 
                                 $id_distrito = $distrito->id;
@@ -167,7 +171,8 @@ class CensoLuminariaController extends Controller
                 'direccion',
                 'puntosCercanos',
                 'tipos_falla',
-                'id_distrito_valido'
+                'id_distrito_valido',
+                'companias'
             ));
         } else {
             alert()->error('la ubicacion es incorrecta');
@@ -217,6 +222,7 @@ class CensoLuminariaController extends Controller
             $censo->condicion_lampara = 0;
         }
         $censo->tipo_falla_id = $request->tipo_falla_id;
+        $censo->compania_id = $request->compania_id;
         $censo->save();
 
 

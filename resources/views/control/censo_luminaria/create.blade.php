@@ -254,7 +254,17 @@
                             </div>
                         </div>
                         <br>
-                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-7">
+                        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-7">
+
+                            <div class="input-area">
+                                <label for="largeInput" class="form-label">Comapñia</label>
+                                <select class="form-control" name="compania_id" id="compania_id" required>
+                                    <option value="">Seleccione</option>
+                                    @foreach ($companias as $obj)
+                                        <option value="{{ $obj->id }}">{{ $obj->nombre }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
 
                             <div class="input-area">
                                 <label for="condicion_lampara" class="form-label">¿Está la lámpara en buenas
