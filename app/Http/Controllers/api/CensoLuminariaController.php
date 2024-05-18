@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
+use App\Models\catalogo\Compania;
 use App\Models\catalogo\Departamento;
 use App\Models\catalogo\Distrito;
 use App\Models\catalogo\Municipio;
@@ -54,10 +55,12 @@ class CensoLuminariaController extends Controller
             $municipios = Municipio::where('departamento_id', $departamento_id)->get();
             $primerMunicipio = Municipio::where('departamento_id', $departamento_id)->first();
             $distritos = Distrito::where('municipio_id', $primerMunicipio->id)->get();
+            $companias = Compania::where('activo',1)->get();
         } else {
             $distrito = Distrito::findOrFail($distrito_id);
             $distritos = Distrito::where('municipio_id', $distrito->municipio_id)->get();
             $municipios = Municipio::where('departamento_id', $departamento_id)->get();
+            $companias = $distrito->companias;
         }
 
         $departamentos = Departamento::get();
@@ -85,7 +88,8 @@ class CensoLuminariaController extends Controller
 
         $response = [
             "departamentos" => $departamentos, "municipios" => $municipios, "distritos" => $distritos,
-            "tipos" => $tipos, "tipos_falla" => $tipos_falla, 'puntosCercanos' => $puntosCercanos,'id_distrito_valido'=>$id_distrito_valido
+            "tipos" => $tipos, "tipos_falla" => $tipos_falla, 'puntosCercanos' => $puntosCercanos,
+            'id_distrito_valido'=>$id_distrito_valido,'companias'=>$companias
         ];
 
         return $response;
@@ -118,6 +122,20 @@ class CensoLuminariaController extends Controller
         return PotenciaPromedio::select('consumo_promedio')->findOrFail($id);
     }
 
+
+    public function get_companias($id)
+    {
+        try{
+            $distrito = Distrito::findOrFail($id);
+            return $distrito->companias;
+        }
+        catch(Exception $e)
+        {
+            return null;
+        }
+
+    }
+
     public function store(Request $request)
     {
 
@@ -126,6 +144,7 @@ class CensoLuminariaController extends Controller
             $codigo = $this->getCodigo($request->distrito_id);
             $censo = new CensoLuminaria();
             $censo->distrito_id = $request->distrito_id;
+            $censo->compania_id = $request->compania_id;
             $censo->tipo_luminaria_id = $request->tipo_luminaria_id;
             $censo->codigo_luminaria = $codigo;
 

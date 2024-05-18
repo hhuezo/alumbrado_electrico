@@ -37,6 +37,7 @@ Route::get('api_get_municipios/{id}', [ReporteFallaController::class,'getMunicip
 Route::get('api_get_distritos/{id}', [ReporteFallaController::class,'getDistritos']);
 Route::resource('api_reporte_falla', ReporteFallaController::class);
 
+Route::get('api_get_companias/{id}', [CensoLuminariaController::class,'get_companias']);
 Route::get('api_censo_luminaria/get_data_create/{departamento}/{distrito}/{lat}/{long}/{usuario}', [CensoLuminariaController::class,'get_data_create']);
 Route::get('api_censo_luminaria/get_potencia_promedio/{id}', [CensoLuminariaController::class,'get_potencia_promedio']);
 Route::get('api_censo_luminaria/get_consumo_mensual/{id}', [CensoLuminariaController::class,'get_consumo_mensual']);
