@@ -46,9 +46,6 @@ class HomeController extends Controller
 
         if ($verificacion_data > 0) {
 
-
-
-
             if ($anio && $mes) {
                 $resultados = DB::table('base_datos_siget')
                     ->join('tipo_luminaria', 'base_datos_siget.tipo_luminaria_id', '=', 'tipo_luminaria.id')
