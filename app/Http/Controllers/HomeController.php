@@ -111,7 +111,7 @@ class HomeController extends Controller
             $tipo_luminarias = TipoLuminaria::where('activo', '1')
                 ->withCount(['baseDatosSiget as potencias_count' => function ($query) use ($mes, $anio,$id_distrito) {
                     $query->select(DB::raw('count(distinct potencia_nominal)'))->where('mes', $mes)
-                        ->where('anio', $anio)->where('municipio_id',$id_distrito);
+                        ->where('anio', $anio);
                 }])->get();
 
 
