@@ -438,7 +438,7 @@
                             <div class="input-area">
                                 <label for="largeInput" class="form-label">Distrito</label>
                                 <div class="relative">
-                                <input type="hidden" id="id_distrito" name="distrito">
+                                <input type="hidden" id="id_distrito" name="id_distrito">
                                 <input type="text" class="form-control !pr-12" placeholder="Search" readonly id="nombre_distrito">
                                     <button type="button" data-bs-toggle="modal" data-bs-target="#default_modal" class="absolute right-0 top-1/2 -translate-y-1/2 w-9 h-full border-l border-l-slate-200 dark:border-l-slate-700 flex items-center justify-center">
                                         <iconify-icon icon="heroicons-solid:search"></iconify-icon>
