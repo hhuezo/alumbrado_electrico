@@ -193,9 +193,9 @@
                                 <li>
                                     <a href="{{ url('importacion/base_datos') }}">Importación de censo gen.</a>
                                 </li>
-                                <li>
+                                {{-- <li>
                                     <a href="#">Gráficos</a>
-                                </li>
+                                </li> --}}
                                 <li>
                                     <a href="#">Estimación de factura general</a>
                                 </li>
@@ -222,12 +222,12 @@
                                 <li>
                                     <a href="{{ url('control/censo_luminaria/show_map') }}">Creación nuevo registro</a>
                                 </li>
-                                <li>
+                                {{-- <li>
                                     <a href="{{ url('control/censo_luminaria') }}">Censos</a>
                                 </li>
                                 <li>
                                     <a href="#">Comparación censos</a>
-                                </li>
+                                </li> --}}
                             </ul>
                         </li>
                     @endcan
@@ -246,18 +246,14 @@
                                     <a href="#">Inventario actual AP</a>
                                 </li>
                                 <li>
-                                    <a href="#">Pendiente</a>
+                                    <a href="#">Comparación de censos</a>
+                                </li>
+                                <li>
+                                    <a href="#">Evaluación de proyectos</a>
                                 </li>
                             </ul>
 
-                            <ul class="sidebar-submenu">
-                                <li>
-                                    <a href="{{ url('seguridad/usuario') }}">Evaluación de Proyectos</a>
-                                </li>
-                                <li>
-                                    <a href="#">Informes</a>
-                                </li>
-                            </ul>
+
                         </li>
                     @endcan
 
@@ -275,7 +271,7 @@
                                     <a href="{{ url('publico/reporte_falla_publico') }}">Crear reporte de falla</a>
                                 </li>
                                 <li>
-                                    <a href="{{ url('reporte_falla') }}">Listado de reportes</a>
+                                    <a href="{{ url('reporte_falla') }}">Seguimiento de reportes</a>
                                 </li>
                                 <li>
                                     <a href="#">Informes</a>
@@ -317,7 +313,11 @@
                                 <li>
                                     <a href="{{ url('catalogo/tipo_falla') }}">Tipos de falla</a>
                                 </li>
-
+                                @can('menu precio energia')
+                                <li>
+                                    <a href="{{ url('control/valor_mensual_energia') }}">Precio energía mensual(kwh)</a>
+                                </li>
+                                @endcan
                             </ul>
                         </li>
                     @endcan
@@ -353,23 +353,15 @@
                                 <span class="flex items-center">
                                     <iconify-icon class=" nav-icon" icon="material-symbols:add-notes"
                                         style="color: white;"></iconify-icon>
-                                    <span>Visualizar mapa</span>
+                                    <span>Visualización Luminarias</span>
                                 </span>
                             </a>
                         </li>
                     @endcan
 
-                    @can('menu precio energia')
-                        <li>
-                            <a href="{{ url('control/valor_mensual_energia') }}" class="navItem">
-                                <span class="flex items-center">
-                                    <iconify-icon class=" nav-icon" icon="material-symbols:add-notes"
-                                        style="color: white;"></iconify-icon>
-                                    <span>Precio energía mensual(kwh)</span>
-                                </span>
-                            </a>
-                        </li>
-                    @endcan
+
+
+
 
 
 
