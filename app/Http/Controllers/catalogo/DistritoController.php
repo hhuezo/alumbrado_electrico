@@ -5,6 +5,7 @@ namespace App\Http\Controllers\catalogo;
 use App\Http\Controllers\Controller;
 use App\Models\catalogo\Compania;
 use App\Models\catalogo\Distrito;
+use App\Models\catalogo\Municipio;
 use Illuminate\Http\Request;
 
 class DistritoController extends Controller
@@ -37,6 +38,19 @@ class DistritoController extends Controller
             $distrito->companias()->attach($request->compania_id);
         }
         return $compania;
+    }
+
+    public function get_municipios($id){
+        return Municipio::where('departamento_id',$id)->get();
+    }
+
+    public function get_distritos($id){
+        return Distrito::where('municipio_id',$id)->get();
+    }
+
+    public function get_option($id) {
+        $distrito = Distrito::findOrFail($id);
+        return response()->json($distrito);
     }
 
     public function show($id)

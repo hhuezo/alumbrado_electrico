@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\BaseDatosSiget;
+use App\Models\catalogo\Departamento;
+use App\Models\catalogo\Distrito;
+use App\Models\catalogo\Municipio;
 use App\Models\catalogo\TipoLuminaria;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -31,6 +34,7 @@ class HomeController extends Controller
 
         $mes = null;
         $anio = null;
+        $id_distrito = null;
         if ($request->mes) {
             $mes  = $request->mes;
         }
@@ -44,13 +48,19 @@ class HomeController extends Controller
             }
         }
 
+        if ($request->id_distrito) {
+            $id_distrito  = $request->id_distrito;
+        }
+      
+
         if ($verificacion_data > 0) {
 
-            if ($anio && $mes) {
+            if ($anio && $mes && $id_distrito) {
                 $resultados = DB::table('base_datos_siget')
                     ->join('tipo_luminaria', 'base_datos_siget.tipo_luminaria_id', '=', 'tipo_luminaria.id')
                     ->where('mes', $mes)
                     ->where('anio', $anio)
+                    ->where('municipio_id',$id_distrito)
                     ->select('tipo_luminaria.nombre as tipo', DB::raw('SUM(base_datos_siget.consumo_mensual * numero_luminarias) as consumo_mensual'))
                     ->groupBy('tipo_luminaria.nombre')
                     ->get();
@@ -70,11 +80,12 @@ class HomeController extends Controller
                     "drilldown" => $resultado->tipo,
                 ];
             })->all();
-            if ($anio && $mes) {
+            if ($anio && $mes && $id_distrito) {
                 $resultados = DB::table('base_datos_siget')
                     ->join('tipo_luminaria', 'base_datos_siget.tipo_luminaria_id', '=', 'tipo_luminaria.id')
                     ->where('mes', $mes)
                     ->where('anio', $anio)
+                    ->where('municipio_id',$id_distrito)
                     ->select('tipo_luminaria.nombre as tipo', DB::raw('sum(base_datos_siget.numero_luminarias) as conteo'))
                     ->groupBy('tipo_luminaria.nombre')
                     ->get();
@@ -119,8 +130,10 @@ class HomeController extends Controller
             $data_rango_potencia_instalada = null;
         }
         $meses = ["01" => "Enero", "02" => "Febrero", "03" => "Marzo", "04" => "Abril", "05" => "Mayo", "06" => "Junio", "07" => "Julio", "08" => "Agosto", "09" => "Septiembre", "10" => "Octubre", "11" => "Noviembre", "12" => "Diciembre"];
-
-        return view('home', compact('anio', 'mes', 'data_tipo_luminaria', 'data_numero_luminaria', 'data_rango_potencia_instalada', 'meses','verificacion_data'));
+        $departamentos = Departamento::get();
+        $municipios = Municipio::get();
+        $distritos = Distrito::get();
+        return view('home', compact('departamentos','municipios','distritos','anio', 'mes', 'data_tipo_luminaria', 'data_numero_luminaria', 'data_rango_potencia_instalada', 'meses','verificacion_data'));
     }
 
 

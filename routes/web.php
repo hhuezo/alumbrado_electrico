@@ -15,6 +15,8 @@ use App\Http\Controllers\publico\ReporteFallaPublicoController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\WelcomeController;
+use App\Models\catalogo\Departamento;
+use App\Models\catalogo\Distrito;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -89,3 +91,7 @@ Route::get('publico/reporte_falla_publico/get_distritos/{id}', [ReporteFallaPubl
 Route::resource('publico/reporte_falla_publico', ReporteFallaPublicoController::class);
 
 Route::resource('importacion/base_datos', BaseDatosController::class);
+Route::get('get_municipios/{id}',[DistritoController::class, 'get_municipios']);
+Route::get('get_distritos/{id}',[DistritoController::class, 'get_distritos']);
+Route::get('get_option/{id}',[DistritoController::class,'get_option']);
+
