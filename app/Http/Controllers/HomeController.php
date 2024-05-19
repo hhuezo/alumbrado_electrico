@@ -35,6 +35,7 @@ class HomeController extends Controller
         $mes = null;
         $anio = null;
         $id_distrito = null;
+        $nombre_distrito = 'Todos';
         if ($request->mes) {
             $mes  = $request->mes;
         }
@@ -49,9 +50,15 @@ class HomeController extends Controller
         }
 
         if ($request->id_distrito) {
-            $id_distrito  = $request->id_distrito;
+            $id_distrito = array();
+            $dis  = Distrito::findOrFail($request->id_distrito);
+            array_push($id_distrito,$dis->codigo);
+            $nombre_distrito = $dis->nombre;
+        }else{
+            //$id_distrito = array();
+            $dis  = Distrito::get();
+            $id_distrito = $dis->pluck('codigo')->toArray();
         }
-      
 
         if ($verificacion_data > 0) {
 
@@ -60,7 +67,7 @@ class HomeController extends Controller
                     ->join('tipo_luminaria', 'base_datos_siget.tipo_luminaria_id', '=', 'tipo_luminaria.id')
                     ->where('mes', $mes)
                     ->where('anio', $anio)
-                    ->where('municipio_id',$id_distrito)
+                    ->whereIn('municipio_id',$id_distrito)
                     ->select('tipo_luminaria.nombre as tipo', DB::raw('SUM(base_datos_siget.consumo_mensual * numero_luminarias) as consumo_mensual'))
                     ->groupBy('tipo_luminaria.nombre')
                     ->get();
@@ -85,7 +92,7 @@ class HomeController extends Controller
                     ->join('tipo_luminaria', 'base_datos_siget.tipo_luminaria_id', '=', 'tipo_luminaria.id')
                     ->where('mes', $mes)
                     ->where('anio', $anio)
-                    ->where('municipio_id',$id_distrito)
+                    ->whereIn('municipio_id',$id_distrito)
                     ->select('tipo_luminaria.nombre as tipo', DB::raw('sum(base_datos_siget.numero_luminarias) as conteo'))
                     ->groupBy('tipo_luminaria.nombre')
                     ->get();
@@ -111,7 +118,7 @@ class HomeController extends Controller
             $tipo_luminarias = TipoLuminaria::where('activo', '1')
                 ->withCount(['baseDatosSiget as potencias_count' => function ($query) use ($mes, $anio,$id_distrito) {
                     $query->select(DB::raw('count(distinct potencia_nominal)'))->where('mes', $mes)
-                        ->where('anio', $anio);
+                        ->where('anio', $anio)->whereIn('municipio_id',$id_distrito);
                 }])->get();
 
 
@@ -133,7 +140,7 @@ class HomeController extends Controller
         $departamentos = Departamento::get();
         $municipios = Municipio::get();
         $distritos = Distrito::get();
-        return view('home', compact('departamentos','municipios','distritos','anio', 'mes', 'data_tipo_luminaria', 'data_numero_luminaria', 'data_rango_potencia_instalada', 'meses','verificacion_data'));
+        return view('home', compact('nombre_distrito','departamentos','municipios','distritos','anio', 'mes', 'data_tipo_luminaria', 'data_numero_luminaria', 'data_rango_potencia_instalada', 'meses','verificacion_data'));
     }
 
 
