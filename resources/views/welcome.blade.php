@@ -25,6 +25,9 @@
     <script src="{{ asset('assets/js/jquery-3.6.0.min.js') }}" sync></script>
     <script src="{{ asset('assets/js/jquery.dataTables.min.js') }}"></script>
 
+    <!-- select 2 -->
+    <link rel="stylesheet" href="{{ asset('assets/select2/select2.min.css') }}">
+
     <style>
         .sidebar-wrapper {
             height: auto;
@@ -1145,6 +1148,9 @@
         <!-- app js -->
         <script src="{{ asset('assets/js/sidebar-menu.js') }}"></script>
         <script src="{{ asset('assets/js/app.js') }}"></script>
+
+     <!-- Select2 -->
+     <script src="{{ asset('vendors/select2/select2.min.js') }}"></script>
 
 
         <script>

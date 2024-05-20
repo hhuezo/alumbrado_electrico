@@ -200,7 +200,7 @@
                                     <a href="#">Estimación de factura general</a>
                                 </li>
                                 <li>
-                                    <a href="#">Evaluación de proyectos</a>
+                                    <a href="{{ url('publico/evaluacion_proyectos') }}">Evaluación de proyectos</a>
                                 </li>
                                 <li>
                                     <a href="#">Biblioteca / Info general</a>

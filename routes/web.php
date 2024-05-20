@@ -12,6 +12,7 @@ use App\Http\Controllers\control\ValorEnergiaController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\importacion\BaseDatosController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\publico\EvaluacionProyectosController;
 use App\Http\Controllers\publico\ReporteFallaPublicoController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UsuarioController;
@@ -92,6 +93,9 @@ Route::resource('reporte_falla', ControlReporteFallaController::class);
 //acceso publico
 Route::get('publico/reporte_falla_publico/get_distritos/{id}', [ReporteFallaPublicoController::class,'get_distritos']);
 Route::resource('publico/reporte_falla_publico', ReporteFallaPublicoController::class);
+Route::resource('publico/evaluacion_proyectos', EvaluacionProyectosController::class);
+Route::get('publico/getConteoLuminaria', [EvaluacionProyectosController::class, 'getConteoLuminaria']);
+
 
 Route::resource('importacion/base_datos', BaseDatosController::class);
 Route::get('get_municipios/{id}',[DistritoController::class, 'get_municipios']);
