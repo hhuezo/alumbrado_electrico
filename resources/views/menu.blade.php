@@ -243,7 +243,7 @@
                             </a>
                             <ul class="sidebar-submenu">
                                 <li>
-                                    <a href="#">Inventario actual AP</a>
+                                    <a href="{{ url('control/censo_luminaria') }}">Inventario actual AP</a>
                                 </li>
                                 <li>
                                     <a href="#">Comparación de censos</a>
