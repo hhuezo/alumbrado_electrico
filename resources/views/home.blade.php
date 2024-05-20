@@ -186,6 +186,7 @@
                     }]
                 });
 
+                //this
                 Highcharts.chart('container_conteo_luminaria_pie', {
                     chart: {
                         type: 'pie'

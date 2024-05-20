@@ -94,7 +94,7 @@ class HomeController extends Controller
                 ];
             })->all();
 
-
+            //dd($data_numero_luminaria);
             //rangos
             $data_rango_potencia_instalada = [];
             $tipo_luminarias = TipoLuminaria::where('activo', '1')
