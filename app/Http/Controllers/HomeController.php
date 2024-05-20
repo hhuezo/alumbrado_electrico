@@ -72,19 +72,6 @@ class HomeController extends Controller
                     ->select('tipo_luminaria.nombre as tipo', DB::raw('SUM(base_datos_siget.consumo_mensual * numero_luminarias) as consumo_mensual'))
                     ->groupBy('tipo_luminaria.nombre')
                     ->get();
-
-                $tiposLuminarias = DB::table('tipo_luminaria')
-                    ->select(
-                        'tipo_luminaria.nombre as tipo',
-                        DB::raw('COALESCE(SUM(base_datos_siget.numero_luminarias), 0) as suma_luminarias'),
-                        DB::raw('COALESCE(censo.total_censo_luminarias, 0) as total_censo_luminarias')
-                    )
-                    ->leftJoin('base_datos_siget', 'tipo_luminaria.id', '=', 'base_datos_siget.tipo_luminaria_id')
-                    ->leftJoin(DB::raw('(SELECT tipo_luminaria_id, COUNT(id) as total_censo_luminarias FROM censo_luminaria GROUP BY tipo_luminaria_id) as censo'), function ($join) {
-                        $join->on('tipo_luminaria.id', '=', 'censo.tipo_luminaria_id');
-                    })
-                    ->groupBy('tipo_luminaria.nombre', 'censo.total_censo_luminarias')
-                    ->get();
             } else {
 
                 // Si no hay valores válidos para $anio y $mes, ejecutar la consulta sin esas condiciones
@@ -92,20 +79,6 @@ class HomeController extends Controller
                     ->join('tipo_luminaria', 'base_datos_siget.tipo_luminaria_id', '=', 'tipo_luminaria.id')
                     ->select('tipo_luminaria.nombre as tipo', DB::raw('SUM(base_datos_siget.consumo_mensual * numero_luminarias) as consumo_mensual'))
                     ->groupBy('tipo_luminaria.nombre')
-                    ->get();
-
-
-                $tiposLuminarias = DB::table('tipo_luminaria')
-                    ->select(
-                        'tipo_luminaria.nombre as tipo',
-                        DB::raw('COALESCE(SUM(base_datos_siget.numero_luminarias), 0) as suma_luminarias'),
-                        DB::raw('COALESCE(censo.total_censo_luminarias, 0) as total_censo_luminarias')
-                    )
-                    ->leftJoin('base_datos_siget', 'tipo_luminaria.id', '=', 'base_datos_siget.tipo_luminaria_id')
-                    ->leftJoin(DB::raw('(SELECT tipo_luminaria_id, COUNT(id) as total_censo_luminarias FROM censo_luminaria GROUP BY tipo_luminaria_id) as censo'), function ($join) {
-                        $join->on('tipo_luminaria.id', '=', 'censo.tipo_luminaria_id');
-                    })
-                    ->groupBy('tipo_luminaria.nombre', 'censo.total_censo_luminarias')
                     ->get();
             }
 
@@ -160,30 +133,6 @@ class HomeController extends Controller
                 ];
             }
 
-            $data_censo_siget = [];
-            $data_censo_propio = [];
-            $data_censo_facturado = [];
-
-            foreach($tiposLuminarias as $luminarias)
-            {
-                $data_censo_siget[] = [
-                    'name' => $luminarias->tipo,
-                    'y' => $luminarias->suma_luminarias + 0,
-                    'drilldown' => $luminarias->tipo
-                ];
-
-                $data_censo_propio[] = [
-                    'name' => $luminarias->tipo,
-                    'y' => $luminarias->total_censo_luminarias + 0,
-                    'drilldown' => $luminarias->tipo
-                ];
-
-                $data_censo_facturado[] = [
-                    'name' => $luminarias->tipo,
-                    'y' =>  $luminarias->total_censo_luminarias - $luminarias->suma_luminarias +  0,
-                    'drilldown' => $luminarias->tipo
-                ];
-            }
 
         } else {
             $data_tipo_luminaria = null;
@@ -213,9 +162,6 @@ class HomeController extends Controller
             'data_rango_potencia_instalada',
             'meses',
             'verificacion_data',
-            'data_censo_siget',
-            'data_censo_propio',
-            'data_censo_facturado'
         ));
     }
 

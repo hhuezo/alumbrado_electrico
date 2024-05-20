@@ -7,6 +7,7 @@ use App\Http\Controllers\control\ReporteFallaController as ControlReporteFallaCo
 use App\Http\Controllers\catalogo\TipoFallaController;
 use App\Http\Controllers\catalogo\TipoLuminariaController;
 use App\Http\Controllers\control\CensoLuminariaController;
+use App\Http\Controllers\control\ComparacionCensosController;
 use App\Http\Controllers\control\ValorEnergiaController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\importacion\BaseDatosController;
@@ -70,6 +71,8 @@ Route::get('censo_luminaria/get_potencia_promedio/{id}', [CensoLuminariaControll
 Route::get('censo_luminaria/get_consumo_mensual/{id}', [CensoLuminariaController::class,'get_consumo_mensual']);
 Route::resource('control/censo_luminaria', CensoLuminariaController::class);
 Route::resource('control/valor_mensual_energia', ValorEnergiaController::class);
+
+Route::resource('control/comparacion_censos', ComparacionCensosController::class);
 
 //catalogos
 Route::post('catalogo/biblioteca/active', [BibliotecaController::class,'active']);

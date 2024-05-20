@@ -246,7 +246,7 @@
                                     <a href="{{ url('control/censo_luminaria') }}">Inventario actual AP</a>
                                 </li>
                                 <li>
-                                    <a href="#">Comparación de censos</a>
+                                    <a href="{{ url('control/comparacion_censos') }}">Comparación de censos</a>
                                 </li>
                                 <li>
                                     <a href="#">Evaluación de proyectos</a>
