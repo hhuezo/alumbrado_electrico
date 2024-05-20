@@ -202,6 +202,8 @@
                 </div>
             </div>
         </div>
+        <div class="xl:col-span-3 col-span-12 lg:col-span-3">
+        </div>
         <div class="xl:col-span-6 col-span-12 lg:col-span-6">
             <div class="card p-6 h-full">
                 <div class="space-y-5">
