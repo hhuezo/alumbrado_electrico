@@ -1,10 +1,120 @@
-<div id="divGrafico" class="xl:col-span-3 col-span-3 lg:col-span-3 ">
-    <div class="card p-6 h-full">
-        <div class="space-y-5">
-            <div id="container_conteo_luminaria_pie"></div>
+<style>
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        padding: 10px !important;
+    }
+
+    th,
+    td {
+        border: 1px solid black;
+        padding: 8px;
+        text-align: center;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    td {
+        background-color: #ffffff;
+    }
+
+    .editable {
+        cursor: pointer;
+    }
+</style>
+
+<div id="divGrafico" class="xl:col-span-6 col-span-6 lg:col-span-6 ">
+    <div class="card p-6">
+        <div id="container_conteo_luminaria_pie"></div>
+
+    </div>
+</div>
+
+<div class="xl:col-span-12 col-span-12 lg:col-span-12 ">
+    @foreach ($tipos as $tipo)
+    <div class="card xl:col-span-6 col-span-6 lg:col-span-6 ">
+        <div class="card-body flex flex-col p-6">
+            <header class="flex mb-5 items-center border-b border-slate-100 dark:border-slate-700 pb-5 -mx-6 px-6">
+                <div class="flex-1">
+                    <div class="card-title text-slate-900 dark:text-white">{{ $tipo->nombre }}
+
+                    </div>
+                </div>
+            </header>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tecnología</th>
+                        <th>Potencia</th>
+                        <th>Consumo mensual</th>
+                        <th>Cantidad</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($resultados->where('tipo_id', $tipo->id) as $resultado)
+                        <tr>
+                            <td class="editable">{{ $tipo->nombre }}</td>
+                            <td class="editable">{{ $resultado->potencia_nominal }} Vatios</td>
+                            <td class="editable">{{ $resultado->consumo_mensual }} kwh</td>
+                            <td class="editable" contenteditable="true" style="text-align: right !important">0
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+@endforeach
+</div>
+
+<div class="xl:col-span-3 col-span-3 lg:col-span-3">
+    <div class="h-full card">
+        <div class="p-0  h-full relative card-body">
+            <header class="flex mb-5 items-center border-b border-slate-100 dark:border-slate-700 pb-5 -mx-6 px-6">
+                <div class="flex-1">
+                    <br>
+                    <div class="card-title text-slate-900 dark:text-white"> Tecnologias</div>
+                </div>
+            </header>
+            <!-- END: Todo Header -->
+            <div class="h-full all-todos overflow-x-hidden" data-simplebar="data-simplebar">
+                <ul class="divide-y divide-slate-100 dark:divide-slate-700 -mb-6 h-full todo-list">
+                    <!-- BEGIN: Todos -->
+
+                    @foreach ($tipos as $tipo)
+                        <li data-status="team" data-stared="false" data-complete="false"
+                            class="flex items-center px-6 space-x-4 py-6 hover:-translate-y-1 hover:shadow-todo transition-all duration-200 rtl:space-x-reverse">
+                            <input type="checkbox" id="checkboxTipo{{ $tipo->id }}" class="table-checkbox"
+                                onchange="showDivTipo('{{ $tipo->id }}')" name="todo-checkbox">
+                            <span
+                                class="flex-1 text-sm text-slate-600 dark:text-slate-300 truncate bar-active transition-all duration-150">
+                                {{ $tipo->nombre }}
+                            </span>
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
         </div>
     </div>
 </div>
+
+
+
+<div clas="xl:col-span-9 col-span-9 lg:col-span-9">
+
+
+
+
+
+</div>
+
+
+
+
 
 <div id="divFormTecnologias" class="xl:col-span-9 col-span-9 lg:col-span-9 ">
     <div class="card p-6 h-full">
@@ -17,23 +127,28 @@
             </header>
             <div id="formTecnologias" class="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-5">
 
-                @foreach ($resultados as $obj )
-                <div class="input-area">
-                    <label for="input_{{$obj->tipo}}_{{$obj->potencia_nominal}}" class="form-label">{{$obj->tipo }}
-                        {{$obj->potencia_nominal }} Vatios <span id="span_{{$obj->tipo}}_{{$obj->potencia_nominal}}"
-                            class="badge bg-primary-500 text-white capitalize">0%</span> <span
-                            class="badge bg-slate-900 text-white capitalize">{{$obj->consumo_mensual}}
-                            kwh</span></label>
-                    <input id="input_{{$obj->tipo}}_{{$obj->potencia_nominal}}" type="number"
-                        class="form-control iluminaria porcentajeParque" placeholder="{{$obj->tipo}}" value="0" min="0" max="{{$obj->conteo}}">
-                    <input id="input_{{$obj->tipo}}_{{$obj->potencia_nominal}}_consumo_mensual_kwh" type="hidden"
-                        class="form-control" value="{{$obj->consumo_mensual}}">
-                </div>
+                @foreach ($resultados as $obj)
+                    <div class="input-area">
+                        <label for="input_{{ $obj->tipo }}_{{ $obj->potencia_nominal }}"
+                            class="form-label">{{ $obj->tipo }}
+                            {{ $obj->potencia_nominal }} Vatios <span
+                                id="span_{{ $obj->tipo }}_{{ $obj->potencia_nominal }}"
+                                class="badge bg-primary-500 text-white capitalize">0%</span> <span
+                                class="badge bg-slate-900 text-white capitalize">{{ $obj->consumo_mensual }}
+                                kwh</span></label>
+                        <input id="input_{{ $obj->tipo }}_{{ $obj->potencia_nominal }}" type="number"
+                            class="form-control iluminaria porcentajeParque" placeholder="{{ $obj->tipo }}"
+                            value="0" min="0" max="{{ $obj->conteo }}">
+                        <input id="input_{{ $obj->tipo }}_{{ $obj->potencia_nominal }}_consumo_mensual_kwh"
+                            type="hidden" class="form-control" value="{{ $obj->consumo_mensual }}">
+                    </div>
                 @endforeach
             </div>
         </div>
     </div>
 </div>
+
+{{--
 <div class="xl:col-span-6 col-span-6 lg:col-span-7 ">
     <div class="card">
         <div class="card-body flex flex-col p-6">
@@ -48,13 +163,13 @@
 
 
             @if (count($errors) > 0)
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
             @endif
             <div class="space-y-4">
                 <div class="input-area relative pl-27">
@@ -160,15 +275,17 @@
                             class=" table-th border border-slate-100 dark:bg-slate-800 dark:border-slate-700 ">
                             PR
                         </th>
-                        <td id="pr" class="table-td border border-slate-100 dark:bg-slate-800 dark:border-slate-700 ">
+                        <td id="pr"
+                            class="table-td border border-slate-100 dark:bg-slate-800 dark:border-slate-700 ">
                         </td>
                     </tr>
 
 
                 </tbody>
             </table>
-<br>
-            <div id="recomendable" class="py-[18px] px-6 font-normal font-Inter text-sm rounded-md bg-success-500 text-white dark:bg-success-500
+            <br>
+            <div id="recomendable"
+                class="py-[18px] px-6 font-normal font-Inter text-sm rounded-md bg-success-500 text-white dark:bg-success-500
               dark:text-slate-300">
                 <div class="flex items-start space-x-3 rtl:space-x-reverse">
                     <div class="flex-1">
@@ -177,7 +294,8 @@
                 </div>
             </div>
 
-            <div id="noRecomendable" class="py-[18px] px-6 font-normal font-Inter text-sm rounded-md bg-danger-500 text-white dark:bg-danger-500
+            <div id="noRecomendable"
+                class="py-[18px] px-6 font-normal font-Inter text-sm rounded-md bg-danger-500 text-white dark:bg-danger-500
                                     dark:text-slate-300">
                 <div class="flex items-start space-x-3 rtl:space-x-reverse">
                     <div class="flex-1">
@@ -189,12 +307,12 @@
 
         </div>
     </div>
-</div>
+</div> --}}
 <script type="text/javascript">
     $(document).ready(function() {
 
         $(document).ready(function() {
-            totalParque= {{$resultados->sum('conteo')}};
+            totalParque = {{ $resultados->sum('conteo') }};
             // Evento input para todos los inputs de clase .iluminaria
             $('.porcentajeParque').on('input', function() {
                 var inputId = $(this).attr('id'); // Obtener el id del input
@@ -206,7 +324,7 @@
                 var spanId = '#span_' + tipo + '_' + potencia_nominal;
 
                 // Cambiar el texto del span correspondiente
-                $(spanId).text(((nuevoValor*100)/totalParque) + '%');
+                $(spanId).text(((nuevoValor * 100) / totalParque) + '%');
             });
         });
 
@@ -214,94 +332,94 @@
         $('#noRecomendable').hide();
 
         let chart;
-        chart= Highcharts.chart('container_conteo_luminaria_pie', {
-                        chart: {
-                            type: 'pie'
-                        },
-                        title: {
-                            align: 'left',
-                            text: 'Cantidad por tipo de luminaria'
-                        },
-                        subtitle: {
-                            align: 'left',
-                            text: ''
-                        },
-                        accessibility: {
-                            announceNewData: {
-                                enabled: true
-                            }
-                        },
-                        xAxis: {
-                            type: 'category'
-                        },
-                        yAxis: {
-                            title: {
-                                text: 'Número de luminarias'
-                            }
+        chart = Highcharts.chart('container_conteo_luminaria_pie', {
+            chart: {
+                type: 'pie'
+            },
+            title: {
+                align: 'left',
+                text: 'Cantidad por tipo de luminaria'
+            },
+            subtitle: {
+                align: 'left',
+                text: ''
+            },
+            accessibility: {
+                announceNewData: {
+                    enabled: true
+                }
+            },
+            xAxis: {
+                type: 'category'
+            },
+            yAxis: {
+                title: {
+                    text: 'Número de luminarias'
+                }
 
-                        },
-                        legend: {
-                            enabled: false
-                        },
-                        plotOptions: {
-                            pie: {
-                                allowPointSelect: true,
-                                cursor: 'pointer',
-                                dataLabels: {
-                                    enabled: true,
-                                    format: '<b>{point.name}</b>: {point.y:.0f}'
-                                },
-                                showInLegend: true
-                            }
-                        },
+            },
+            legend: {
+                enabled: false
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '<b>{point.name}</b>: {point.y:.0f}'
+                    },
+                    showInLegend: true
+                }
+            },
 
-                        tooltip: {
-                            headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-                            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}</b>   <br/>'
-                        },
+            tooltip: {
+                headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}</b>   <br/>'
+            },
 
-                        series: [{
-                            name: 'Browsers',
-                            colorByPoint: true,
-                            data:  @json($data_numero_luminaria)
+            series: [{
+                name: 'Browsers',
+                colorByPoint: true,
+                data: @json($data_numero_luminaria)
 
-                        }]
+            }]
         });
 
         function updateTotal() {
             let tecno_susti_total_iluminarias = 0;
             let consumoMensual = 0;
-            let totalInversion=0;
-            let costoMensualSustituido=0;
-            let precioEnergiaMensualTotal=0;
-            const VALORKWH=0.14;
+            let totalInversion = 0;
+            let costoMensualSustituido = 0;
+            let precioEnergiaMensualTotal = 0;
+            const VALORKWH = 0.14;
             $('#formTecnologias').find('.input-area').each(function() {
-            let numLuminarias = parseFloat($(this).find('input[type="number"]').val());
+                let numLuminarias = parseFloat($(this).find('input[type="number"]').val());
 
-            if (numLuminarias>0) {
-                 consumoMensual = parseFloat($(this).find('input[type="hidden"]').val());
-            } else {
-                 consumoMensual = 0;
-            }
+                if (numLuminarias > 0) {
+                    consumoMensual = parseFloat($(this).find('input[type="hidden"]').val());
+                } else {
+                    consumoMensual = 0;
+                }
 
-            if (!isNaN(numLuminarias) && !isNaN(consumoMensual)) {
-                tecno_susti_total_iluminarias += numLuminarias;
-                precioEnergiaMensualTotal += (VALORKWH*consumoMensual)*numLuminarias;
-            }
+                if (!isNaN(numLuminarias) && !isNaN(consumoMensual)) {
+                    tecno_susti_total_iluminarias += numLuminarias;
+                    precioEnergiaMensualTotal += (VALORKWH * consumoMensual) * numLuminarias;
+                }
             });
 
             if ($('#tecno_susti_valor_mercado').val() === "") {
                 $('#tecno_susti_valor_mercado').val(0);
             }
 
-            totalInversion=tecno_susti_total_iluminarias*parseFloat($('#tecno_susti_valor_mercado').val());
+            totalInversion = tecno_susti_total_iluminarias * parseFloat($('#tecno_susti_valor_mercado').val());
 
             $('#tecno_susti_total_iluminarias').val(tecno_susti_total_iluminarias);
             $('#tecno_susti_total_inversion').val(totalInversion);
 
             //precio_facturado_mensual precio_facturado_anual
             $('#precio_facturado_mensual').text(precioEnergiaMensualTotal);
-            $('#precio_facturado_anual').text(precioEnergiaMensualTotal*12);
+            $('#precio_facturado_anual').text(precioEnergiaMensualTotal * 12);
 
             if ($('#tecno_susti_kwh_uso').val() === "") {
                 $('#tecno_susti_kwh_uso').val(0);
@@ -309,32 +427,45 @@
 
             //(VALORKWH*tecno_susti_kwh_uso)*tecno_susti_total_iluminarias
             //precio_sustituido_costo_mensual precio_sustituido_costo_anual
-            costoMensualSustituido=(VALORKWH*parseFloat($('#tecno_susti_kwh_uso').val()))*parseFloat($('#tecno_susti_total_iluminarias').val());
+            costoMensualSustituido = (VALORKWH * parseFloat($('#tecno_susti_kwh_uso').val())) * parseFloat($(
+                '#tecno_susti_total_iluminarias').val());
             $('#precio_sustituido_costo_mensual').text(costoMensualSustituido);
-            $('#precio_sustituido_costo_anual').text(costoMensualSustituido*12);
+            $('#precio_sustituido_costo_anual').text(costoMensualSustituido * 12);
 
             //ahorro_mensual ahorro_anual
-            $('#ahorro_mensual').text(precioEnergiaMensualTotal-costoMensualSustituido);
-            $('#ahorro_anual').text(parseFloat($('#ahorro_mensual').text())*12);
+            $('#ahorro_mensual').text(precioEnergiaMensualTotal - costoMensualSustituido);
+            $('#ahorro_anual').text(parseFloat($('#ahorro_mensual').text()) * 12);
 
             //pr
-            $('#pr').text(parseFloat(totalInversion)/parseFloat($('#ahorro_anual').text()));
+            $('#pr').text(parseFloat(totalInversion) / parseFloat($('#ahorro_anual').text()));
 
-        if (totalInversion!==0 && parseFloat($('#ahorro_anual').text())!==0) {
-            if (parseFloat($('#pr').text())<=3) {
-                $('#recomendable').show();
-                $('#noRecomendable').hide();
+            if (totalInversion !== 0 && parseFloat($('#ahorro_anual').text()) !== 0) {
+                if (parseFloat($('#pr').text()) <= 3) {
+                    $('#recomendable').show();
+                    $('#noRecomendable').hide();
+                } else {
+                    $('#recomendable').hide();
+                    $('#noRecomendable').show();
+                }
             } else {
                 $('#recomendable').hide();
-                $('#noRecomendable').show();
+                $('#noRecomendable').hide();
             }
-        }else{
-            $('#recomendable').hide();
-            $('#noRecomendable').hide();
-        }
 
         }
-            // Añadir evento 'input' a todos los inputs con la clase 'iluminaria'
-            $('.iluminaria').on('input', updateTotal);
+        // Añadir evento 'input' a todos los inputs con la clase 'iluminaria'
+        $('.iluminaria').on('input', updateTotal);
     });
+
+    function showDivTipo(control) {
+        var checkbox = document.getElementById("checkboxTipo" + control).checked;
+        var div = document.getElementById("divTipo" + control);
+
+        if (checkbox) {
+            div.style.display = "block";
+        } else {
+            div.style.display = "none";
+        }
+        console.log(checkbox);
+    }
 </script>
