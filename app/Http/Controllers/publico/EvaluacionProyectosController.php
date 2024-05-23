@@ -38,29 +38,7 @@ class EvaluacionProyectosController extends Controller
             ->first();
 
         $anio = $result->max_anio;
-        $mes = $result->max_mes+0;
-
-
-        /* $resultados = DB::table('base_datos_siget')
-        ->join('tipo_luminaria', 'base_datos_siget.tipo_luminaria_id', '=', 'tipo_luminaria.id')
-        ->join('distrito', 'distrito.codigo', '=', 'base_datos_siget.municipio_id')
-        ->select(
-            'tipo_luminaria.nombre as tipo',
-            DB::raw('SUM(base_datos_siget.numero_luminarias) as conteo'),
-            'distrito.nombre',
-            'distrito.id',
-            'base_datos_siget.potencia_nominal',
-            DB::raw('base_datos_siget.consumo_mensual as consumo_mensual')
-        )
-        ->where('distrito.codigo', $request->distrito)
-        ->groupBy('distrito.nombre', 'distrito.id', 'tipo_luminaria.nombre', 'base_datos_siget.potencia_nominal')
-        ->get();*/
-        /*$resultados = DB::table('censo_luminaria')
-        ->join('tipo_luminaria', 'censo_luminaria.tipo_luminaria_id', '=', 'tipo_luminaria.id')
-        ->where('distrito_id', $request->distrito)
-        ->select('tipo_luminaria.nombre as tipo', DB::raw('COUNT(*) as conteo'))
-        ->groupBy('tipo_luminaria.nombre')
-        ->get();*/
+        $mes = $result->max_mes + 0;
 
         $resultados = DB::table('base_datos_siget')
             ->join('tipo_luminaria', 'base_datos_siget.tipo_luminaria_id', '=', 'tipo_luminaria.id')
@@ -82,22 +60,16 @@ class EvaluacionProyectosController extends Controller
         $tipo_id_array =  $resultados->pluck('tipo_id')->toArray();
         $tipos = TipoLuminaria::whereIn('id', $tipo_id_array)->get();
 
-        $data_numero_luminaria = $resultados->map(function ($resultado) {
-            return [
-                "name" => $resultado->tipo,
-                "y" => $resultado->conteo + 0,
-                "drilldown" => $resultado->tipo,
-            ];
-        })->all();
 
 
 
 
-        $resultados = BaseDatosSiget::
-            join('tipo_luminaria', 'base_datos_siget.tipo_luminaria_id', '=', 'tipo_luminaria.id')
+
+        $resultados = BaseDatosSiget::join('tipo_luminaria', 'base_datos_siget.tipo_luminaria_id', '=', 'tipo_luminaria.id')
             ->join('distrito', 'distrito.codigo', '=', 'base_datos_siget.municipio_id')
             ->select(
-                'tipo_luminaria.nombre as tipo','tipo_luminaria.id as tipo_id',
+                'tipo_luminaria.nombre as tipo',
+                'tipo_luminaria.id as tipo_id',
                 DB::raw('SUM(base_datos_siget.numero_luminarias) as conteo'),
                 'distrito.nombre',
                 'distrito.id',
@@ -107,15 +79,58 @@ class EvaluacionProyectosController extends Controller
             ->where('distrito.codigo', $request->distrito)
             ->where('base_datos_siget.anio', $anio)
             ->where('base_datos_siget.mes', $mes)
-            ->groupBy('distrito.nombre', 'distrito.id', 'tipo_luminaria.nombre', 'base_datos_siget.potencia_nominal','tipo_luminaria.id')
+            ->groupBy('distrito.nombre', 'distrito.id', 'tipo_luminaria.nombre', 'base_datos_siget.potencia_nominal', 'tipo_luminaria.id')
             ->get();
 
 
-        return view('publico.eva', compact('resultados', 'data_numero_luminaria', 'tipos','anio','mes'));
+        return view('publico.eva', compact('resultados',  'tipos', 'anio', 'mes'));
 
         //return response()->json($data_numero_luminaria);
     }
 
+
+    public function get_grafico($distrito_id)
+    {
+        $result = DB::table('base_datos_siget')
+            ->selectRaw('MAX(anio) as max_anio')
+            ->selectSub(function ($query) {
+                $query->from('base_datos_siget')
+                    ->whereColumn('anio', DB::raw('(SELECT MAX(anio) FROM base_datos_siget)'))
+                    ->selectRaw('MAX(mes) as max_mes');
+            }, 'max_mes')
+            ->first();
+
+        $anio = $result->max_anio;
+        $mes = $result->max_mes + 0;
+
+
+        $resultados = DB::table('base_datos_siget')
+            ->join('tipo_luminaria', 'base_datos_siget.tipo_luminaria_id', '=', 'tipo_luminaria.id')
+            ->join('distrito', 'distrito.codigo', '=', 'base_datos_siget.municipio_id')
+            ->select(
+                'tipo_luminaria.id as tipo_id',
+                'tipo_luminaria.nombre as tipo',
+                DB::raw('SUM(base_datos_siget.numero_luminarias) as conteo'),
+                'distrito.nombre',
+                'distrito.id',
+                DB::raw('base_datos_siget.consumo_mensual as consumo_mensual')
+            )
+            ->where('distrito.codigo', $distrito_id)
+            ->where('base_datos_siget.anio', $anio)
+            ->where('base_datos_siget.mes', $mes)
+            ->groupBy('distrito.nombre', 'distrito.id', 'tipo_luminaria.nombre')
+            ->get();
+
+        $data_numero_luminaria = $resultados->map(function ($resultado) {
+            return [
+                "name" => $resultado->tipo,
+                "y" => $resultado->conteo + 0,
+                "drilldown" => $resultado->tipo,
+            ];
+        })->all();
+
+        return view('publico.grafico', compact('data_numero_luminaria',  'anio', 'mes'));
+    }
     /**
      * Show the form for creating a new resource.
      *

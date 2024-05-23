@@ -93,6 +93,7 @@ Route::resource('reporte_falla', ControlReporteFallaController::class);
 //acceso publico
 Route::get('publico/reporte_falla_publico/get_distritos/{id}', [ReporteFallaPublicoController::class,'get_distritos']);
 Route::resource('publico/reporte_falla_publico', ReporteFallaPublicoController::class);
+Route::get('publico/evaluacion_proyectos/get_grafico/{distrito}', [EvaluacionProyectosController::class,'get_grafico']);
 Route::resource('publico/evaluacion_proyectos', EvaluacionProyectosController::class);
 Route::get('publico/getConteoLuminaria', [EvaluacionProyectosController::class, 'getConteoLuminaria']);
 

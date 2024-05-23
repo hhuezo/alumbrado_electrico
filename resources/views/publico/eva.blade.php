@@ -25,61 +25,12 @@
     }
 </style>
 
-<div id="divGrafico" class="xl:col-span-6 col-span-6 lg:col-span-6 ">
-    <div class="card p-6">
-        <div id="container_conteo_luminaria_pie"></div>
-
-    </div>
-</div>
-
-<div class="xl:col-span-12 col-span-12 lg:col-span-12 ">
-    @foreach ($tipos as $tipo)
-    <div class="card xl:col-span-6 col-span-6 lg:col-span-6 ">
-        <div class="card-body flex flex-col p-6">
-            <header class="flex mb-5 items-center border-b border-slate-100 dark:border-slate-700 pb-5 -mx-6 px-6">
-                <div class="flex-1">
-                    <div class="card-title text-slate-900 dark:text-white">{{ $tipo->nombre }}
-
-                    </div>
-                </div>
-            </header>
-
-            <table>
-                <thead>
-                    <tr>
-                        <th>Tecnología</th>
-                        <th>Potencia</th>
-                        <th>Consumo mensual</th>
-                        <th>Cantidad</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($resultados->where('tipo_id', $tipo->id) as $resultado)
-                        <tr>
-                            <td class="editable">{{ $tipo->nombre }}</td>
-                            <td class="editable">{{ $resultado->potencia_nominal }} Vatios</td>
-                            <td class="editable">{{ $resultado->consumo_mensual }} kwh</td>
-                            <td class="editable" contenteditable="true" style="text-align: right !important">0
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-
-        </div>
-    </div>
-@endforeach
-</div>
-
 <div class="xl:col-span-3 col-span-3 lg:col-span-3">
     <div class="h-full card">
         <div class="p-0  h-full relative card-body">
-            <header class="flex mb-5 items-center border-b border-slate-100 dark:border-slate-700 pb-5 -mx-6 px-6">
-                <div class="flex-1">
-                    <br>
-                    <div class="card-title text-slate-900 dark:text-white"> Tecnologias</div>
-                </div>
-            </header>
+            <div class="card-header">
+                <h4 class="card-title">Evaluación de proyectos</h4>
+            </div>
             <!-- END: Todo Header -->
             <div class="h-full all-todos overflow-x-hidden" data-simplebar="data-simplebar">
                 <ul class="divide-y divide-slate-100 dark:divide-slate-700 -mb-6 h-full todo-list">
@@ -103,18 +54,51 @@
 </div>
 
 
+@foreach ($tipos as $tipo)
+    <div class="xl:col-span-3 col-span-3 lg:col-span-3" style="display: none" id="divTipo{{ $tipo->id }}">
+        <div class="h-full card">
+            <div class="card-header">
+                <h5 class="card-title">{{ $tipo->nombre }}</h5>
+            </div>
 
-<div clas="xl:col-span-9 col-span-9 lg:col-span-9">
+            <div class="card-body flex flex-col p-6">
+                <table>
+                    <thead>
+                        <tr>
+                            {{-- <th>Tecnología</th> --}}
+                            <th>Potencia</th>
+                            <th>Consumo mensual</th>
+                            <th>Cantidad</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($resultados->where('tipo_id', $tipo->id) as $resultado)
+                            <tr>
+                                {{-- <td class="editable">{{ $tipo->nombre }}</td> --}}
+                                <td class="editable">{{ $resultado->potencia_nominal }} Vatios</td>
+                                <td class="editable">{{ $resultado->consumo_mensual }} kwh</td>
+                                <td class="editable"
+                                    id="input_{{ $resultado->tipo }}_{{ $resultado->potencia_nominal }}"
+                                    contenteditable="true" style="text-align: right !important"
+                                    onblur="updateInput(this.textContent,
+                                    'input_{{ $resultado->tipo }}_{{ $resultado->potencia_nominal }}_consumo_mensual_kwh',{{ $resultado->conteo }})"
+                                    onkeypress="return isDecimalKey(event)">0</td>
+                            </tr>
+                            <input
+                                id="input_{{ $resultado->tipo }}_{{ $resultado->potencia_nominal }}_consumo_mensual_kwh"
+                                type="text" class="form-control" value="{{ $resultado->consumo_mensual }}">
+                        @endforeach
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+@endforeach
 
 
 
-
-
-</div>
-
-
-
-
+{{--
 
 <div id="divFormTecnologias" class="xl:col-span-9 col-span-9 lg:col-span-9 ">
     <div class="card p-6 h-full">
@@ -140,13 +124,23 @@
                             class="form-control iluminaria porcentajeParque" placeholder="{{ $obj->tipo }}"
                             value="0" min="0" max="{{ $obj->conteo }}">
                         <input id="input_{{ $obj->tipo }}_{{ $obj->potencia_nominal }}_consumo_mensual_kwh"
-                            type="hidden" class="form-control" value="{{ $obj->consumo_mensual }}">
+                            type="text" class="form-control" value="{{ $obj->consumo_mensual }}">
                     </div>
                 @endforeach
             </div>
         </div>
     </div>
 </div>
+
+
+
+ --}}
+
+
+
+
+
+
 
 {{--
 <div class="xl:col-span-6 col-span-6 lg:col-span-7 ">
@@ -331,60 +325,7 @@
         $('#recomendable').hide();
         $('#noRecomendable').hide();
 
-        let chart;
-        chart = Highcharts.chart('container_conteo_luminaria_pie', {
-            chart: {
-                type: 'pie'
-            },
-            title: {
-                align: 'left',
-                text: 'Cantidad por tipo de luminaria'
-            },
-            subtitle: {
-                align: 'left',
-                text: ''
-            },
-            accessibility: {
-                announceNewData: {
-                    enabled: true
-                }
-            },
-            xAxis: {
-                type: 'category'
-            },
-            yAxis: {
-                title: {
-                    text: 'Número de luminarias'
-                }
 
-            },
-            legend: {
-                enabled: false
-            },
-            plotOptions: {
-                pie: {
-                    allowPointSelect: true,
-                    cursor: 'pointer',
-                    dataLabels: {
-                        enabled: true,
-                        format: '<b>{point.name}</b>: {point.y:.0f}'
-                    },
-                    showInLegend: true
-                }
-            },
-
-            tooltip: {
-                headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-                pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}</b>   <br/>'
-            },
-
-            series: [{
-                name: 'Browsers',
-                colorByPoint: true,
-                data: @json($data_numero_luminaria)
-
-            }]
-        });
 
         function updateTotal() {
             let tecno_susti_total_iluminarias = 0;
@@ -467,5 +408,35 @@
             div.style.display = "none";
         }
         console.log(checkbox);
+    }
+
+    function isDecimalKey(evt) {
+        var charCode = (evt.which) ? evt.which : evt.keyCode;
+
+        // Permitir números del 0 al 9
+        if (charCode >= 48 && charCode <= 57) {
+            return true;
+        }
+
+        // Permitir solo un punto decimal y verificar si ya hay uno presente
+        if (charCode === 46 && evt.target.value.indexOf('.') === -1) {
+            return true;
+        }
+
+        return false; // Bloquear cualquier otro carácter
+    }
+
+    function updateInput(valor, input, conteo) {
+        var valorDecimal = parseFloat(document.getElementById(input).value);
+        var conteoDecimal = parseFloat(conteo);
+        if (valorDecimal > conteo) {
+           alert("cantidad no válida");
+           document.getElementById(input).value = 0;
+        } else {
+            document.getElementById(input).value = valor;
+        }
+        //
+        //input
+        console.log(valorDecimal, conteoDecimal, conteoDecimal);
     }
 </script>
