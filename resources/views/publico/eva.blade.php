@@ -76,17 +76,17 @@
                             <tr>
                                 {{-- <td class="editable">{{ $tipo->nombre }}</td> --}}
                                 <td class="editable">{{ $resultado->potencia_nominal }} Vatios</td>
-                                <td class="editable">{{ $resultado->consumo_mensual }} kwh</td>
+                                <td class="editable">{{ $resultado->consumo_mensual }} kwh {{ $resultado->conteo }}</td>
                                 <td class="editable"
                                     id="input_{{ $resultado->tipo }}_{{ $resultado->potencia_nominal }}"
                                     contenteditable="true" style="text-align: right !important"
                                     onblur="updateInput(this.textContent,
-                                    'input_{{ $resultado->tipo }}_{{ $resultado->potencia_nominal }}_consumo_mensual_kwh',{{ $resultado->conteo }})"
+                                    'input_{{ $resultado->tipo }}_{{ $resultado->potencia_nominal }}',{{ $resultado->conteo }})"
                                     onkeypress="return isDecimalKey(event)">0</td>
                             </tr>
                             <input
                                 id="input_{{ $resultado->tipo }}_{{ $resultado->potencia_nominal }}_consumo_mensual_kwh"
-                                type="text" class="form-control" value="{{ $resultado->consumo_mensual }}">
+                                type="hidden" class="form-control" value="{{ $resultado->consumo_mensual }}">
                         @endforeach
 
                     </tbody>
@@ -142,7 +142,7 @@
 
 
 
-{{--
+
 <div class="xl:col-span-6 col-span-6 lg:col-span-7 ">
     <div class="card">
         <div class="card-body flex flex-col p-6">
@@ -301,7 +301,7 @@
 
         </div>
     </div>
-</div> --}}
+</div>
 <script type="text/javascript">
     $(document).ready(function() {
 
@@ -427,16 +427,17 @@
     }
 
     function updateInput(valor, input, conteo) {
-        var valorDecimal = parseFloat(document.getElementById(input).value);
-        var conteoDecimal = parseFloat(conteo);
-        if (valorDecimal > conteo) {
-           alert("cantidad no válida");
-           document.getElementById(input).value = 0;
-        } else {
-            document.getElementById(input).value = valor;
+        var valorInt = parseInt(valor);
+        var conteoInt = parseFloat(conteo);
+        var element = document.getElementById(input);
+
+        if (valorInt > conteoInt) {
+            alert("cantidad no válida");
+            //document.getElementById(input).value = 0;
+            $('#'+input).text('0');
         }
         //
         //input
-        console.log(valorDecimal, conteoDecimal, conteoDecimal);
+        console.log(valorInt, input, conteo);
     }
 </script>
