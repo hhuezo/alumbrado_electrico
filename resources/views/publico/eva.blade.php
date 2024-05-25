@@ -205,6 +205,8 @@
                 // Construir el id del span correspondiente
                 var spanId = '#span_' + tipo + '_' + potencia_nominal;
 
+                 console.log("nuevoValor ",nuevoValor);
+
                 // Cambiar el texto del span correspondiente
                 $(spanId).text(((nuevoValor*100)/totalParque) + '%');
             });
