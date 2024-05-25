@@ -26,7 +26,7 @@
                             kwh</span></label>
                     <input id="input_{{$obj->tipo}}_{{$obj->potencia_nominal}}" type="number"
                         class="form-control iluminaria porcentajeParque" placeholder="{{$obj->tipo}}" value="0" min="0" max="{{$obj->conteo}}">
-                    <input id="input_{{$obj->tipo}}_{{$obj->potencia_nominal}}_consumo_mensual_kwh" type="hidden"
+                    <input id="input_{{$obj->tipo}}_{{$obj->potencia_nominal}}_consumo_mensual_kwh" type="text"
                         class="form-control" value="{{$obj->consumo_mensual}}">
                 </div>
                 @endforeach
@@ -206,6 +206,10 @@
                 var spanId = '#span_' + tipo + '_' + potencia_nominal;
 
                  console.log("nuevoValor ",nuevoValor);
+                console.log("inputId ",inputId);
+                console.log("tipo ",tipo);
+                console.log("potencia_nominal ",potencia_nominal);
+                console.log("spanId ",spanId);
 
                 // Cambiar el texto del span correspondiente
                 $(spanId).text(((nuevoValor*100)/totalParque) + '%');
