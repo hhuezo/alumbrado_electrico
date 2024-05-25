@@ -1,12 +1,122 @@
-<div id="divGrafico" class="xl:col-span-3 col-span-3 lg:col-span-3 ">
-    <div class="card p-6 h-full">
-        <div class="space-y-5">
-            <div id="container_conteo_luminaria_pie"></div>
+<style>
+    .dataTable {
+        border-collapse: collapse;
+        width: 100%;
+        padding: 10px !important;
+    }
+
+    .th_td  {
+        border: 1px solid black;
+        padding: 8px;
+        text-align: center;
+    }
+
+    .backgroundth {
+        background-color: #f2f2f2;
+    }
+
+    .backgroundtd {
+        background-color: #ffffff;
+    }
+
+    .editable {
+        cursor: pointer;
+    }
+</style>
+
+
+
+<div class="xl:col-span-12 col-span-12 lg:col-span-12">
+    <div class="card">
+        <div class="card-body flex flex-col p-6">
+            <header class="flex mb-5 items-center border-b border-slate-100 dark:border-slate-700 pb-5 -mx-6 px-6">
+                <div class="flex-1">
+                    <div class="card-title text-slate-900 dark:text-white">Evaluación de proyectos</div>
+                </div>
+            </header>
+            <div class="card-text h-full ">
+                <div id="divFormTecnologias">
+                    <ul class="nav nav-tabs flex flex-col md:flex-row flex-wrap list-none border-b-0 pl-0 mb-4"
+                        id="tabs-tab" role="tablist">
+                        @php($i = 1)
+                        @foreach ($tipos as $tipo)
+                            <li class="nav-item" role="presentation">
+                                <a href="#tabs-{{ $tipo->id }}"
+                                    class="nav-link w-full {{ $i == 1 ? 'active' : '' }}  block font-medium text-sm font-Inter leading-tight capitalize border-x-0 border-t-0 border-b border-transparent px-4 pb-2 my-2 hover:border-transparent focus:border-transparent  dark:text-slate-300"
+                                    id="tabs-home-tab" data-bs-toggle="pill" data-bs-target="#tabs-{{ $tipo->id }}"
+                                    role="tab" aria-controls="tabs-home"
+                                    aria-selected="true">{{ $tipo->nombre }}</a>
+                            </li>
+                            @php($i++)
+                        @endforeach
+                    </ul>
+                    <div class="tab-content" id="tabs-tabContent">
+                        @php($i = 1)
+                        @foreach ($tipos as $tipo)
+                            <div class="tab-pane fade show {{ $i == 1 ? 'active' : '' }}" id="tabs-{{ $tipo->id }}"
+                                role="tabpanel" aria-labelledby="tabs-home-tab">
+                                <div class="card-body flex flex-col p-6">
+                                    <table class="dataTable">
+                                        <thead>
+                                            <tr>
+                                                <th class="th_td backgroundth">Potencia</th>
+                                                <th class="th_td backgroundth">Kwh</th>
+                                                <th class="th_td backgroundth">N° Luminarias</th>
+                                                <th class="th_td backgroundth">Cantidad</th>
+                                                <th class="th_td backgroundth">Porcentaje</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($resultados->where('tipo_id', $tipo->id) as $resultado)
+                                                <tr>
+                                                    <td class="editable th_td backgroundtd">{{ $resultado->potencia_nominal }} Vatios</td>
+                                                    <td class="editable th_td backgroundtd">{{ $resultado->consumo_mensual }}</td>
+                                                    <td class="editable th_td backgroundtd">{{ $resultado->conteo }}</td>
+                                                    <td class="editable th_td backgroundtd"
+                                                        id="celda_{{ $resultado->tipo_id }}_{{ $resultado->potencia_nominal }}"
+                                                        contenteditable="true" style="text-align: right !important"
+                                                        onblur="updateInput(this.textContent,
+                                                        '{{ $resultado->tipo_id }}_{{ $resultado->potencia_nominal }}',{{ $resultado->conteo }})"
+                                                        onkeypress="return isIntegerKey(event)">0</td>
+                                                    <td class="editable th_td backgroundtd"><span
+                                                            id="span_{{ $resultado->tipo_id }}_{{ $resultado->potencia_nominal }}"
+                                                            class="badge bg-primary-500 text-white capitalize">0%</span>
+
+                                                    </td>
+                                                </tr>
+                                                <input style="display: none"
+                                                    id="input_{{ $resultado->tipo_id }}_{{ $resultado->potencia_nominal }}"
+                                                    type="number" class="form-control iluminaria porcentajeParque"
+                                                    placeholder="{{ $resultado->tipo }}" value="0" min="0"
+                                                    max="{{ $resultado->conteo }}">
+                                                <input style="display: none"
+                                                    id="input_{{ $resultado->tipo_id }}_{{ $resultado->potencia_nominal }}_consumo_mensual_kwh"
+                                                    type="text" class="form-control"
+                                                    value="{{ $resultado->consumo_mensual }}">
+                                            @endforeach
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                                </p>
+                                @php($i++)
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+
+
 </div>
 
-<div id="divFormTecnologias" class="xl:col-span-9 col-span-9 lg:col-span-9 ">
+
+
+
+
+
+{{-- <div id="divFormTecnologias" class="xl:col-span-9 col-span-9 lg:col-span-9 ">
     <div class="card p-6 h-full">
         <div class="space-y-5">
             <header class="flex mb-5 items-center border-b border-slate-100 dark:border-slate-700 pb-5 -mx-6 px-6">
@@ -17,23 +127,37 @@
             </header>
             <div id="formTecnologias" class="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-5">
 
-                @foreach ($resultados as $obj )
-                <div class="input-area">
-                    <label for="input_{{$obj->tipo}}_{{$obj->potencia_nominal}}" class="form-label">{{$obj->tipo }}
-                        {{$obj->potencia_nominal }} Vatios <span id="span_{{$obj->tipo}}_{{$obj->potencia_nominal}}"
-                            class="badge bg-primary-500 text-white capitalize">0%</span> <span
-                            class="badge bg-slate-900 text-white capitalize">{{$obj->consumo_mensual}}
-                            kwh</span></label>
-                    <input id="input_{{$obj->tipo}}_{{$obj->potencia_nominal}}" type="number"
-                        class="form-control iluminaria porcentajeParque" placeholder="{{$obj->tipo}}" value="0" min="0" max="{{$obj->conteo}}">
-                    <input id="input_{{$obj->tipo}}_{{$obj->potencia_nominal}}_consumo_mensual_kwh" type="hidden"
-                        class="form-control" value="{{$obj->consumo_mensual}}">
-                </div>
+                @foreach ($resultados as $obj)
+                    <div class="input-area">
+                        <label for="input_{{ $obj->tipo }}_{{ $obj->potencia_nominal }}"
+                            class="form-label">{{ $obj->tipo }}
+                            {{ $obj->potencia_nominal }} Vatios <span
+                                id="span_{{ $obj->tipo }}_{{ $obj->potencia_nominal }}"
+                                class="badge bg-primary-500 text-white capitalize">0%</span> <span
+                                class="badge bg-slate-900 text-white capitalize">{{ $obj->consumo_mensual }}
+                                kwh</span></label>
+                        <input id="input_{{ $obj->tipo }}_{{ $obj->potencia_nominal }}" type="number"
+                            class="form-control iluminaria porcentajeParque" placeholder="{{ $obj->tipo }}"
+                            value="0" min="0" max="{{ $obj->conteo }}">
+                        <input id="input_{{ $obj->tipo }}_{{ $obj->potencia_nominal }}_consumo_mensual_kwh"
+                            type="text" class="form-control" value="{{ $obj->consumo_mensual }}">
+                    </div>
                 @endforeach
             </div>
         </div>
     </div>
-</div>
+</div> --}}
+
+
+
+
+
+
+
+
+
+
+
 <div class="xl:col-span-6 col-span-6 lg:col-span-7 ">
     <div class="card">
         <div class="card-body flex flex-col p-6">
@@ -48,13 +172,13 @@
 
 
             @if (count($errors) > 0)
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
             @endif
             <div class="space-y-4">
                 <div class="input-area relative pl-27">
@@ -160,15 +284,17 @@
                             class=" table-th border border-slate-100 dark:bg-slate-800 dark:border-slate-700 ">
                             PR
                         </th>
-                        <td id="pr" class="table-td border border-slate-100 dark:bg-slate-800 dark:border-slate-700 ">
+                        <td id="pr"
+                            class="table-td border border-slate-100 dark:bg-slate-800 dark:border-slate-700 ">
                         </td>
                     </tr>
 
 
                 </tbody>
             </table>
-<br>
-            <div id="recomendable" class="py-[18px] px-6 font-normal font-Inter text-sm rounded-md bg-success-500 text-white dark:bg-success-500
+            <br>
+            <div id="recomendable"
+                class="py-[18px] px-6 font-normal font-Inter text-sm rounded-md bg-success-500 text-white dark:bg-success-500
               dark:text-slate-300">
                 <div class="flex items-start space-x-3 rtl:space-x-reverse">
                     <div class="flex-1">
@@ -177,7 +303,8 @@
                 </div>
             </div>
 
-            <div id="noRecomendable" class="py-[18px] px-6 font-normal font-Inter text-sm rounded-md bg-danger-500 text-white dark:bg-danger-500
+            <div id="noRecomendable"
+                class="py-[18px] px-6 font-normal font-Inter text-sm rounded-md bg-danger-500 text-white dark:bg-danger-500
                                     dark:text-slate-300">
                 <div class="flex items-start space-x-3 rtl:space-x-reverse">
                     <div class="flex-1">
@@ -191,155 +318,215 @@
     </div>
 </div>
 <script type="text/javascript">
+    var totalParque = {{ $resultados->sum('conteo') }};
     $(document).ready(function() {
 
-        $(document).ready(function() {
-            totalParque= {{$resultados->sum('conteo')}};
-            // Evento input para todos los inputs de clase .iluminaria
-            $('.porcentajeParque').on('input', function() {
-                var inputId = $(this).attr('id'); // Obtener el id del input
-                var nuevoValor = $(this).val(); // Obtener el valor ingresado
-                var tipo = inputId.split('_')[1]; // Obtener tipo del id
-                var potencia_nominal = inputId.split('_')[2]; // Obtener potencia_nominal del id
 
-                // Construir el id del span correspondiente
-                var spanId = '#span_' + tipo + '_' + potencia_nominal;
 
-                // Cambiar el texto del span correspondiente
-                $(spanId).text(((nuevoValor*100)/totalParque) + '%');
-            });
-        });
+        // $(document).ready(function() {
+
+        //     // Evento input para todos los inputs de clase .iluminaria
+        //     $('.porcentajeParque').on('input', function() {
+        //         var inputId = $(this).attr('id'); // Obtener el id del input
+        //         var nuevoValor = $(this).val(); // Obtener el valor ingresado
+        //         var tipo = inputId.split('_')[1]; // Obtener tipo del id
+        //         var potencia_nominal = inputId.split('_')[2]; // Obtener potencia_nominal del id
+
+        //         console.log("nuevoValor ", nuevoValor);
+
+        //         // Construir el id del span correspondiente
+        //         var spanId = '#span_' + tipo + '_' + potencia_nominal;
+
+        //         // Cambiar el texto del span correspondiente
+        //         $(spanId).text(((nuevoValor * 100) / totalParque) + '%');
+        //     });
+        // });
 
         $('#recomendable').hide();
         $('#noRecomendable').hide();
 
-        let chart;
-        chart= Highcharts.chart('container_conteo_luminaria_pie', {
-                        chart: {
-                            type: 'pie'
-                        },
-                        title: {
-                            align: 'left',
-                            text: 'Cantidad por tipo de luminaria'
-                        },
-                        subtitle: {
-                            align: 'left',
-                            text: ''
-                        },
-                        accessibility: {
-                            announceNewData: {
-                                enabled: true
-                            }
-                        },
-                        xAxis: {
-                            type: 'category'
-                        },
-                        yAxis: {
-                            title: {
-                                text: 'Número de luminarias'
-                            }
 
-                        },
-                        legend: {
-                            enabled: false
-                        },
-                        plotOptions: {
-                            pie: {
-                                allowPointSelect: true,
-                                cursor: 'pointer',
-                                dataLabels: {
-                                    enabled: true,
-                                    format: '<b>{point.name}</b>: {point.y:.0f}'
-                                },
-                                showInLegend: true
-                            }
-                        },
 
-                        tooltip: {
-                            headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-                            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}</b>   <br/>'
-                        },
 
-                        series: [{
-                            name: 'Browsers',
-                            colorByPoint: true,
-                            data:  @json($data_numero_luminaria)
+        // Añadir evento 'input' a todos los inputs con la clase 'iluminaria'
+        $('.iluminaria').on('input', updateTotal);
+    });
 
-                        }]
-        });
+    function updateTotal(tecno_susti_total_iluminarias,precioEnergiaMensualTotal) {
+        /*let tecno_susti_total_iluminarias = 0;
+        let consumoMensual = 0;
+        let totalInversion = 0;
+        let costoMensualSustituido = 0;
+        let precioEnergiaMensualTotal = 0;
+        let numLuminarias = 0;*/
+        const VALORKWH = 0.14;
+        /*$('#formTecnologias').find('.input-area').each(function() {
+            numLuminarias = parseFloat($(this).find('input[type="number"]').val());
 
-        function updateTotal() {
-            let tecno_susti_total_iluminarias = 0;
-            let consumoMensual = 0;
-            let totalInversion=0;
-            let costoMensualSustituido=0;
-            let precioEnergiaMensualTotal=0;
-            const VALORKWH=0.14;
-            $('#formTecnologias').find('.input-area').each(function() {
-            let numLuminarias = parseFloat($(this).find('input[type="number"]').val());
-
-            if (numLuminarias>0) {
-                 consumoMensual = parseFloat($(this).find('input[type="hidden"]').val());
+            if (numLuminarias > 0) {
+                consumoMensual = parseFloat($(this).find('input[type="hidden"]').val());
             } else {
-                 consumoMensual = 0;
+                consumoMensual = 0;
             }
 
             if (!isNaN(numLuminarias) && !isNaN(consumoMensual)) {
                 tecno_susti_total_iluminarias += numLuminarias;
-                precioEnergiaMensualTotal += (VALORKWH*consumoMensual)*numLuminarias;
+                precioEnergiaMensualTotal += (VALORKWH * consumoMensual) * numLuminarias;
             }
-            });
+        });
 
-            if ($('#tecno_susti_valor_mercado').val() === "") {
-                $('#tecno_susti_valor_mercado').val(0);
-            }
 
-            totalInversion=tecno_susti_total_iluminarias*parseFloat($('#tecno_susti_valor_mercado').val());
 
-             //console.log("numLuminarias ", numLuminarias);
+
+
+        console.log("numLuminarias ", numLuminarias);
         console.log("consumoMensual ", consumoMensual);
         console.log("tecno_susti_total_iluminarias ", tecno_susti_total_iluminarias);
         console.log("precioEnergiaMensualTotal ", precioEnergiaMensualTotal);
+*/
 
-            $('#tecno_susti_total_iluminarias').val(tecno_susti_total_iluminarias);
-            $('#tecno_susti_total_inversion').val(totalInversion);
+        if ($('#tecno_susti_valor_mercado').val() === "") {
+            $('#tecno_susti_valor_mercado').val(0);
+        }
 
-            //precio_facturado_mensual precio_facturado_anual
-            $('#precio_facturado_mensual').text(precioEnergiaMensualTotal);
-            $('#precio_facturado_anual').text(precioEnergiaMensualTotal*12);
+        totalInversion = tecno_susti_total_iluminarias * parseFloat($('#tecno_susti_valor_mercado').val());
 
-            if ($('#tecno_susti_kwh_uso').val() === "") {
-                $('#tecno_susti_kwh_uso').val(0);
-            }
+        //console.log(numLuminarias," ",consumoMensual," ",tecno_susti_total_iluminarias," ",precioEnergiaMensualTotal);
 
-            //(VALORKWH*tecno_susti_kwh_uso)*tecno_susti_total_iluminarias
-            //precio_sustituido_costo_mensual precio_sustituido_costo_anual
-            costoMensualSustituido=(VALORKWH*parseFloat($('#tecno_susti_kwh_uso').val()))*parseFloat($('#tecno_susti_total_iluminarias').val());
-            $('#precio_sustituido_costo_mensual').text(costoMensualSustituido);
-            $('#precio_sustituido_costo_anual').text(costoMensualSustituido*12);
+        $('#tecno_susti_total_iluminarias').val(tecno_susti_total_iluminarias);
+        $('#tecno_susti_total_inversion').val(totalInversion);
 
-            //ahorro_mensual ahorro_anual
-            $('#ahorro_mensual').text(precioEnergiaMensualTotal-costoMensualSustituido);
-            $('#ahorro_anual').text(parseFloat($('#ahorro_mensual').text())*12);
+        //precio_facturado_mensual precio_facturado_anual
+        $('#precio_facturado_mensual').text(precioEnergiaMensualTotal);
+        $('#precio_facturado_anual').text(precioEnergiaMensualTotal * 12);
 
-            //pr
-            $('#pr').text(parseFloat(totalInversion)/parseFloat($('#ahorro_anual').text()));
+        if ($('#tecno_susti_kwh_uso').val() === "") {
+            $('#tecno_susti_kwh_uso').val(0);
+        }
 
-        if (totalInversion!==0 && parseFloat($('#ahorro_anual').text())!==0) {
-            if (parseFloat($('#pr').text())<=3) {
+        //(VALORKWH*tecno_susti_kwh_uso)*tecno_susti_total_iluminarias
+        //precio_sustituido_costo_mensual precio_sustituido_costo_anual
+        costoMensualSustituido = (VALORKWH * parseFloat($('#tecno_susti_kwh_uso').val())) * parseFloat($(
+            '#tecno_susti_total_iluminarias').val());
+        $('#precio_sustituido_costo_mensual').text(costoMensualSustituido);
+        $('#precio_sustituido_costo_anual').text(costoMensualSustituido * 12);
+
+        //ahorro_mensual ahorro_anual
+        $('#ahorro_mensual').text(precioEnergiaMensualTotal - costoMensualSustituido);
+        $('#ahorro_anual').text(parseFloat($('#ahorro_mensual').text()) * 12);
+
+        //pr
+        $('#pr').text(parseFloat(totalInversion) / parseFloat($('#ahorro_anual').text()));
+
+        if (totalInversion !== 0 && parseFloat($('#ahorro_anual').text()) !== 0) {
+            if (parseFloat($('#pr').text()) <= 3) {
                 $('#recomendable').show();
                 $('#noRecomendable').hide();
             } else {
                 $('#recomendable').hide();
                 $('#noRecomendable').show();
             }
-        }else{
+        } else {
             $('#recomendable').hide();
             $('#noRecomendable').hide();
         }
 
+    }
+
+    function showDivTipo(control) {
+        var checkbox = document.getElementById("checkboxTipo" + control).checked;
+        var div = document.getElementById("divTipo" + control);
+
+        if (checkbox) {
+            div.style.display = "block";
+        } else {
+            div.style.display = "none";
         }
-            // Añadir evento 'input' a todos los inputs con la clase 'iluminaria'
-            $('.iluminaria').on('input', updateTotal);
-    });
+        console.log(checkbox);
+    }
+
+    function isIntegerKey(evt) {
+        var charCode = (evt.which) ? evt.which : evt.keyCode;
+
+        // Permitir números del 0 al 9
+        if (charCode >= 48 && charCode <= 57) {
+            return true;
+        }
+
+        return false; // Bloquear cualquier otro carácter
+    }
+
+    function updateInput(valor, input, conteo) {
+        if (valor != "") {
+            var valorInt = parseInt(valor);
+            var conteoInt = parseInt(conteo);
+            var element = document.getElementById("input_" + input);
+
+            if (valorInt > conteoInt) {
+                alert("cantidad no válida");
+                //document.getElementById(input).value = 0;
+                $('#celda_' + input).text('0');
+                document.getElementById("input_" + input).value = 0;
+                $('#span_' + input).text("0");
+            } else {
+                document.getElementById("input_" + input).value = valor;
+                $('#span_' + input).text(((valorInt * 100) / totalParque) + '%');
+            }
+        } else {
+            $('#celda_' + input).text('0');
+            document.getElementById("input_" + input).value = 0;
+            $('#span_' + input).text("0");
+        }
+        imprimirValoresInputs();
+        //input
+        console.log(valorInt, input, conteo);
+    }
+
+
+    function imprimirValoresInputs() {
+        var tecno_susti_total_iluminarias = 0;
+        var precioEnergiaMensualTotal = 0;
+        const VALORKWH = 0.14;
+        @foreach ($resultados as $resultado)
+            // Utiliza jQuery para obtener el valor del input _consumo_mensual_kwh
+            var luminarias = $('#input_{{ $resultado->tipo_id }}_{{ $resultado->potencia_nominal }}').val();
+            console.log("luminarias: " + luminarias);
+            var consumoMensual = $(
+                '#input_{{ $resultado->tipo_id }}_{{ $resultado->potencia_nominal }}_consumo_mensual_kwh').val();
+            console.log("consumoMensual: " + consumoMensual);
+            var luminariasInt = parseInt(luminarias);
+            var consumoMensualDecimal = parseFloat(consumoMensual);
+
+            if (luminariasInt > 0) {
+                tecno_susti_total_iluminarias += luminariasInt;
+                precioEnergiaMensualTotal += (VALORKWH * consumoMensualDecimal) * luminariasInt;
+
+            }
+        @endforeach
+
+        console.log("total luminarias: " + tecno_susti_total_iluminarias);
+        console.log("precioEnergiaMensualTotal: " + precioEnergiaMensualTotal);
+
+        updateTotal(tecno_susti_total_iluminarias,precioEnergiaMensualTotal);
+
+    }
+
+    /*
+
+  $('.porcentajeParque').on('input', function() {
+                var inputId = $(this).attr('id'); // Obtener el id del input
+                var nuevoValor = $(this).val(); // Obtener el valor ingresado
+                var tipo = inputId.split('_')[1]; // Obtener tipo del id
+                var potencia_nominal = inputId.split('_')[2]; // Obtener potencia_nominal del id
+
+                console.log("nuevoValor ",nuevoValor);
+
+                // Construir el id del span correspondiente
+                var spanId = '#span_' + tipo + '_' + potencia_nominal;
+
+                // Cambiar el texto del span correspondiente
+                $(spanId).text(((nuevoValor * 100) / totalParque) + '%');
+            });
+
+    */
 </script>

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\catalogo\TipoLuminaria;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -40,5 +41,10 @@ class BaseDatosSiget extends Model
 
 
     protected $guarded = [];
+
+    public function tipoLuminaria()
+    {
+        return $this->belongsTo(TipoLuminaria::class, 'tipo_luminaria_id', 'id');
+    }
 
 }

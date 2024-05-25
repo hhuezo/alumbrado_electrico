@@ -7,6 +7,7 @@ use App\Http\Controllers\control\ReporteFallaController as ControlReporteFallaCo
 use App\Http\Controllers\catalogo\TipoFallaController;
 use App\Http\Controllers\catalogo\TipoLuminariaController;
 use App\Http\Controllers\control\CensoLuminariaController;
+use App\Http\Controllers\control\ComparacionCensosController;
 use App\Http\Controllers\control\ValorEnergiaController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\importacion\BaseDatosController;
@@ -16,6 +17,8 @@ use App\Http\Controllers\publico\ReporteFallaPublicoController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\WelcomeController;
+use App\Models\catalogo\Departamento;
+use App\Models\catalogo\Distrito;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -70,6 +73,8 @@ Route::get('censo_luminaria/get_consumo_mensual/{id}', [CensoLuminariaController
 Route::resource('control/censo_luminaria', CensoLuminariaController::class);
 Route::resource('control/valor_mensual_energia', ValorEnergiaController::class);
 
+Route::resource('control/comparacion_censos', ComparacionCensosController::class);
+
 //catalogos
 Route::post('catalogo/biblioteca/active', [BibliotecaController::class,'active']);
 Route::resource('catalogo/biblioteca', BibliotecaController::class);
@@ -88,8 +93,13 @@ Route::resource('reporte_falla', ControlReporteFallaController::class);
 //acceso publico
 Route::get('publico/reporte_falla_publico/get_distritos/{id}', [ReporteFallaPublicoController::class,'get_distritos']);
 Route::resource('publico/reporte_falla_publico', ReporteFallaPublicoController::class);
+Route::get('publico/evaluacion_proyectos/get_grafico/{distrito}', [EvaluacionProyectosController::class,'get_grafico']);
 Route::resource('publico/evaluacion_proyectos', EvaluacionProyectosController::class);
 Route::get('publico/getConteoLuminaria', [EvaluacionProyectosController::class, 'getConteoLuminaria']);
 
 
 Route::resource('importacion/base_datos', BaseDatosController::class);
+Route::get('get_municipios/{id}',[DistritoController::class, 'get_municipios']);
+Route::get('get_distritos/{id}',[DistritoController::class, 'get_distritos']);
+Route::get('get_option/{id}',[DistritoController::class,'get_option']);
+

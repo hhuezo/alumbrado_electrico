@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\BaseDatosSiget;
+use App\Models\catalogo\Departamento;
+use App\Models\catalogo\Distrito;
+use App\Models\catalogo\Municipio;
 use App\Models\catalogo\TipoLuminaria;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -27,10 +30,13 @@ class HomeController extends Controller
 
     public function index(Request $request)
     {
+
         $verificacion_data = BaseDatosSiget::count('id');
 
         $mes = null;
         $anio = null;
+        $id_distrito = null;
+        $nombre_distrito = 'Todos';
         if ($request->mes) {
             $mes  = $request->mes;
         }
@@ -44,17 +50,30 @@ class HomeController extends Controller
             }
         }
 
+        if ($request->id_distrito) {
+            $id_distrito = array();
+            $dis  = Distrito::findOrFail($request->id_distrito);
+            array_push($id_distrito, $dis->codigo);
+            $nombre_distrito = $dis->nombre;
+        } else {
+            //$id_distrito = array();
+            $dis  = Distrito::get();
+            $id_distrito = $dis->pluck('codigo')->toArray();
+        }
+
         if ($verificacion_data > 0) {
 
-            if ($anio && $mes) {
+            if ($anio && $mes && $id_distrito) {
                 $resultados = DB::table('base_datos_siget')
                     ->join('tipo_luminaria', 'base_datos_siget.tipo_luminaria_id', '=', 'tipo_luminaria.id')
                     ->where('mes', $mes)
                     ->where('anio', $anio)
+                    ->whereIn('municipio_id', $id_distrito)
                     ->select('tipo_luminaria.nombre as tipo', DB::raw('SUM(base_datos_siget.consumo_mensual * numero_luminarias) as consumo_mensual'))
                     ->groupBy('tipo_luminaria.nombre')
                     ->get();
             } else {
+
                 // Si no hay valores válidos para $anio y $mes, ejecutar la consulta sin esas condiciones
                 $resultados = DB::table('base_datos_siget')
                     ->join('tipo_luminaria', 'base_datos_siget.tipo_luminaria_id', '=', 'tipo_luminaria.id')
@@ -70,11 +89,12 @@ class HomeController extends Controller
                     "drilldown" => $resultado->tipo,
                 ];
             })->all();
-            if ($anio && $mes) {
+            if ($anio && $mes && $id_distrito) {
                 $resultados = DB::table('base_datos_siget')
                     ->join('tipo_luminaria', 'base_datos_siget.tipo_luminaria_id', '=', 'tipo_luminaria.id')
                     ->where('mes', $mes)
                     ->where('anio', $anio)
+                    ->whereIn('municipio_id', $id_distrito)
                     ->select('tipo_luminaria.nombre as tipo', DB::raw('sum(base_datos_siget.numero_luminarias) as conteo'))
                     ->groupBy('tipo_luminaria.nombre')
                     ->get();
@@ -98,9 +118,9 @@ class HomeController extends Controller
             //rangos
             $data_rango_potencia_instalada = [];
             $tipo_luminarias = TipoLuminaria::where('activo', '1')
-                ->withCount(['baseDatosSiget as potencias_count' => function ($query) use ($mes, $anio) {
+                ->withCount(['baseDatosSiget as potencias_count' => function ($query) use ($mes, $anio, $id_distrito) {
                     $query->select(DB::raw('count(distinct potencia_nominal)'))->where('mes', $mes)
-                        ->where('anio', $anio);
+                        ->where('anio', $anio)->whereIn('municipio_id', $id_distrito);
                 }])->get();
 
 
@@ -112,15 +132,37 @@ class HomeController extends Controller
                     'id' => $tipo->id
                 ];
             }
-        }
-        else{
+
+
+        } else {
             $data_tipo_luminaria = null;
             $data_numero_luminaria = null;
             $data_rango_potencia_instalada = null;
         }
         $meses = ["01" => "Enero", "02" => "Febrero", "03" => "Marzo", "04" => "Abril", "05" => "Mayo", "06" => "Junio", "07" => "Julio", "08" => "Agosto", "09" => "Septiembre", "10" => "Octubre", "11" => "Noviembre", "12" => "Diciembre"];
+        $departamentos = Departamento::get();
+        $municipios = Municipio::get();
+        $distritos = Distrito::get();
 
-        return view('home', compact('anio', 'mes', 'data_tipo_luminaria', 'data_numero_luminaria', 'data_rango_potencia_instalada', 'meses','verificacion_data'));
+        /*
+        $data_censo_siget = [];
+        $data_censo_propio = [];
+        $data_censo_facturado = [];*/
+
+
+        return view('home', compact(
+            'nombre_distrito',
+            'departamentos',
+            'municipios',
+            'distritos',
+            'anio',
+            'mes',
+            'data_tipo_luminaria',
+            'data_numero_luminaria',
+            'data_rango_potencia_instalada',
+            'meses',
+            'verificacion_data',
+        ));
     }
 
 
