@@ -302,6 +302,11 @@
 
             totalInversion=tecno_susti_total_iluminarias*parseFloat($('#tecno_susti_valor_mercado').val());
 
+             //console.log("numLuminarias ", numLuminarias);
+        console.log("consumoMensual ", consumoMensual);
+        console.log("tecno_susti_total_iluminarias ", tecno_susti_total_iluminarias);
+        console.log("precioEnergiaMensualTotal ", precioEnergiaMensualTotal);
+
             $('#tecno_susti_total_iluminarias').val(tecno_susti_total_iluminarias);
             $('#tecno_susti_total_inversion').val(totalInversion);
 
