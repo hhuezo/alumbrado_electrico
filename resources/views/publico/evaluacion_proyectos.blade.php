@@ -1,6 +1,5 @@
 @extends('menu')
 @section('contenido')
-    @include('sweetalert::alert', ['cdn' => 'https://cdn.jsdelivr.net/npm/sweetalert2@9'])
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="https://code.highcharts.com/modules/exporting.js"></script>
     <script src="https://code.highcharts.com/modules/export-data.js"></script>
@@ -12,7 +11,7 @@
             display: none;
         }
     </style>
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
     <div class="space-y-5">

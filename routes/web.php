@@ -6,6 +6,7 @@ use App\Http\Controllers\catalogo\ReporteFallaController;
 use App\Http\Controllers\control\ReporteFallaController as ControlReporteFallaController;
 use App\Http\Controllers\catalogo\TipoFallaController;
 use App\Http\Controllers\catalogo\TipoLuminariaController;
+use App\Http\Controllers\catalogo\ValorKWHController;
 use App\Http\Controllers\control\CensoLuminariaController;
 use App\Http\Controllers\control\ComparacionCensosController;
 use App\Http\Controllers\control\ValorEnergiaController;
@@ -81,6 +82,8 @@ Route::resource('catalogo/biblioteca', BibliotecaController::class);
 Route::post('catalogo/tipo_luminaria/create_potencia', [TipoLuminariaController::class,'create_potencia']);
 Route::resource('catalogo/tipo_luminaria', TipoLuminariaController::class);
 Route::resource('catalogo/tipo_falla', TipoFallaController::class);
+
+Route::resource('catalogo/valorkwh', ValorKWHController::class);
 
 
 Route::get('catalogo/reporte_falla/get_distrito_id/{name}', [ReporteFallaController::class,'getDistritoId']);

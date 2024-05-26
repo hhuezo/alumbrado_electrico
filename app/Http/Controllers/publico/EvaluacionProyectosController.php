@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\BaseDatosSiget;
 use App\Models\catalogo\Departamento;
 use App\Models\catalogo\TipoLuminaria;
+use App\Models\Configuracion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -82,8 +83,9 @@ class EvaluacionProyectosController extends Controller
             ->groupBy('distrito.nombre', 'distrito.id', 'tipo_luminaria.nombre', 'base_datos_siget.potencia_nominal', 'tipo_luminaria.id')
             ->get();
 
+            $configuracion = Configuracion::first();
 
-        return view('publico.eva', compact('resultados',  'tipos', 'anio', 'mes'));
+        return view('publico.eva', compact('resultados',  'tipos', 'anio', 'mes','configuracion'));
 
         //return response()->json($data_numero_luminaria);
     }

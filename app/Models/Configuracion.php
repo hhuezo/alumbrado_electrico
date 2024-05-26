@@ -18,6 +18,7 @@ class Configuracion extends Model
 
     protected $fillable = [
         'api_key_maps',
+        'valor_kwh',
     ];
 
     protected $guarded = [];
