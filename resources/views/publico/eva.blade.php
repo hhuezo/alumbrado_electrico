@@ -183,13 +183,20 @@
             @endif
             <div class="space-y-4">
                 <div class="input-area relative pl-27">
-                    <label for="tecnologia_sustituir" class="inputLabel">Tecnologia</label>
-                    <input id="tecnologia_sustituir" type="text" class="form-control" placeholder="Tecnologia">
+                    <label for="largeInput" class="form-label">Tecnologia a sustituir</label>
+                    <select class="form-control select2" id="tecnologia_sustituir">
+                        <option value="" selected disabled>Seleccione...</option>
+                        @foreach ($resultados as $obj)
+                            <option value="{{ $obj->consumo_mensual }}">
+                                {{ $obj->tipo }} {{ $obj->potencia_nominal }} Vatios
+                            </option>
+                        @endforeach
+                    </select>
                 </div>
                 <br>
                 <div class="input-area relative pl-27">
                     <label for="tecno_susti_kwh_uso" class="inputLabel">kwh de uso</label>
-                    <input id="tecno_susti_kwh_uso" type="number" class="form-control iluminaria"
+                    <input readonly id="tecno_susti_kwh_uso" type="number" class="form-control iluminaria"
                         placeholder="kwh de uso">
                 </div>
                 <br>
@@ -319,7 +326,12 @@
 <script type="text/javascript">
     var totalParque = {{ $resultados->sum('conteo') }};
     $(document).ready(function() {
+        //tecnologia_sustituir tecno_susti_kwh_uso
 
+        function cambiarValorMercadoUnidadSusti() {
+            $("#tecno_susti_kwh_uso").val($("#tecnologia_sustituir").val());
+
+        }
 
 
         // $(document).ready(function() {
@@ -349,6 +361,8 @@
 
         // Añadir evento 'click' a botón btnCalcular
         $('#btnCalcular').on('click', imprimirValoresInputs);
+        $('#tecnologia_sustituir').on('change', cambiarValorMercadoUnidadSusti);
+
     });
 
     function updateTotal(tecno_susti_total_iluminarias,precioEnergiaMensualTotal,VALORKWH) {
