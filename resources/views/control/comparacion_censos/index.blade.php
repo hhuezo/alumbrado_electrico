@@ -119,7 +119,7 @@
                 },
                 title: {
                     align: 'left',
-                    text: 'Censo propio - facturado'
+                    text: 'Diferencia de censo propio con respecto al facturado'
                 },
                 subtitle: {
                     align: 'left',
