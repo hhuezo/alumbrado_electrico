@@ -203,7 +203,7 @@
                                     <a href="{{ url('publico/evaluacion_proyectos') }}">Evaluación de proyectos</a>
                                 </li>
                                 <li>
-                                    <a href="#">Biblioteca / Info general</a>
+                                    <a href="{{ url('publico/biblioteca_publica') }}">Biblioteca / Info general</a>
                                 </li>
                             </ul>
                         </li>
