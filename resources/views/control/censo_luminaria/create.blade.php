@@ -257,7 +257,7 @@
                         <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-7">
 
                             <div class="input-area">
-                                <label for="largeInput" class="form-label">Comapñia</label>
+                                <label for="largeInput" class="form-label">Compañia</label>
                                 <select class="form-control" name="compania_id" id="compania" required>
                                     <option value="">Seleccione</option>
                                     @foreach ($companias as $obj)
