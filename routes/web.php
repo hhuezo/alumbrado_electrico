@@ -81,6 +81,9 @@ Route::resource('control/comparacion_censos', ComparacionCensosController::class
 Route::post('catalogo/biblioteca/active', [BibliotecaController::class,'active']);
 Route::resource('catalogo/biblioteca', BibliotecaController::class);
 Route::post('catalogo/tipo_luminaria/create_potencia', [TipoLuminariaController::class,'create_potencia']);
+Route::get('catalogo/tipo_luminaria/create_tecnologia_sustituir/{id}/edit', [TipoLuminariaController::class,'create_tecnologia_sustituir']);
+Route::post('catalogo/tipo_luminaria/store_tecnologia_sustituir/{id}', [TipoLuminariaController::class,'store_tecnologia_sustituir'])->name('tipo_luminaria.store_tecnologia_sustituir');
+Route::delete('catalogo/tipo_luminaria/delete_tecnologia_sustituir/{id}', [TipoLuminariaController::class,'delete_tecnologia_sustituir'])->name('tipo_luminaria.delete_tecnologia_sustituir');
 Route::resource('catalogo/tipo_luminaria', TipoLuminariaController::class);
 Route::resource('catalogo/tipo_falla', TipoFallaController::class);
 
@@ -101,6 +104,8 @@ Route::resource('publico/reporte_falla_publico', ReporteFallaPublicoController::
 Route::get('publico/evaluacion_proyectos/get_grafico/{distrito}', [EvaluacionProyectosController::class,'get_grafico']);
 Route::resource('publico/evaluacion_proyectos', EvaluacionProyectosController::class);
 Route::get('publico/getConteoLuminaria', [EvaluacionProyectosController::class, 'getConteoLuminaria']);
+Route::get('publico/getTecnologiasSugeridas', [EvaluacionProyectosController::class, 'getTecnologiasSugeridas']);
+
 
 
 Route::resource('importacion/base_datos', BaseDatosController::class);

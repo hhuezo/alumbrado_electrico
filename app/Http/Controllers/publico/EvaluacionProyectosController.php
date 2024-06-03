@@ -5,6 +5,8 @@ namespace App\Http\Controllers\publico;
 use App\Http\Controllers\Controller;
 use App\Models\BaseDatosSiget;
 use App\Models\catalogo\Departamento;
+use App\Models\catalogo\PotenciaPromedio;
+use App\Models\catalogo\TecnologiaSustituir;
 use App\Models\catalogo\TipoLuminaria;
 use App\Models\Configuracion;
 use Illuminate\Http\Request;
@@ -83,11 +85,41 @@ class EvaluacionProyectosController extends Controller
             ->groupBy('distrito.nombre', 'distrito.id', 'tipo_luminaria.nombre', 'base_datos_siget.potencia_nominal', 'tipo_luminaria.id')
             ->get();
 
-            $configuracion = Configuracion::first();
+        $configuracion = Configuracion::first();
 
-        return view('publico.eva', compact('resultados',  'tipos', 'anio', 'mes','configuracion'));
+        return view('publico.eva', compact('resultados',  'tipos', 'anio', 'mes', 'configuracion'));
 
         //return response()->json($data_numero_luminaria);
+    }
+
+    public function getTecnologiasSugeridas(Request $request)
+    {
+        //dd($request->input('tecnologia_actual_array'), "datos_enviados");
+
+        $datos = $request->input('tecnologia_actual_array');
+
+        $resultados = [];
+        foreach ($datos as $dato) {
+            //dd($dato['tipo_id'],$dato['potencia_nominal'],$dato['consumo_mensual_kwh'], "primer registro");
+
+            $registro = PotenciaPromedio::where('tipo_luminaria_id', (int) $dato['tipo_id'])
+                ->where('potencia', (string) $dato['potencia_nominal'])
+                ->where('consumo_promedio',(float) $dato['consumo_mensual_kwh'])
+                ->first();
+                //dd($registro,"Tecnologia1");
+
+            if ($registro) {
+                $resultados[] = $registro->id;
+            }
+        }
+        //dd($resultados,ids);
+
+        $tecnologiasRemplazar = TecnologiaSustituir::whereIn('tecnologia_actual_id', $resultados)->get();
+        $sustituir_id_array =  $tecnologiasRemplazar->pluck('tecnologia_sustituir_id')->toArray();
+        $tecnologiasRemplazar = PotenciaPromedio::whereIn('id', $sustituir_id_array)->get();
+        //dd($tecnologiasRemplazar);
+
+        return view('publico.combo_tecnologias_sustituir_', compact('tecnologiasRemplazar'));
     }
 
 
