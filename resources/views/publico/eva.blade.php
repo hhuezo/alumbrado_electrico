@@ -24,7 +24,6 @@
     }
 </style>
 
-
 <div class="xl:col-span-12 col-span-12 lg:col-span-12">
     <div class="card">
         <div class="card-body flex flex-col p-6">
@@ -101,7 +100,7 @@
                                 @php($i++)
                             </div>
                         @endforeach
-                        <button id="btnCalcular" style=" float: right;" class="btn inline-flex justify-center btn-dark">Calcular Analisis Financiero</button>
+                        <button id="btnGetTecnologiasSustituir" style=" float: right;" class="btn inline-flex justify-center btn-dark">Obtener tecnologías sugeridas</button>
 
                     </div>
                 </div>
@@ -183,25 +182,20 @@
             @endif
             <div class="space-y-4">
                 <div class="input-area relative pl-27">
-                    <label for="largeInput" class="form-label">Tecnologia a sustituir</label>
+                    <label for="largeInput" class="form-label">Tecnología a sustituir</label>
                     <select class="form-control select2" id="tecnologia_sustituir">
                         <option value="" selected disabled>Seleccione...</option>
-                        @foreach ($resultados as $obj)
-                            <option value="{{ $obj->consumo_mensual }}">
-                                {{ $obj->tipo }} {{ $obj->potencia_nominal }} Vatios
-                            </option>
-                        @endforeach
                     </select>
                 </div>
                 <br>
                 <div class="input-area relative pl-27">
-                    <label for="tecno_susti_kwh_uso" class="inputLabel">kwh de uso</label>
+                    <label for="tecno_susti_kwh_uso" class="inputLabel">kWh de uso</label>
                     <input readonly id="tecno_susti_kwh_uso" type="number" class="form-control iluminaria"
                         placeholder="kwh de uso">
                 </div>
                 <br>
                 <div class="input-area relative pl-27">
-                    <label for="tecno_susti_valor_mercado" class="inputLabel">Valor Mercado por unidad</label>
+                    <label for="tecno_susti_valor_mercado" class="inputLabel">Precio Mercado por unidad ($)</label>
                     <input id="tecno_susti_valor_mercado" type="number" class="form-control iluminaria"
                         placeholder="Valor Mercado por unidad">
                 </div>
@@ -213,13 +207,17 @@
                 </div>
                 <br>
                 <div class="input-area relative pl-27">
-                    <label for="tecno_susti_total_inversion" class="inputLabel">Total inversión $</label>
+                    <label for="tecno_susti_total_inversion" class="inputLabel">Total inversión ($)</label>
                     <input readonly id="tecno_susti_total_inversion" type="text" class="form-control"
                         placeholder="Total inversión">
                 </div>
             </div>
+
         </div>
+        <button id="btnCalcular" style=" float: right;" class="btn inline-flex justify-center btn-dark">Calcular Analisis Financiero</button>
+
     </div>
+
 </div>
 <div class="xl:col-span-6 col-span-6 lg:col-span-7 ">
     <div class="card">
@@ -230,7 +228,7 @@
                     </div>
                 </div>
             </header>
-            <label for="" class="text-slate-600 dark:text-slate-300 text-left px-6 py-4 text-xs font-normal"> Valor Kwh: {{rtrim($configuracion->valor_kwh,'0')}}</label>
+            <label for="" class="dark:bg-slate-800 dark:border-slate-700 text-primary-500"> Valor kWh: {{rtrim($configuracion->valor_kwh,'0')}}</label>
             <table class="min-w-full divide-y divide-slate-100 table-fixed dark:divide-slate-700">
                 <thead class="">
                     <tr>
@@ -361,6 +359,7 @@
 
         // Añadir evento 'click' a botón btnCalcular
         $('#btnCalcular').on('click', imprimirValoresInputs);
+        $('#btnGetTecnologiasSustituir').on('click', getTecnologiaSustituir);
         $('#tecnologia_sustituir').on('change', cambiarValorMercadoUnidadSusti);
 
     });
@@ -522,6 +521,52 @@
         console.log(valorInt, input, conteo);
     }
 
+    function getTecnologiaSustituir() {
+        var tecno_susti_total_iluminarias = 0;
+        var tecnologia_actual_array = [];
+        @foreach ($resultados as $resultado)
+            // Utiliza jQuery para obtener el valor del input _consumo_mensual_kwh
+            var luminarias = $('#input_{{ $resultado->tipo_id }}_{{ $resultado->potencia_nominal }}').val();
+            //console.log("luminarias: " + luminarias);
+            var consumoMensual = $(
+                '#input_{{ $resultado->tipo_id }}_{{ $resultado->potencia_nominal }}_consumo_mensual_kwh').val();
+            var luminariasInt = parseInt(luminarias);
+
+            if (luminariasInt > 0) {
+                var newItem = {
+                    tipo_id: {{ $resultado->tipo_id }},
+                    potencia_nominal: {{ $resultado->potencia_nominal }},
+                    consumo_mensual_kwh: {{ $resultado->consumo_mensual }}
+                };
+                tecnologia_actual_array.push(newItem);
+            }
+        @endforeach
+
+        console.log("tecnologia_actual_array: " + tecnologia_actual_array);
+
+        updateTecnologia_sustituirCBX(tecnologia_actual_array);
+
+    }
+
+    function updateTecnologia_sustituirCBX(tecnologia_actual_array) {
+                let parametros = {
+                    "tecnologia_actual_array": tecnologia_actual_array
+                };
+                $.ajax({
+                    type: "get",
+                    url: "{{ URL::to('publico/getTecnologiasSugeridas') }}",
+                    data: parametros,
+                    success: function(response) {
+                        console.log(response);
+                        let cBXtecnologia_sustituir = $('#tecnologia_sustituir');
+                        cBXtecnologia_sustituir.empty();
+                        $('#tecno_susti_kwh_uso').val(0);
+                        if (response !== null && !$.isEmptyObject(response)) {
+                            cBXtecnologia_sustituir.html(response);
+                        }
+                    }
+                });
+    }
 
     function imprimirValoresInputs() {
         var tecno_susti_total_iluminarias = 0;

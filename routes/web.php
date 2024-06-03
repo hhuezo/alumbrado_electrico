@@ -102,6 +102,8 @@ Route::resource('publico/reporte_falla_publico', ReporteFallaPublicoController::
 Route::get('publico/evaluacion_proyectos/get_grafico/{distrito}', [EvaluacionProyectosController::class,'get_grafico']);
 Route::resource('publico/evaluacion_proyectos', EvaluacionProyectosController::class);
 Route::get('publico/getConteoLuminaria', [EvaluacionProyectosController::class, 'getConteoLuminaria']);
+Route::get('publico/getTecnologiasSugeridas', [EvaluacionProyectosController::class, 'getTecnologiasSugeridas']);
+
 
 
 Route::resource('importacion/base_datos', BaseDatosController::class);
