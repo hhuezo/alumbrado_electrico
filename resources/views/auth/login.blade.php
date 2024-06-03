@@ -14,7 +14,7 @@
     <script src="{{ asset('assets/js/settings.js') }}" sync></script>
     <!-- END : Theme Config js-->
     @include('sweetalert::alert', ['cdn' => 'https://cdn.jsdelivr.net/npm/sweetalert2@9'])
-    <div class="loginwrapper bg-cover bg-no-repeat bg-center" style="background-image: url(img/image.jpeg);">
+    <div class="loginwrapper bg-cover bg-no-repeat bg-center" style="background-image: url(img/image.jpg);">
         {{-- style="background-image: url(img/familia_dashboard.jpg);" --}}
         <div class="lg-inner-column">
             <div class="left-columns lg:w-1/2 lg:block hidden">

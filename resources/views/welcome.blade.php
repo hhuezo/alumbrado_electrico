@@ -189,7 +189,16 @@
                             <!-- BEGIN: Breadcrumb -->
                             <div class="mb-5">
                                 <ul class="m-0 p-0 list-none">
-
+                                    <button
+                                        class="btn btn-white float-left  dark:bg-slate-700 dark:text-slate-300 m-1 active"
+                                        id="pills-grid-tab" data-bs-toggle="pill" data-bs-target="#pills-grid"
+                                        role="tab" aria-controls="pills-grid" aria-selected="true">
+                                        <span class="flex items-center">
+                                            <iconify-icon class="text-xl ltr:mr-2 rtl:ml-2"
+                                                icon="heroicons-outline:view-grid"></iconify-icon>
+                                            <span>Reporte de falla</span>
+                                        </span>
+                                    </button>
                                 </ul>
                             </div>
                             <!-- END: BreadCrumb -->
@@ -197,6 +206,8 @@
                         <div class="flex flex-wrap ">
                             <ul class="nav nav-pills flex items-center flex-wrap list-none pl-0 mr-4" id="pills-tabVertical"
                                 role="tablist">
+
+
                                 <li class="nav-item flex-grow text-center" role="presentation">
                                     <a href="{{ url('/') }}?opcion=1">
                                         <button
@@ -1114,7 +1125,8 @@
 
                             function showData(id) {
                                 $.ajax({
-                                    url: '{{ url('welcome/rango_potencia_data') }}/' + id + '/' + {{ $anio }} + '/' + {{ $mes }} + '?departamento_id=' + {{$departamento_id}},
+                                    url: '{{ url('welcome/rango_potencia_data') }}/' + id + '/' + {{ $anio }} + '/' +
+                                        {{ $mes }} + '?departamento_id=' + {{ $departamento_id }},
                                     type: 'GET',
                                     success: function(response) {
                                         // Aquí manejas la respuesta del servidor
@@ -1149,8 +1161,8 @@
         <script src="{{ asset('assets/js/sidebar-menu.js') }}"></script>
         <script src="{{ asset('assets/js/app.js') }}"></script>
 
-     <!-- Select2 -->
-     <script src="{{ asset('vendors/select2/select2.min.js') }}"></script>
+        <!-- Select2 -->
+        <script src="{{ asset('vendors/select2/select2.min.js') }}"></script>
 
 
         <script>
