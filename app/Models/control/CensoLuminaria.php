@@ -3,6 +3,7 @@
 namespace App\Models\control;
 
 use App\Models\catalogo\Distrito;
+use App\Models\catalogo\TipoFalla;
 use App\Models\catalogo\TipoLuminaria;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -29,7 +30,9 @@ class CensoLuminaria extends Model
         'codigo_luminaria',
         'decidad_luminicia',
         'direccion',
-        'tipo_falla_id'
+        'tipo_falla_id',
+        'condicion_lampara',
+        'compania_id'
     ];
 
     protected $guarded =[
@@ -39,6 +42,11 @@ class CensoLuminaria extends Model
     public function tipo_luminaria()
     {
         return $this->belongsTo(TipoLuminaria::class, 'tipo_luminaria_id', 'id');
+    }
+
+    public function tipo_falla()
+    {
+        return $this->belongsTo(TipoFalla::class);
     }
 
     public function distrito()

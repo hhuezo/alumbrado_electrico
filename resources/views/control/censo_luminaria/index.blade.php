@@ -26,6 +26,7 @@
                                     <td style="text-align: center">Fecha</td>
                                     <td style="text-align: center">Consumo mensual</td>
                                     <td style="text-align: center">Distrito</td>
+                                    <td style="text-align: center">Condición</td>
                                     <td style="text-align: center">opciones</td>
 
                                 </tr>
@@ -43,24 +44,25 @@
 
                                             <td align="center">{{ $obj->consumo_mensual }} (kWh)</td>
                                             <td>{{ $obj->distrito->nombre }}</td>
+                                            <td>{{ $obj->tipo_falla ? $obj->tipo_falla->nombre : 'En buen estado' }}</td>
                                             <td align="center">
 
                                                 <a href="{{ url('control/censo_luminaria') }}/{{ $obj->id }}">
-                                                    <button class="btn inline-flex justify-center btn-primary">
+                                                    <button class="btn inline-flex justify-center btn-primary  btn-sm">
                                                         <iconify-icon icon="ic:outline-remove-red-eye" width="24"
                                                             height="24"></iconify-icon>
                                                     </button>
                                                 </a>
 
                                                 @if ($obj->countCodigo($obj->codigo_luminaria) == 1)
-                                                    <button class="btn inline-flex justify-center btn-danger"
+                                                    <button class="btn inline-flex justify-center btn-danger btn-sm"
                                                         data-bs-toggle="modal"
                                                         data-bs-target="#modal-delete-{{ $obj->id }}">
                                                         <iconify-icon icon="mdi:trash" width="24"></iconify-icon>
                                                     </button>
                                                 @else
                                                     <button
-                                                        class="btn inline-flex justify-center btn-danger cursor-not-allowed light"
+                                                        class="btn inline-flex justify-center btn-danger btn-sm"
                                                         disabled="disabled"><iconify-icon icon="mdi:trash"
                                                             width="24"></iconify-icon> </button>
                                                 @endif

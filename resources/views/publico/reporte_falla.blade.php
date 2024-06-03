@@ -53,7 +53,7 @@
                                                 </div>
                                             </div>
 
-                                            <a href="{{ URL('/') }}">
+                                            <a href="{{ URL('/home') }}">
                                                 <button class="btn btn-dark btn-sm float-right">
                                                     <iconify-icon icon="icon-park-solid:back" style="color: white;"
                                                         width="24"></iconify-icon>

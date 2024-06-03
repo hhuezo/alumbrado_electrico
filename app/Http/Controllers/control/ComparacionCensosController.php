@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\control;
 
 use App\Http\Controllers\Controller;
+use App\Models\BaseDatosSiget;
 use App\Models\catalogo\Departamento;
 use App\Models\catalogo\Distrito;
 use Illuminate\Http\Request;
@@ -15,6 +16,35 @@ class ComparacionCensosController extends Controller
     {
         $departamentos = Departamento::get();
         $nombreDistrito = "";
+
+        // Obtener el máximo año
+        $maxAnio = BaseDatosSiget::max('anio');
+
+        // Obtener el registro con el máximo mes dentro del máximo año
+        $result = BaseDatosSiget::where('anio', $maxAnio)
+            ->orderBy('mes', 'desc')
+            ->first(['anio', 'mes']);
+
+        if ($result) {
+            $maxAnio = $result->anio;
+            $maxMes = $result->mes;
+
+        }
+
+        $meses = [
+            '01' => 'ENERO',
+            '02' => 'FEBRERO',
+            '03' => 'MARZO',
+            '04' => 'ABRIL',
+            '05' => 'MAYO',
+            '06' => 'JUNIO',
+            '07' => 'JULIO',
+            '08' => 'AGOSTO',
+            '09' => 'SEPTIEMBRE',
+            '10' => 'OCTUBRE',
+            '11' => 'NOVIEMBRE',
+            '12' => 'DICIEMBRE'
+        ];
 
         if ($request->id_distrito) {
             $distrito = Distrito::findOrFail($request->id_distrito);
@@ -29,6 +59,8 @@ class ComparacionCensosController extends Controller
                         INNER JOIN distrito ON distrito.codigo = base_datos_siget.municipio_id
                         WHERE base_datos_siget.tipo_luminaria_id = tipo_luminaria.id
                         AND distrito.id = ' . $request->id_distrito . '
+                        AND base_datos_siget.anio = ' . $maxAnio . '
+                        AND base_datos_siget.mes = "' . $maxMes . '"
                     ) as suma_luminarias'),
                     DB::raw('(
                         SELECT COUNT(censo_luminaria.id)
@@ -78,8 +110,8 @@ class ComparacionCensosController extends Controller
             ];
         }
 
-
-        return view('control.comparacion_censos.index', compact('data_censo_siget', 'data_censo_propio', 'data_censo_facturado', 'departamentos','nombreDistrito'));
+        return view('control.comparacion_censos.index', compact('data_censo_siget', 'data_censo_propio',
+        'data_censo_facturado', 'departamentos', 'nombreDistrito','maxAnio','maxMes','meses'));
     }
 
     public function create()

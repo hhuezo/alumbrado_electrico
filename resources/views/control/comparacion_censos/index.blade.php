@@ -280,7 +280,7 @@
             <div class="xl:col-span-12 col-span-12 lg:col-span-12 ">
                 <div class="card p-6 h-full">
                     <div class="space-y-5">
-                        <div class="card-title text-slate-900 dark:text-white">COMPARACIÓN DE CENSOS {{$nombreDistrito ? '('.$nombreDistrito.')':''}}
+                        <div class="card-title text-slate-900 dark:text-white">{{$meses[$maxMes]}}-{{$maxAnio}} COMPARACIÓN DE CENSOS {{$nombreDistrito ? '('.$nombreDistrito.')':''}}
                             <button class="btn btn-dark btn-sm float-right" data-bs-toggle="modal"
                                 data-bs-target="#default_modal">
                                 <iconify-icon icon="mdi:filter" width="20" height="20"></iconify-icon>
