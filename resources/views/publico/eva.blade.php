@@ -229,7 +229,7 @@
                     </div>
                 </div>
             </header>
-            <label for="" class="dark:bg-slate-800 dark:border-slate-700 text-primary-500"> Valor kWh: {{rtrim($configuracion->valor_kwh,'0')}}</label>
+            <label for="" class="dark:bg-slate-800 dark:border-slate-700 text-primary-500"> Valor kWh: ${{rtrim($configuracion->valor_kwh,'0')}}</label>
             <table class="min-w-full divide-y divide-slate-100 table-fixed dark:divide-slate-700">
                 <thead class="">
                     <tr>
