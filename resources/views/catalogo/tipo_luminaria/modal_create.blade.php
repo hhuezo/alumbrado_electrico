@@ -12,7 +12,7 @@
                     <div
                         class="flex items-center justify-between p-5 border-b rounded-t dark:border-slate-600 bg-black-500">
                         <h3 class="text-base font-medium text-white dark:text-white capitalize">
-                            Agregar poténcia
+                            Agregar potencia
                         </h3>
                         <button type="button"
                             class="text-slate-400 bg-transparent hover:text-slate-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center
@@ -33,7 +33,7 @@
                         <input type="hidden" name="tipo_luminaria_id" value="{{$tipo_luminaria->id}}" class="form-control" required>
                         <div class="grid pt-4 pb-3 px-4">
                             <div class="input-area relative">
-                                <label for="largeInput" class="form-label">Poténcia</label>
+                                <label for="largeInput" class="form-label">Potencia</label>
                                 <input type="number" name="potencia" class="form-control" required>
                             </div>
                         </div>
