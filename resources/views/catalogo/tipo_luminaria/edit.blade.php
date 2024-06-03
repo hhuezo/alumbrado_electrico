@@ -132,6 +132,11 @@
                                                             <td>{{ $obj->potencia }}</td>
                                                             <td>{{ $obj->consumo_promedio }} kwH</td>
                                                             <td align="center">
+                                                                <a href="{{ url('catalogo/tipo_luminaria/create_tecnologia_sustituir') }}/{{ $obj->id }}/edit">
+                                                                    <iconify-icon icon="mdi:pencil-box" width="40"></iconify-icon>
+                                                                </a>
+                                                                &nbsp;&nbsp;
+
                                                                 <iconify-icon icon="mdi:trash" data-bs-toggle="modal"
                                                                     data-bs-target="#modal-delete-{{ $obj->id }}"
                                                                     width="40"></iconify-icon>

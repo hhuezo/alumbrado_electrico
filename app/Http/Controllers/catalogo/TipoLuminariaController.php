@@ -4,6 +4,7 @@ namespace App\Http\Controllers\catalogo;
 
 use App\Http\Controllers\Controller;
 use App\Models\catalogo\PotenciaPromedio;
+use App\Models\catalogo\TecnologiaSustituir;
 use App\Models\catalogo\TipoLuminaria;
 use Exception;
 use Illuminate\Http\Request;
@@ -49,6 +50,53 @@ class TipoLuminariaController extends Controller
             $potencia->consumo_promedio = $request->consumo_promedio;
             $potencia->save();
 
+            return back();
+        }
+    }
+
+    public function create_tecnologia_sustituir($id)
+    {
+        $PotenciaPromedio = PotenciaPromedio::findOrFail($id);
+        $iluminarias = PotenciaPromedio::get();
+        $tecnologiasRemplazar= TecnologiaSustituir::where('tecnologia_actual_id',$id)->get();
+        $sustituir_id_array =  $tecnologiasRemplazar->pluck('tecnologia_sustituir_id')->toArray();
+        $tecnologiasRemplazar = PotenciaPromedio::whereIn('id', $sustituir_id_array)->get();
+
+        //dd($id);
+        return view('catalogo.tecnologia_sustituir.edit', compact('PotenciaPromedio','iluminarias','tecnologiasRemplazar'));
+
+    }
+
+    public function store_tecnologia_sustituir(Request $request)
+    {
+        //dd($request->id,$request->tecnologia_sustituir_id);
+
+        $conteo = TecnologiaSustituir::where('tecnologia_actual_id', $request->id)->where('tecnologia_sustituir_id', $request->tecnologia_sustituir_id)->count();
+        //dd($request->id,$request->tecnologia_sustituir_id, $conteo);
+        if ($conteo > 0) {
+             return back()->withErrors(['msg' => 'Ya existe un registro con ese valor']);
+        } else {
+            $tecnologiaActual = PotenciaPromedio::find($request->id); // ID de la tecnología actual
+            $tecnologiaActual->tecnologiasSustituir()->attach($request->tecnologia_sustituir_id);
+
+            alert()->success('El registro ha agregado correctamente');
+            return back();
+        }
+    }
+
+    public function delete_tecnologia_sustituir(Request $request)
+    {
+        //dd($request->id,$request->tecnologia_sustituir_id);
+
+        $conteo = TecnologiaSustituir::where('tecnologia_actual_id', $request->id)->where('tecnologia_sustituir_id', $request->tecnologia_sustituir_id_eliminar)->count();
+        //dd($request->id,$request->tecnologia_sustituir_id, $conteo);
+        if ($conteo == 0) {
+             return back()->withErrors(['msg' => 'No existe un registro con ese valor']);
+        } else {
+            $tecnologiaActual = PotenciaPromedio::find($request->id); // ID de la tecnología actual
+            $tecnologiaActual->tecnologiasSustituir()->detach($request->tecnologia_sustituir_id_eliminar);
+
+            alert()->success('El registro ha sido eliminado correctamente');
             return back();
         }
     }

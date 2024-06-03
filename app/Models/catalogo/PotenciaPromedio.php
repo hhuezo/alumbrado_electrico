@@ -28,4 +28,22 @@ class PotenciaPromedio extends Model
     {
         return $this->belongsTo(TipoLuminaria::class, 'tipo_luminaria_id', 'id');
     }
+
+    public function tecnologiasActuales()
+    {
+        return $this->belongsToMany(self::class,
+            'tecnologia_sustituir',
+            'tecnologia_sustituir_id',
+            'tecnologia_actual_id',
+        );
+    }
+
+    public function tecnologiasSustituir()
+    {
+        return $this->belongsToMany(self::class,
+        'tecnologia_sustituir',
+        'tecnologia_actual_id',
+        'tecnologia_sustituir_id'
+    );
+    }
 }
