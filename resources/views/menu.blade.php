@@ -1795,7 +1795,7 @@
                                         type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                         <div
                                             class="lg:h-8 lg:w-8 h-7 w-7 rounded-full flex-1 ltr:mr-[10px] rtl:ml-[10px]">
-                                            <img src="{{ asset('assets/images/all-img/user.png') }}" alt="user"
+                                            <img src="{{ asset('img/usuario.svg') }}" alt="user"
                                                 class="block w-full h-full object-cover rounded-full">
                                         </div>
                                         @php
