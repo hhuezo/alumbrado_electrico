@@ -212,9 +212,10 @@
                         placeholder="Total inversión">
                 </div>
             </div>
+            <br>
+            <button id="btnCalcular" style=" float: right;" class="btn inline-flex justify-center btn-dark">Calcular Analisis Financiero</button>
 
         </div>
-        <button id="btnCalcular" style=" float: right;" class="btn inline-flex justify-center btn-dark">Calcular Analisis Financiero</button>
 
     </div>
 
