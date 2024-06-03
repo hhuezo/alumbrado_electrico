@@ -19,7 +19,7 @@
                 },
                 subtitle: {
                     align: 'left',
-                    text: '"La gráfica muestra la diferencia entre el censo propio con respecto al facturado, si la cantidad es con signo menos existen mas luminarias facturadas que la del censo propio"'
+                    text: ''
                 },
                 accessibility: {
                     announceNewData: {
@@ -135,7 +135,7 @@
                 },
                 yAxis: {
                     title: {
-                        text: 'Número de luminarias'
+                        text: 'La gráfica muestra la diferencia entre el censo propio con respecto al facturado, si la cantidad es con signo menos existen mas luminarias facturadas que la del censo propio'
                     }
                 },
                 legend: {
@@ -309,9 +309,9 @@
                     </div>
                 </div>
             </div>
-            <div class="xl:col-span-3 col-span-12 lg:col-span-3">
+            <div class="xl:col-span-2 col-span-12 lg:col-span-3">
             </div>
-            <div class="xl:col-span-6 col-span-12 lg:col-span-6">
+            <div class="xl:col-span-8 col-span-12 lg:col-span-6">
                 <div class="card p-6 h-full">
                     <div class="space-y-5">
                         <div id="container_data_censo_facturado"></div>
