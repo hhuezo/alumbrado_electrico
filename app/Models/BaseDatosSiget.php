@@ -36,6 +36,7 @@ class BaseDatosSiget extends Model
         'distrito_id',
         'distrito',
         'area',
+        'poblacion',
         'tecnologia',
     ];
 

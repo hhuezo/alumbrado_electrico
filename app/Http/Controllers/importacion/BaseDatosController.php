@@ -72,7 +72,7 @@ class BaseDatosController extends Controller
                 ->orWhere('b.compania_id', '')
                 ->update(['b.compania_id' => DB::raw('c.id')]);
 
-                $registros = BaseDatosSiget::select('municipio_id', 'compania_id')->groupBy('municipio_id')
+                $registros = BaseDatosSiget::select('municipio_id', 'compania_id','poblacion','area')->groupBy('municipio_id')
                 ->where('anio', $request->anio)->where('mes', $request->mes)->get();
 
                 foreach ($registros as $registro) {
@@ -87,6 +87,11 @@ class BaseDatosController extends Controller
                             'distrito_id' => $distrito->id,
                             'compania_id' => $registro->compania_id,
                         ]);
+
+                        //agregarn poblacion y area
+                        $distrito->poblacion = $registro->poblacion;
+                        $distrito->extension_territorial = $registro->area;
+                        $distrito->save();
                     }
                 }
 
