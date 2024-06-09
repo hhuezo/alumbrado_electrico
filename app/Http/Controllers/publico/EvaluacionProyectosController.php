@@ -9,6 +9,7 @@ use App\Models\catalogo\PotenciaPromedio;
 use App\Models\catalogo\TecnologiaSustituir;
 use App\Models\catalogo\TipoLuminaria;
 use App\Models\Configuracion;
+use App\Models\control\CensoLuminaria;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -43,31 +44,6 @@ class EvaluacionProyectosController extends Controller
         $anio = $result->max_anio;
         $mes = $result->max_mes + 0;
 
-        $resultados = DB::table('base_datos_siget')
-            ->join('tipo_luminaria', 'base_datos_siget.tipo_luminaria_id', '=', 'tipo_luminaria.id')
-            ->join('distrito', 'distrito.codigo', '=', 'base_datos_siget.municipio_id')
-            ->select(
-                'tipo_luminaria.id as tipo_id',
-                'tipo_luminaria.nombre as tipo',
-                DB::raw('SUM(base_datos_siget.numero_luminarias) as conteo'),
-                'distrito.nombre',
-                'distrito.id',
-                DB::raw('base_datos_siget.consumo_mensual as consumo_mensual')
-            )
-            ->where('distrito.codigo', $request->distrito)
-            ->where('base_datos_siget.anio', $anio)
-            ->where('base_datos_siget.mes', $mes)
-            ->groupBy('distrito.nombre', 'distrito.id', 'tipo_luminaria.nombre')
-            ->get();
-
-        $tipo_id_array =  $resultados->pluck('tipo_id')->toArray();
-        $tipos = TipoLuminaria::whereIn('id', $tipo_id_array)->get();
-
-
-
-
-
-
         $resultados = BaseDatosSiget::join('tipo_luminaria', 'base_datos_siget.tipo_luminaria_id', '=', 'tipo_luminaria.id')
             ->join('distrito', 'distrito.codigo', '=', 'base_datos_siget.municipio_id')
             ->select(
@@ -85,11 +61,15 @@ class EvaluacionProyectosController extends Controller
             ->groupBy('distrito.nombre', 'distrito.id', 'tipo_luminaria.nombre', 'base_datos_siget.potencia_nominal', 'tipo_luminaria.id')
             ->get();
 
+        $tipo_id_array =  $resultados->pluck('tipo_id')->toArray();
+        $tipos = TipoLuminaria::whereIn('id', $tipo_id_array)->get();
+
+        //dd($tipo_id_array,$tipos);
+        //dd($resultados, $resultadosCenso);
+
         $configuracion = Configuracion::first();
 
         return view('publico.eva', compact('resultados',  'tipos', 'anio', 'mes', 'configuracion'));
-
-        //return response()->json($data_numero_luminaria);
     }
 
     public function getTecnologiasSugeridas(Request $request)
@@ -104,9 +84,9 @@ class EvaluacionProyectosController extends Controller
 
             $registro = PotenciaPromedio::where('tipo_luminaria_id', (int) $dato['tipo_id'])
                 ->where('potencia', (string) $dato['potencia_nominal'])
-                ->where('consumo_promedio',(float) $dato['consumo_mensual_kwh'])
+                ->where('consumo_promedio', (float) $dato['consumo_mensual_kwh'])
                 ->first();
-                //dd($registro,"Tecnologia1");
+            //dd($registro,"Tecnologia1");
 
             if ($registro) {
                 $resultados[] = $registro->id;
@@ -166,6 +146,67 @@ class EvaluacionProyectosController extends Controller
         return view('publico.grafico', compact('data_numero_luminaria',  'anio', 'mes'));
     }
 
+    public function evaluacionProyectosCensoIndex()
+    {
+        $departamentos = Departamento::get();
+        return view('publico.evaluacion_proyectos_censo', compact(
+            'departamentos'
+        ));
+    }
+
+    public function getConteoLuminariaCenso(Request $request)
+    {
+        $resultados = CensoLuminaria::join('tipo_luminaria', 'censo_luminaria.tipo_luminaria_id', '=', 'tipo_luminaria.id')
+            ->join('distrito', 'distrito.id', '=', 'censo_luminaria.distrito_id')
+            ->select(
+                'tipo_luminaria.nombre as tipo',
+                'tipo_luminaria.id as tipo_id',
+                DB::raw('COUNT(*) as conteo'),
+                'distrito.nombre',
+                'distrito.id',
+                'censo_luminaria.potencia_nominal',
+                DB::raw('censo_luminaria.consumo_mensual as consumo_mensual')
+            )
+            ->where('distrito.codigo', $request->distrito)
+            ->groupBy('distrito.nombre', 'distrito.id', 'tipo_luminaria.nombre', 'censo_luminaria.potencia_nominal', 'tipo_luminaria.id')
+            ->get();
+
+        $tipo_id_array =  $resultados->pluck('tipo_id')->toArray();
+        $tipos = TipoLuminaria::whereIn('id', $tipo_id_array)->get();
+
+        $configuracion = Configuracion::first();
+
+        return view('publico.eva', compact('resultados','tipos','configuracion'));
+    }
+
+    public function getGraficoCenso($distrito_id)
+    {
+        $resultados = DB::table('censo_luminaria')
+            ->join('tipo_luminaria', 'censo_luminaria.tipo_luminaria_id', '=', 'tipo_luminaria.id')
+            ->join('distrito', 'distrito.id', '=', 'censo_luminaria.distrito_id')
+            ->select(
+                'tipo_luminaria.id as tipo_id',
+                'tipo_luminaria.nombre as tipo',
+                DB::raw('COUNT(*) as conteo'),
+                'distrito.nombre',
+                'distrito.id',
+                DB::raw('censo_luminaria.consumo_mensual as consumo_mensual')
+            )
+            ->where('distrito.codigo', $distrito_id)
+            ->groupBy('distrito.nombre', 'distrito.id', 'tipo_luminaria.nombre')
+            ->get();
+
+        $data_numero_luminaria = $resultados->map(function ($resultado) {
+            return [
+                "name" => $resultado->tipo,
+                "y" => $resultado->conteo + 0,
+                "drilldown" => $resultado->tipo,
+            ];
+        })->all();
+        //dd($data_numero_luminaria);
+        return view('publico.grafico', compact('data_numero_luminaria'));
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -195,7 +236,7 @@ class EvaluacionProyectosController extends Controller
      */
     public function show($id)
     {
-        //
+        dd('Metodo show');
     }
 
     /**

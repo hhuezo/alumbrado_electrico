@@ -102,10 +102,14 @@ Route::resource('publico/biblioteca_publica', BibliotecaPublicaController::class
 Route::get('publico/reporte_falla_publico/get_distritos/{id}', [ReporteFallaPublicoController::class,'get_distritos']);
 Route::resource('publico/reporte_falla_publico', ReporteFallaPublicoController::class);
 Route::get('publico/evaluacion_proyectos/get_grafico/{distrito}', [EvaluacionProyectosController::class,'get_grafico']);
-Route::resource('publico/evaluacion_proyectos', EvaluacionProyectosController::class);
 Route::get('publico/getConteoLuminaria', [EvaluacionProyectosController::class, 'getConteoLuminaria']);
 Route::get('publico/getTecnologiasSugeridas', [EvaluacionProyectosController::class, 'getTecnologiasSugeridas']);
 
+Route::get('publico/evaluacion_proyectos/getGraficoCenso/{distrito}', [EvaluacionProyectosController::class,'getGraficoCenso']);
+Route::get('publico/evaluacion_proyectos/evaluacionProyectosCensoIndex', [EvaluacionProyectosController::class,'evaluacionProyectosCensoIndex']);
+Route::get('publico/evaluacion_proyectos/getConteoLuminariaCenso', [EvaluacionProyectosController::class, 'getConteoLuminariaCenso']);
+
+Route::resource('publico/evaluacion_proyectos', EvaluacionProyectosController::class);
 
 
 Route::resource('importacion/base_datos', BaseDatosController::class);
