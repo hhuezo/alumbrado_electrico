@@ -58,6 +58,8 @@ class EvaluacionProyectosController extends Controller
             ->where('distrito.codigo', $request->distrito)
             ->where('base_datos_siget.anio', $anio)
             ->where('base_datos_siget.mes', $mes)
+            ->where('base_datos_siget.potencia_nominal','<>', null)
+            ->where('base_datos_siget.consumo_mensual','<>', null)
             ->groupBy('distrito.nombre', 'distrito.id', 'tipo_luminaria.nombre', 'base_datos_siget.potencia_nominal', 'tipo_luminaria.id')
             ->get();
 
@@ -133,6 +135,8 @@ class EvaluacionProyectosController extends Controller
             ->where('distrito.codigo', $distrito_id)
             ->where('base_datos_siget.anio', $anio)
             ->where('base_datos_siget.mes', $mes)
+            ->where('base_datos_siget.potencia_nominal','<>', null)
+            ->where('base_datos_siget.consumo_mensual','<>', null)
             ->groupBy('distrito.nombre', 'distrito.id', 'tipo_luminaria.nombre')
             ->get();
 
@@ -169,6 +173,8 @@ class EvaluacionProyectosController extends Controller
                 DB::raw('censo_luminaria.consumo_mensual as consumo_mensual')
             )
             ->where('distrito.codigo', $request->distrito)
+            ->where('censo_luminaria.potencia_nominal','<>', null)
+            ->where('censo_luminaria.consumo_mensual','<>', null)
             ->groupBy('distrito.nombre', 'distrito.id', 'tipo_luminaria.nombre', 'censo_luminaria.potencia_nominal', 'tipo_luminaria.id')
             ->get();
 
@@ -194,6 +200,8 @@ class EvaluacionProyectosController extends Controller
                 DB::raw('censo_luminaria.consumo_mensual as consumo_mensual')
             )
             ->where('distrito.codigo', $distrito_id)
+            ->where('censo_luminaria.potencia_nominal','<>', null)
+            ->where('censo_luminaria.consumo_mensual','<>', null)
             ->groupBy('distrito.nombre', 'distrito.id', 'tipo_luminaria.nombre')
             ->get();
 
