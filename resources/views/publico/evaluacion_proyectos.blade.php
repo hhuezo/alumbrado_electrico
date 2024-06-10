@@ -27,7 +27,7 @@
                             @csrf
                             <div class="input-area">
                                 <label for="largeInput" class="form-label">Departamento</label>
-                                <select class="form-control select2" id="departamento">
+                                <select class="form-control" id="departamento">
                                     <option value="" selected disabled>Seleccione...</option>
                                     @foreach ($departamentos as $obj)
                                         <option value="{{ $obj->id }}">
@@ -39,14 +39,14 @@
 
                             <div class="input-area">
                                 <label for="largeInput" class="form-label">Municipio</label>
-                                <select class="form-control select2" id="municipio">
+                                <select class="form-control" id="municipio">
                                     <option value="" selected disabled>Seleccione...</option>
                                 </select>
                             </div>
 
                             <div class="input-area">
                                 <label for="largeInput" class="form-label">Distrito</label>
-                                <select class="form-control select2" name="distrito_id" id="distrito" required>
+                                <select class="form-control" name="distrito_id" id="distrito" required>
                                     <option value="" selected disabled>Seleccione...</option>
                                 </select>
                             </div>
@@ -101,7 +101,7 @@
                     //console.log(data);
                     muni = $("#municipio");
                     muni.val(null).trigger("change");
-                    var _select = ''
+                    var _select = '<option value="">SELECCIONE</option>';
                     for (var i = 0; i < data.length; i++)
                         _select += '<option value="' + data[i].id + '">' + data[i].nombre +
                         '</option>';

@@ -98,6 +98,7 @@ class EvaluacionProyectosController extends Controller
 
         $datos = $request->input('tecnologia_actual_array');
 
+
         $resultados = [];
         foreach ($datos as $dato) {
             //dd($dato['tipo_id'],$dato['potencia_nominal'],$dato['consumo_mensual_kwh'], "primer registro");
@@ -107,12 +108,11 @@ class EvaluacionProyectosController extends Controller
                 ->where('consumo_promedio',(float) $dato['consumo_mensual_kwh'])
                 ->first();
                 //dd($registro,"Tecnologia1");
-
             if ($registro) {
                 $resultados[] = $registro->id;
             }
         }
-        //dd($resultados,ids);
+
 
         $tecnologiasRemplazar = TecnologiaSustituir::whereIn('tecnologia_actual_id', $resultados)->get();
         $sustituir_id_array =  $tecnologiasRemplazar->pluck('tecnologia_sustituir_id')->toArray();

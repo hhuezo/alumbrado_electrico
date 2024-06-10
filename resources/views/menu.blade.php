@@ -289,7 +289,7 @@
                                 <span class="flex items-center">
                                     <iconify-icon class=" nav-icon" icon="heroicons-outline:clipboard-list">
                                     </iconify-icon>
-                                    <span>Catalogos</span>
+                                    <span>Catálogos</span>
                                 </span>
                                 <iconify-icon class="icon-arrow" icon="heroicons-outline:chevron-right"></iconify-icon>
                             </a>

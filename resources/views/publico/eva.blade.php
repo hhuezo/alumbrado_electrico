@@ -194,21 +194,21 @@
                     </div>
                 </div>
             </header>
-            <label for="" class="dark:bg-slate-800 dark:border-slate-700 text-primary-500"> Valor kWh:
-                ${{ rtrim($configuracion->valor_kwh, '0') }}</label>
+            <label for="" class="card-title dark:bg-slate-800 dark:border-slate-700 text-primary-500"> Valor kwh:
+                ${{ rtrim($configuracion->valor_kwh, '0') }}</label></br>
             <table class="min-w-full divide-y divide-slate-100 table-fixed dark:divide-slate-700">
                 <thead class="">
                     <tr>
 
-                        <th scope="col"
+                        <th class="th_td" scope="col"
                             class=" table-th border border-slate-100 dark:bg-slate-800 dark:border-slate-700 text-primary-500">
                         </th>
-                        <th scope="col"
+                        <th class="th_td" scope="col"
                             class=" table-th border border-slate-100 dark:bg-slate-800 dark:border-slate-700 ">
                             Costo Mensual total
                         </th>
 
-                        <th scope="col"
+                        <th class="th_td" scope="col"
                             class=" table-th border border-slate-100 dark:bg-slate-800 dark:border-slate-700 ">
                             Costo Anual
                         </th>
@@ -218,44 +218,44 @@
                 <tbody class="bg-white divide-y divide-slate-100 dark:bg-slate-800 dark:divide-slate-700">
 
                     <tr>
-                        <th scope="col"
+                        <th class="th_td" scope="col"
                             class=" table-th border border-slate-100 dark:bg-slate-800 dark:border-slate-700 ">
                             Precio energia facturado
                         </th>
-                        <td id="precio_facturado_mensual"
+                        <td class="th_td" id="precio_facturado_mensual"
                             class="table-td border border-slate-100 dark:bg-slate-800 dark:border-slate-700"></td>
-                        <td id="precio_facturado_anual"
+                        <td class="th_td" id="precio_facturado_anual"
                             class="table-td border border-slate-100 dark:bg-slate-800 dark:border-slate-700 "></td>
                     </tr>
 
                     <tr>
-                        <th scope="col"
+                        <th class="th_td" scope="col"
                             class=" table-th border border-slate-100 dark:bg-slate-800 dark:border-slate-700 ">
                             Precio sustituido
                         </th>
-                        <td id="precio_sustituido_costo_mensual"
+                        <td class="th_td" id="precio_sustituido_costo_mensual"
                             class="table-td border border-slate-100 dark:bg-slate-800 dark:border-slate-700"></td>
-                        <td id="precio_sustituido_costo_anual"
+                        <td class="th_td" id="precio_sustituido_costo_anual"
                             class="table-td border border-slate-100 dark:bg-slate-800 dark:border-slate-700 "></td>
                     </tr>
 
                     <tr>
-                        <th scope="col"
+                        <th class="th_td" scope="col"
                             class=" table-th border border-slate-100 dark:bg-slate-800 dark:border-slate-700 ">
                             Ahorro
                         </th>
-                        <td id="ahorro_mensual"
+                        <td class="th_td" id="ahorro_mensual"
                             class="table-td border border-slate-100 dark:bg-slate-800 dark:border-slate-700"></td>
-                        <td id="ahorro_anual"
+                        <td class="th_td" id="ahorro_anual"
                             class="table-td border border-slate-100 dark:bg-slate-800 dark:border-slate-700 "></td>
                     </tr>
                     <tr>
-                        <td class="table-td border border-slate-100 dark:bg-slate-800 dark:border-slate-700"></td>
-                        <th scope="col"
+                        <td class="th_td" class="table-td border border-slate-100 dark:bg-slate-800 dark:border-slate-700"></td>
+                        <th class="th_td" scope="col"
                             class=" table-th border border-slate-100 dark:bg-slate-800 dark:border-slate-700 ">
                             PR
                         </th>
-                        <td id="pr"
+                        <td class="th_td" id="pr"
                             class="table-td border border-slate-100 dark:bg-slate-800 dark:border-slate-700 ">
                         </td>
                     </tr>
