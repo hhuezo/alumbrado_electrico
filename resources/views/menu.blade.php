@@ -203,6 +203,9 @@
                                     <a href="{{ url('publico/evaluacion_proyectos') }}">Evaluación de proyectos</a>
                                 </li>
                                 <li>
+                                    <a href="{{ url('publico/evaluacion_proyectos/evaluacionProyectosCensoIndex') }}">Evaluación de proyectos censo</a>
+                                </li>
+                                <li>
                                     <a href="{{ url('publico/biblioteca_publica') }}">Biblioteca / Info general</a>
                                 </li>
                             </ul>
