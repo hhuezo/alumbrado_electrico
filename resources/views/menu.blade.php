@@ -201,10 +201,7 @@
                                 </li>
                                 <li>
                                     <a href="{{ url('publico/evaluacion_proyectos') }}">Evaluación de proyectos</a>
-                                </li>
-                                <li>
-                                    <a href="{{ url('publico/evaluacion_proyectos/evaluacionProyectosCensoIndex') }}">Evaluación de proyectos censo</a>
-                                </li>
+                                </li>                             
                                 <li>
                                     <a href="{{ url('publico/biblioteca_publica') }}">Biblioteca / Info general</a>
                                 </li>
@@ -251,8 +248,8 @@
                                 <li>
                                     <a href="{{ url('control/comparacion_censos') }}">Comparación de censos</a>
                                 </li>
-                                <li>
-                                    <a href="#">Evaluación de proyectos</a>
+                                 <li>
+                                    <a href="{{ url('publico/evaluacion_proyectos/evaluacionProyectosCensoIndex') }}">Evaluación de proyectos censo</a>
                                 </li>
                             </ul>
 
