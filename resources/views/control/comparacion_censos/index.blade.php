@@ -10,7 +10,7 @@
 
             Highcharts.chart('container_data_censo_siget', {
                 chart: {
-                    type: 'bar',
+                    type: 'pie',
                     // height: 1700
                 },
                 title: {
@@ -62,7 +62,7 @@
 
             Highcharts.chart('container_data_censo_propio', {
                 chart: {
-                    type: 'bar',
+                    type: 'pie',
                     // height: 1700
                 },
                 title: {
