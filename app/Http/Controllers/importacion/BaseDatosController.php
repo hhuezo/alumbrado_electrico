@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Imports\DataBaseImport;
 use App\Models\BaseDatosSiget;
 use App\Models\catalogo\Distrito;
+use App\Models\catalogo\PotenciaPromedio;
 use App\Models\Configuracion;
 use App\Models\control\CensoLuminaria;
 use Illuminate\Http\Request;
@@ -47,12 +48,41 @@ class BaseDatosController extends Controller
 
     public function create()
     {
+        $maxAnio = DB::table('base_datos_siget')->max('anio');
+
+        $registro = DB::table('base_datos_siget')
+            ->select('anio', 'mes')
+            ->where('anio', $maxAnio)
+            ->where('mes', function ($query) use ($maxAnio) {
+                $query->select(DB::raw('MAX(mes)'))
+                    ->from('base_datos_siget')
+                    ->where('anio', $maxAnio);
+            })->first();
+
+        $data = BaseDatosSiget::where('anio', $registro->anio)->where('mes', $registro->mes)
+            ->select(
+                'tipo_luminaria_id',
+                'potencia_nominal',
+                'consumo_mensual',
+                DB::raw('(select count(potencia_promedio.id) from potencia_promedio
+                where potencia_promedio.tipo_luminaria_id = base_datos_siget.tipo_luminaria_id
+                and potencia_promedio.potencia = base_datos_siget.potencia_nominal ) as conteo')
+            )
+            ->orderBy('consumo_mensual')
+            ->groupBy('tipo_luminaria_id', 'potencia_nominal')
+            ->having('conteo','=',0)->get();
+
+        foreach($data as $record){
+            $potencia = new PotenciaPromedio();
+            $potencia->tipo_luminaria_id = $record->tipo_luminaria_id;
+            $potencia->potencia = $record->potencia_nominal;
+            $potencia->consumo_promedio = $record->consumo_mensual;
+            $potencia->save();
+        }
     }
 
     public function store(Request $request)
     {
-
-
 
         try {
             $file = $request->file('file');
@@ -72,28 +102,28 @@ class BaseDatosController extends Controller
                 ->orWhere('b.compania_id', '')
                 ->update(['b.compania_id' => DB::raw('c.id')]);
 
-                $registros = BaseDatosSiget::select('municipio_id', 'compania_id','poblacion','area')->groupBy('municipio_id')
+            $registros = BaseDatosSiget::select('municipio_id', 'compania_id', 'poblacion', 'area')->groupBy('municipio_id')
                 ->where('anio', $request->anio)->where('mes', $request->mes)->get();
 
-                foreach ($registros as $registro) {
+            foreach ($registros as $registro) {
 
-                    $distrito = Distrito::where('codigo', $registro->municipio_id)->first();
-                    if ($distrito) {
-                        // Borrar los datos existentes en la tabla distrito_has_compania para el distrito actual
-                        DB::table('distrito_has_compania')->where('distrito_id', $distrito->id)->delete();
+                $distrito = Distrito::where('codigo', $registro->municipio_id)->first();
+                if ($distrito) {
+                    // Borrar los datos existentes en la tabla distrito_has_compania para el distrito actual
+                    DB::table('distrito_has_compania')->where('distrito_id', $distrito->id)->delete();
 
-                        // Insertar los nuevos datos en la tabla distrito_has_compania
-                        DB::table('distrito_has_compania')->insert([
-                            'distrito_id' => $distrito->id,
-                            'compania_id' => $registro->compania_id,
-                        ]);
+                    // Insertar los nuevos datos en la tabla distrito_has_compania
+                    DB::table('distrito_has_compania')->insert([
+                        'distrito_id' => $distrito->id,
+                        'compania_id' => $registro->compania_id,
+                    ]);
 
-                        //agregarn poblacion y area
-                        $distrito->poblacion = $registro->poblacion;
-                        $distrito->extension_territorial = $registro->area;
-                        $distrito->save();
-                    }
+                    //agregarn poblacion y area
+                    $distrito->poblacion = $registro->poblacion;
+                    $distrito->extension_territorial = $registro->area;
+                    $distrito->save();
                 }
+            }
 
 
             alert()->success('El registro ha sido creado correctamente');
