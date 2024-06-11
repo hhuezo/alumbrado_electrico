@@ -4,6 +4,7 @@ namespace App\Http\Controllers\publico;
 
 use App\Http\Controllers\Controller;
 use App\Models\BaseDatosSiget;
+use App\Models\BaseDatosSigetTemp;
 use App\Models\catalogo\Departamento;
 use App\Models\catalogo\PotenciaPromedio;
 use App\Models\catalogo\TecnologiaSustituir;
@@ -58,8 +59,8 @@ class EvaluacionProyectosController extends Controller
             ->where('distrito.codigo', $request->distrito)
             ->where('base_datos_siget.anio', $anio)
             ->where('base_datos_siget.mes', $mes)
-            ->where('base_datos_siget.potencia_nominal','<>', null)
-            ->where('base_datos_siget.consumo_mensual','<>', null)
+            ->where('base_datos_siget.potencia_nominal', '<>', null)
+            ->where('base_datos_siget.consumo_mensual', '<>', null)
             ->groupBy('distrito.nombre', 'distrito.id', 'tipo_luminaria.nombre', 'base_datos_siget.potencia_nominal', 'tipo_luminaria.id')
             ->get();
 
@@ -135,8 +136,8 @@ class EvaluacionProyectosController extends Controller
             ->where('distrito.codigo', $distrito_id)
             ->where('base_datos_siget.anio', $anio)
             ->where('base_datos_siget.mes', $mes)
-            ->where('base_datos_siget.potencia_nominal','<>', null)
-            ->where('base_datos_siget.consumo_mensual','<>', null)
+            ->where('base_datos_siget.potencia_nominal', '<>', null)
+            ->where('base_datos_siget.consumo_mensual', '<>', null)
             ->groupBy('distrito.nombre', 'distrito.id', 'tipo_luminaria.nombre')
             ->get();
 
@@ -149,6 +150,107 @@ class EvaluacionProyectosController extends Controller
         })->all();
 
         return view('publico.grafico', compact('data_numero_luminaria',  'anio', 'mes'));
+    }
+
+    public function get_grafico_sugerido(Request $request)
+    {
+        $distrito_id = $request->distrito;
+        $result = DB::table('base_datos_siget')
+            ->selectRaw('MAX(anio) as max_anio')
+            ->selectSub(function ($query) {
+                $query->from('base_datos_siget')
+                    ->whereColumn('anio', DB::raw('(SELECT MAX(anio) FROM base_datos_siget)'))
+                    ->selectRaw('MAX(mes) as max_mes');
+            }, 'max_mes')
+            ->first();
+
+        $anio = $result->max_anio;
+        $mes = $result->max_mes + 0;
+
+
+        $base_siget = DB::table('base_datos_siget')
+            ->join('distrito', 'distrito.codigo', '=', 'base_datos_siget.municipio_id')
+            ->select('tipo_luminaria_id', 'potencia_nominal', DB::raw('sum(numero_luminarias) numero_luminarias'))
+            ->where('distrito.codigo', $distrito_id)
+            ->where('base_datos_siget.anio', $anio)
+            ->where('base_datos_siget.mes', $mes)
+            ->where('base_datos_siget.potencia_nominal', '<>', null)
+            ->where('base_datos_siget.consumo_mensual', '<>', null)
+            ->groupBy('tipo_luminaria_id', 'potencia_nominal')
+            ->get();
+
+
+        BaseDatosSigetTemp::where('user_id', auth()->user()->id)->delete();
+
+        foreach ($base_siget as $record) {
+            $temp = new BaseDatosSigetTemp();
+            $temp->municipio_id = $distrito_id;
+            $temp->tipo_luminaria_id = $record->tipo_luminaria_id;
+            $temp->potencia_nominal = $record->potencia_nominal;
+            $temp->numero_luminarias = $record->numero_luminarias;
+            $temp->user_id = auth()->user()->id;
+            $temp->save();
+        }
+
+
+
+        $potencia_promedio = PotenciaPromedio::findOrFail($request->tecnologia_sustituir_id);
+
+        $tecnologiaSustituirArray = json_decode($request->tecnologia_sustituir, true);
+
+        //dd($potencia_promedio, $tecnologiaSustituirArray);
+
+        foreach ($tecnologiaSustituirArray as $record) {
+            $numero_luminarias = intval($record['numero_luminarias']);
+
+            //dismunuyendo el numero de luminarias de la potencia actual
+            $temp = new BaseDatosSigetTemp();
+            $temp->municipio_id = $distrito_id;
+            $temp->tipo_luminaria_id = $record['tipo_luminaria_id'];
+            $temp->potencia_nominal = $record['potencia_nominal'];
+            $temp->numero_luminarias = $numero_luminarias  * -1;
+            $temp->user_id = auth()->user()->id;
+            $temp->save();
+
+
+            //agregandola a la potencia a sustituir
+            $temp = new BaseDatosSigetTemp();
+            $temp->municipio_id = $distrito_id;
+            $temp->tipo_luminaria_id = $potencia_promedio->tipo_luminaria_id;
+            $temp->potencia_nominal = $potencia_promedio->potencia;
+            $temp->numero_luminarias = $numero_luminarias;
+            $temp->user_id = auth()->user()->id;
+            $temp->save();
+        }
+
+
+        $resultados = DB::table('base_datos_siget_temp')
+            ->join('tipo_luminaria', 'base_datos_siget_temp.tipo_luminaria_id', '=', 'tipo_luminaria.id')
+            ->join('distrito', 'distrito.codigo', '=', 'base_datos_siget_temp.municipio_id')
+            ->select(
+                'tipo_luminaria.id as tipo_id',
+                'tipo_luminaria.nombre as tipo',
+                DB::raw('SUM(base_datos_siget_temp.numero_luminarias) as conteo'),
+                'distrito.nombre',
+                'distrito.id',
+                DB::raw('base_datos_siget_temp.consumo_mensual as consumo_mensual')
+            )
+            ->groupBy('distrito.nombre', 'distrito.id', 'tipo_luminaria.nombre')
+            ->get();
+
+        $data_numero_luminaria = $resultados->map(function ($resultado) {
+            return [
+                "name" => $resultado->tipo,
+                "y" => $resultado->conteo + 0,
+                "drilldown" => $resultado->tipo,
+            ];
+        })->all();
+
+
+
+        return view('publico.grafico_sugerido', compact('data_numero_luminaria',  'anio', 'mes'));
+
+        //dd($potencia_promedio);
     }
 
     public function evaluacionProyectosCensoIndex()
@@ -173,8 +275,8 @@ class EvaluacionProyectosController extends Controller
                 DB::raw('censo_luminaria.consumo_mensual as consumo_mensual')
             )
             ->where('distrito.codigo', $request->distrito)
-            ->where('censo_luminaria.potencia_nominal','<>', null)
-            ->where('censo_luminaria.consumo_mensual','<>', null)
+            ->where('censo_luminaria.potencia_nominal', '<>', null)
+            ->where('censo_luminaria.consumo_mensual', '<>', null)
             ->groupBy('distrito.nombre', 'distrito.id', 'tipo_luminaria.nombre', 'censo_luminaria.potencia_nominal', 'tipo_luminaria.id')
             ->get();
 
@@ -183,7 +285,7 @@ class EvaluacionProyectosController extends Controller
 
         $configuracion = Configuracion::first();
 
-        return view('publico.eva', compact('resultados','tipos','configuracion'));
+        return view('publico.eva', compact('resultados', 'tipos', 'configuracion'));
     }
 
     public function getGraficoCenso($distrito_id)
@@ -200,8 +302,8 @@ class EvaluacionProyectosController extends Controller
                 DB::raw('censo_luminaria.consumo_mensual as consumo_mensual')
             )
             ->where('distrito.codigo', $distrito_id)
-            ->where('censo_luminaria.potencia_nominal','<>', null)
-            ->where('censo_luminaria.consumo_mensual','<>', null)
+            ->where('censo_luminaria.potencia_nominal', '<>', null)
+            ->where('censo_luminaria.consumo_mensual', '<>', null)
             ->groupBy('distrito.nombre', 'distrito.id', 'tipo_luminaria.nombre')
             ->get();
 

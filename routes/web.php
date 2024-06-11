@@ -47,8 +47,8 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::get('home/rango_potencia_data/{id}/{anio}/{mes}', [HomeController::class,'show_data']);
-Route::get('welcome/rango_potencia_data/{id}/{anio}/{mes}', [WelcomeController::class,'show_data']);
+Route::get('home/rango_potencia_data/{id}/{anio}/{mes}', [HomeController::class, 'show_data']);
+Route::get('welcome/rango_potencia_data/{id}/{anio}/{mes}', [WelcomeController::class, 'show_data']);
 
 
 Route::resource('seguridad/permission', PermissionController::class);
@@ -65,33 +65,33 @@ Route::post('seguridad/role/link_permission', [RoleController::class, 'link_perm
 
 
 
-Route::post('control/censo_luminaria/create_record', [CensoLuminariaController::class,'create_record']);
-Route::get('control/censo_luminaria/show_map', [CensoLuminariaController::class,'show_map']);
-Route::get('censo_luminaria/get_municipios/{id}', [CensoLuminariaController::class,'get_municipios']);
-Route::get('censo_luminaria/get_companias/{id}', [CensoLuminariaController::class,'get_companias']);
-Route::get('censo_luminaria/get_distritos/{id}', [CensoLuminariaController::class,'get_distritos']);
-Route::get('censo_luminaria/get_potencia_promedio/{id}', [CensoLuminariaController::class,'get_potencia_promedio']);
-Route::get('censo_luminaria/get_consumo_mensual/{id}', [CensoLuminariaController::class,'get_consumo_mensual']);
+Route::post('control/censo_luminaria/create_record', [CensoLuminariaController::class, 'create_record']);
+Route::get('control/censo_luminaria/show_map', [CensoLuminariaController::class, 'show_map']);
+Route::get('censo_luminaria/get_municipios/{id}', [CensoLuminariaController::class, 'get_municipios']);
+Route::get('censo_luminaria/get_companias/{id}', [CensoLuminariaController::class, 'get_companias']);
+Route::get('censo_luminaria/get_distritos/{id}', [CensoLuminariaController::class, 'get_distritos']);
+Route::get('censo_luminaria/get_potencia_promedio/{id}', [CensoLuminariaController::class, 'get_potencia_promedio']);
+Route::get('censo_luminaria/get_consumo_mensual/{id}', [CensoLuminariaController::class, 'get_consumo_mensual']);
 Route::resource('control/censo_luminaria', CensoLuminariaController::class);
 Route::resource('control/valor_mensual_energia', ValorEnergiaController::class);
 
 Route::resource('control/comparacion_censos', ComparacionCensosController::class);
 
 //catalogos
-Route::post('catalogo/biblioteca/active', [BibliotecaController::class,'active']);
+Route::post('catalogo/biblioteca/active', [BibliotecaController::class, 'active']);
 Route::resource('catalogo/biblioteca', BibliotecaController::class);
-Route::post('catalogo/tipo_luminaria/create_potencia', [TipoLuminariaController::class,'create_potencia']);
-Route::get('catalogo/tipo_luminaria/create_tecnologia_sustituir/{id}/edit', [TipoLuminariaController::class,'create_tecnologia_sustituir']);
-Route::post('catalogo/tipo_luminaria/store_tecnologia_sustituir/{id}', [TipoLuminariaController::class,'store_tecnologia_sustituir'])->name('tipo_luminaria.store_tecnologia_sustituir');
-Route::delete('catalogo/tipo_luminaria/delete_tecnologia_sustituir/{id}', [TipoLuminariaController::class,'delete_tecnologia_sustituir'])->name('tipo_luminaria.delete_tecnologia_sustituir');
+Route::post('catalogo/tipo_luminaria/create_potencia', [TipoLuminariaController::class, 'create_potencia']);
+Route::get('catalogo/tipo_luminaria/create_tecnologia_sustituir/{id}/edit', [TipoLuminariaController::class, 'create_tecnologia_sustituir']);
+Route::post('catalogo/tipo_luminaria/store_tecnologia_sustituir/{id}', [TipoLuminariaController::class, 'store_tecnologia_sustituir'])->name('tipo_luminaria.store_tecnologia_sustituir');
+Route::delete('catalogo/tipo_luminaria/delete_tecnologia_sustituir/{id}', [TipoLuminariaController::class, 'delete_tecnologia_sustituir'])->name('tipo_luminaria.delete_tecnologia_sustituir');
 Route::resource('catalogo/tipo_luminaria', TipoLuminariaController::class);
 Route::resource('catalogo/tipo_falla', TipoFallaController::class);
 
 Route::resource('catalogo/valorkwh', ValorKWHController::class);
 
 
-Route::get('catalogo/reporte_falla/get_distrito_id/{name}', [ReporteFallaController::class,'getDistritoId']);
-Route::get('catalogo/reporte_falla/get_departamento_id/{name}', [ReporteFallaController::class,'getDepartamentoId']);
+Route::get('catalogo/reporte_falla/get_distrito_id/{name}', [ReporteFallaController::class, 'getDistritoId']);
+Route::get('catalogo/reporte_falla/get_departamento_id/{name}', [ReporteFallaController::class, 'getDepartamentoId']);
 Route::resource('catalogo/distrito', DistritoController::class);
 Route::resource('reporte_falla', ControlReporteFallaController::class);
 
@@ -99,21 +99,22 @@ Route::resource('reporte_falla', ControlReporteFallaController::class);
 
 //acceso publico
 Route::resource('publico/biblioteca_publica', BibliotecaPublicaController::class);
-Route::get('publico/reporte_falla_publico/get_distritos/{id}', [ReporteFallaPublicoController::class,'get_distritos']);
+Route::get('publico/reporte_falla_publico/get_distritos/{id}', [ReporteFallaPublicoController::class, 'get_distritos']);
 Route::resource('publico/reporte_falla_publico', ReporteFallaPublicoController::class);
-Route::get('publico/evaluacion_proyectos/get_grafico/{distrito}', [EvaluacionProyectosController::class,'get_grafico']);
+Route::get('publico/evaluacion_proyectos/get_grafico_sugerido', [EvaluacionProyectosController::class, 'get_grafico_sugerido']);
+Route::get('publico/evaluacion_proyectos/get_grafico/{distrito}', [EvaluacionProyectosController::class, 'get_grafico']);
 Route::get('publico/getConteoLuminaria', [EvaluacionProyectosController::class, 'getConteoLuminaria']);
 Route::get('publico/getTecnologiasSugeridas', [EvaluacionProyectosController::class, 'getTecnologiasSugeridas']);
 
-Route::get('publico/evaluacion_proyectos/getGraficoCenso/{distrito}', [EvaluacionProyectosController::class,'getGraficoCenso']);
-Route::get('publico/evaluacion_proyectos/evaluacionProyectosCensoIndex', [EvaluacionProyectosController::class,'evaluacionProyectosCensoIndex']);
+
+Route::get('publico/evaluacion_proyectos/getGraficoCenso/{distrito}', [EvaluacionProyectosController::class, 'getGraficoCenso']);
+Route::get('publico/evaluacion_proyectos/evaluacionProyectosCensoIndex', [EvaluacionProyectosController::class, 'evaluacionProyectosCensoIndex']);
 Route::get('publico/evaluacion_proyectos/getConteoLuminariaCenso', [EvaluacionProyectosController::class, 'getConteoLuminariaCenso']);
 
 Route::resource('publico/evaluacion_proyectos', EvaluacionProyectosController::class);
 
 
 Route::resource('importacion/base_datos', BaseDatosController::class);
-Route::get('get_municipios/{id}',[DistritoController::class, 'get_municipios']);
-Route::get('get_distritos/{id}',[DistritoController::class, 'get_distritos']);
-Route::get('get_option/{id}',[DistritoController::class,'get_option']);
-
+Route::get('get_municipios/{id}', [DistritoController::class, 'get_municipios']);
+Route::get('get_distritos/{id}', [DistritoController::class, 'get_distritos']);
+Route::get('get_option/{id}', [DistritoController::class, 'get_option']);

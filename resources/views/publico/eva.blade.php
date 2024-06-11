@@ -194,7 +194,8 @@
                     </div>
                 </div>
             </header>
-            <label for="" class="card-title dark:bg-slate-800 dark:border-slate-700 text-primary-500"> Valor kwh:
+            <label for="" class="card-title dark:bg-slate-800 dark:border-slate-700 text-primary-500"> Valor
+                kwh:
                 ${{ rtrim($configuracion->valor_kwh, '0') }}</label></br>
             <table class="min-w-full divide-y divide-slate-100 table-fixed dark:divide-slate-700">
                 <thead class="">
@@ -250,7 +251,8 @@
                             class="table-td border border-slate-100 dark:bg-slate-800 dark:border-slate-700 "></td>
                     </tr>
                     <tr>
-                        <td class="th_td" class="table-td border border-slate-100 dark:bg-slate-800 dark:border-slate-700"></td>
+                        <td class="th_td"
+                            class="table-td border border-slate-100 dark:bg-slate-800 dark:border-slate-700"></td>
                         <th class="th_td" scope="col"
                             class=" table-th border border-slate-100 dark:bg-slate-800 dark:border-slate-700 ">
                             PR
@@ -288,14 +290,35 @@
         </div>
     </div>
 </div>
+
+<div class="xl:col-span-6 col-span-6 lg:col-span-7 ">
+    <div class="card">
+        <div class="card-body flex flex-col p-6">
+            <header class="flex mb-5 items-center border-b border-slate-100 dark:border-slate-700 pb-5 -mx-6 px-6">
+                <div class="flex-1">
+                    <div class="card-title text-slate-900 dark:text-white">Nuevo grafico
+                    </div>
+                </div>
+            </header>
+
+            <div id="nuevo_grafico"></div>
+
+
+        </div>
+    </div>
+</div>
 <script type="text/javascript">
     var totalParque = {{ $resultados->sum('conteo') }};
+    var tecnologia_sustituir = [];
     $(document).ready(function() {
         //tecnologia_sustituir tecno_susti_kwh_uso
 
         function cambiarValorMercadoUnidadSusti() {
-            $("#tecno_susti_kwh_uso").val($("#tecnologia_sustituir").val());
-
+            console.log("test ");
+            var select = document.getElementById('tecnologia_sustituir');
+            var selectedOption = select.options[select.selectedIndex];
+            var consumoPromedio = selectedOption.getAttribute('data-consumo');
+            $("#tecno_susti_kwh_uso").val(consumoPromedio);
         }
 
 
@@ -407,6 +430,9 @@
             $('#noRecomendable').hide();
         }
 
+
+        nuevoGrafico();
+
     }
 
     function showDivTipo(control) {
@@ -467,6 +493,8 @@
                     maximumSignificantDigits: 2
                 }).format((valorInt * 100) / totalParque)) + '%');
             }
+
+            console.log("esta es la tecnologia: ", tecnologia_sustituir);
         } else {
             $('#celda_' + input).text('0');
             document.getElementById("input_" + input).value = 0;
@@ -549,6 +577,45 @@
         console.log("precioEnergiaMensualTotal: " + precioEnergiaMensualTotal);
 
         updateTotal(tecno_susti_total_iluminarias, precioEnergiaMensualTotal, VALORKWH);
+
+    }
+
+
+    function nuevoGrafico() {
+        var tecnologia_sustituir = [];
+        @foreach ($resultados as $resultado)
+            var luminarias = $('#input_{{ $resultado->tipo_id }}_{{ $resultado->potencia_nominal }}').val();
+            var luminariasInt = parseInt(luminarias);
+            if (luminariasInt > 0) {
+                let data_array = {
+                    "tipo_luminaria_id": {{ $resultado->tipo_id }},
+                    "potencia_nominal": {{ $resultado->potencia_nominal }},
+                    "numero_luminarias": luminariasInt
+                };
+                tecnologia_sustituir.push(data_array);
+            }
+        @endforeach
+
+        console.log("luminarias: " + JSON.stringify(tecnologia_sustituir));
+
+        let distrito = $('#distrito').val();
+
+        let tecnologia_sustituir_id = document.getElementById('tecnologia_sustituir').value;
+
+        let parametros = {
+            "tecnologia_sustituir": JSON.stringify(tecnologia_sustituir),
+            "distrito": distrito,
+            "tecnologia_sustituir_id": tecnologia_sustituir_id
+        };
+        $.ajax({
+            type: "get",
+            url: "{{ URL::to('publico/evaluacion_proyectos/get_grafico_sugerido') }}",
+            data: parametros,
+            success: function(response) {
+                console.log("nuevo_grafico ", response);
+                $('#nuevo_grafico').html(response);
+            }
+        });
 
     }
 </script>
