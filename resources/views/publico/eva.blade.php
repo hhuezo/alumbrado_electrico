@@ -68,7 +68,7 @@
                                             @foreach ($resultados->where('tipo_id', $tipo->id) as $resultado)
                                                 <tr>
                                                     <td class="editable th_td backgroundtd">
-                                                        {{ $resultado->potencia_nominal }} Vatios</td>
+                                                        {{ $resultado->potencia_nominal }} Vatios {{$resultado->id}}</td>
                                                     <td class="editable th_td backgroundtd">
                                                         {{ $resultado->consumo_mensual }}</td>
                                                     <td class="editable th_td backgroundtd">{{ $resultado->conteo }}
@@ -506,29 +506,61 @@
     }
 
     function getTecnologiaSustituir() {
+        alert('hola');
         var tecno_susti_total_iluminarias = 0;
         var tecnologia_actual_array = [];
         @foreach ($resultados as $resultado)
-            // Utiliza jQuery para obtener el valor del input _consumo_mensual_kwh
+
             var luminarias = $('#input_{{ $resultado->tipo_id }}_{{ $resultado->potencia_nominal }}').val();
-            //console.log("luminarias: " + luminarias);
-            var consumoMensual = $(
-                '#input_{{ $resultado->tipo_id }}_{{ $resultado->potencia_nominal }}_consumo_mensual_kwh').val();
             var luminariasInt = parseInt(luminarias);
 
             if (luminariasInt > 0) {
-                var newItem = {
-                    tipo_id: {{ $resultado->tipo_id }},
-                    potencia_nominal: {{ $resultado->potencia_nominal }},
-                    consumo_mensual_kwh: {{ $resultado->consumo_mensual }}
-                };
-                tecnologia_actual_array.push(newItem);
+                //console.log("luminarias: " + luminarias);
+                //var consumoMensual = $('#input_{{ $resultado->tipo_id }}_{{ $resultado->potencia_nominal }}_consumo_mensual_kwh').val();
+
+                //console.log("consumoMensual: " + {{ $resultado->id }});
+
+                tecnologia_actual_array.push({{$resultado->id}});
             }
+
+            /* // Utiliza jQuery para obtener el valor del input _consumo_mensual_kwh
+             var luminarias = $('#input_{{ $resultado->tipo_id }}_{{ $resultado->potencia_nominal }}').val();
+             //console.log("luminarias: " + luminarias);
+             var consumoMensual = $(
+                 '#input_{{ $resultado->tipo_id }}_{{ $resultado->potencia_nominal }}_consumo_mensual_kwh').val();
+             var luminariasInt = parseInt(luminarias);
+
+             if (luminariasInt > 0) {
+                 var newItem = {
+                     tipo_id: {{ $resultado->tipo_id }},
+                     potencia_nominal: {{ $resultado->potencia_nominal }},
+                     consumo_mensual_kwh: {{ $resultado->consumo_mensual }}
+                 };
+                 tecnologia_actual_array.push(newItem);
+             }*/
         @endforeach
 
         console.log("tecnologia_actual_array: " + tecnologia_actual_array);
 
-        updateTecnologia_sustituirCBX(tecnologia_actual_array);
+        let parametros = {
+            "tecnologia_actual_array": tecnologia_actual_array
+        };
+        $.ajax({
+            type: "get",
+            url: "{{ URL::to('publico/getTecnologiasSugeridas') }}",
+            data: parametros,
+            success: function(response) {
+                console.log(response);
+                let cBXtecnologia_sustituir = $('#tecnologia_sustituir');
+                cBXtecnologia_sustituir.empty();
+                $('#tecno_susti_kwh_uso').val(0);
+                if (response !== null && !$.isEmptyObject(response)) {
+                    cBXtecnologia_sustituir.html(response);
+                }
+            }
+        });
+
+        // updateTecnologia_sustituirCBX(tecnologia_actual_array);
 
     }
 

@@ -11,7 +11,7 @@
             display: none;
         }
     </style>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
     <div class="space-y-5">
@@ -69,7 +69,7 @@
         </div>
 
 
-        <div class="grid grid-cols-12 gap-5"  id="render">
+        <div class="grid grid-cols-12 gap-5" id="render">
 
 
 
@@ -108,7 +108,7 @@
                     muni.html(_select);
                     muni.val(null).trigger("change");
                     var Municipio = muni.val();
-                    getDistritos(Municipio);
+                    //getDistritos(Municipio);
 
                 });
             });
@@ -121,16 +121,18 @@
 
 
             function getDistritos(Municipio) {
-                console.log();
-                $.get("{{ url('censo_luminaria/get_distritos') }}" + '/' + Municipio, function(data) {
-                    console.log(data);
-                    var _select = '<option value="">SELECCIONE</option>'
-                    for (var i = 0; i < data.length; i++)
-                        _select += '<option value="' + data[i].codigo + '"  >' + data[i].nombre +
-                        '</option>';
+                //console.log("este es el municipio: ", Municipio);
+                if (Municipio != "") {
+                    $.get("{{ url('censo_luminaria/get_distritos') }}" + '/' + Municipio, function(data) {
+                        //console.log(data);
+                        var _select = '<option value="">SELECCIONE</option>'
+                        for (var i = 0; i < data.length; i++)
+                            _select += '<option value="' + data[i].codigo + '"  >' + data[i].nombre +
+                            '</option>';
 
-                    $("#distrito").html(_select);
-                });
+                        $("#distrito").html(_select);
+                    });
+                }
             }
 
             $("#distrito").change(function() {
@@ -151,7 +153,7 @@
                     url: "{{ URL::to('publico/getConteoLuminaria') }}",
                     data: parametros,
                     success: function(response) {
-                        console.log(response);
+                        //console.log(response);
                         let formTecnologias = $('#render');
                         formTecnologias.empty();
                         if (response !== null && !$.isEmptyObject(response)) {

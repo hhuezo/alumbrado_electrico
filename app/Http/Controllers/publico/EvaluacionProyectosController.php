@@ -32,7 +32,6 @@ class EvaluacionProyectosController extends Controller
 
     public function getConteoLuminaria(Request $request)
     {
-
         $result = DB::table('base_datos_siget')
             ->selectRaw('MAX(anio) as max_anio')
             ->selectSub(function ($query) {
@@ -48,11 +47,11 @@ class EvaluacionProyectosController extends Controller
         $resultados = BaseDatosSiget::join('tipo_luminaria', 'base_datos_siget.tipo_luminaria_id', '=', 'tipo_luminaria.id')
             ->join('distrito', 'distrito.codigo', '=', 'base_datos_siget.municipio_id')
             ->select(
+                'base_datos_siget.id as id',
                 'tipo_luminaria.nombre as tipo',
                 'tipo_luminaria.id as tipo_id',
                 DB::raw('SUM(base_datos_siget.numero_luminarias) as conteo'),
                 'distrito.nombre',
-                'distrito.id',
                 'base_datos_siget.potencia_nominal',
                 DB::raw('base_datos_siget.consumo_mensual as consumo_mensual')
             )
@@ -77,7 +76,42 @@ class EvaluacionProyectosController extends Controller
 
     public function getTecnologiasSugeridas(Request $request)
     {
-        //dd($request->input('tecnologia_actual_array'), "datos_enviados");
+        $tecnologia_actual_array = $request->input('tecnologia_actual_array');
+
+        $registros_siget = BaseDatosSiget::whereIn('id',$tecnologia_actual_array)->get();
+
+        $potencia_promedio_array = [];
+
+        foreach($registros_siget as $registro)
+        {
+            $potencia_promedio = PotenciaPromedio::where('tipo_luminaria_id',$registro->tipo_luminaria_id)
+            ->where('potencia',$registro->potencia_nominal)->first();
+
+            array_push($potencia_promedio_array,$potencia_promedio->id);
+
+        }
+
+
+        $tecnologia_sustituir = TecnologiaSustituir::whereIn('tecnologia_actual_id',$potencia_promedio_array)->get();
+
+
+        $tecnologias_sustituir_array = $tecnologia_sustituir->pluck('tecnologia_sustituir_id')->unique()->toArray();
+
+        $potencias_finales = PotenciaPromedio::whereIn('id',$tecnologias_sustituir_array)->get();
+
+        return view('publico.combo_tecnologias_sustituir_', compact('potencias_finales'));
+
+        /*
+        dd($potencias_finales);
+
+        $tecnologia_actual_array = $request('tecnologia_actual_array')->toArray();
+
+
+        // Ensure 'tecnologia_actual_array' is an array
+        if (!is_array($tecnologia_actual_array)) {
+            $tecnologia_actual_array = (array) $tecnologia_actual_array;
+            dd("es arreglo");
+        }
 
         $datos = $request->input('tecnologia_actual_array');
 
@@ -103,7 +137,7 @@ class EvaluacionProyectosController extends Controller
         $tecnologiasRemplazar = PotenciaPromedio::whereIn('id', $sustituir_id_array)->get();
         //dd($tecnologiasRemplazar);
 
-        return view('publico.combo_tecnologias_sustituir_', compact('tecnologiasRemplazar'));
+        return view('publico.combo_tecnologias_sustituir_', compact('tecnologiasRemplazar'));*/
     }
 
 
