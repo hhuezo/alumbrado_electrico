@@ -70,9 +70,9 @@ class BaseDatosController extends Controller
             )
             ->orderBy('consumo_mensual')
             ->groupBy('tipo_luminaria_id', 'potencia_nominal')
-            ->having('conteo','=',0)->get();
+            ->having('conteo', '=', 0)->get();
 
-        foreach($data as $record){
+        foreach ($data as $record) {
             $potencia = new PotenciaPromedio();
             $potencia->tipo_luminaria_id = $record->tipo_luminaria_id;
             $potencia->potencia = $record->potencia_nominal;
@@ -123,6 +123,28 @@ class BaseDatosController extends Controller
                     $distrito->extension_territorial = $registro->area;
                     $distrito->save();
                 }
+            }
+
+            //creando potencias
+            $data = BaseDatosSiget::where('anio', $request->anio)->where('mes', $request->mes)
+                ->select(
+                    'tipo_luminaria_id',
+                    'potencia_nominal',
+                    'consumo_mensual',
+                    DB::raw('(select count(potencia_promedio.id) from potencia_promedio
+                where potencia_promedio.tipo_luminaria_id = base_datos_siget.tipo_luminaria_id
+                and potencia_promedio.potencia = base_datos_siget.potencia_nominal ) as conteo')
+                )
+                ->orderBy('consumo_mensual')
+                ->groupBy('tipo_luminaria_id', 'potencia_nominal')
+                ->having('conteo', '=', 0)->get();
+
+            foreach ($data as $record) {
+                $potencia = new PotenciaPromedio();
+                $potencia->tipo_luminaria_id = $record->tipo_luminaria_id;
+                $potencia->potencia = $record->potencia_nominal;
+                $potencia->consumo_promedio = $record->consumo_mensual;
+                $potencia->save();
             }
 
 
