@@ -191,17 +191,17 @@
                             </a>
                             <ul class="sidebar-submenu">
                                 <li>
-                                    <a href="{{ url('importacion/base_datos') }}">Importación de censo gen.</a>
+                                    <a href="{{ url('importacion/base_datos') }}">Importación de censo<br>general</a>
                                 </li>
                                 {{-- <li>
                                     <a href="#">Gráficos</a>
                                 </li> --}}
                                 <li>
-                                    <a href="#">Estimación de factura general</a>
+                                    <a href="#">Estimación de factura<br>general</a>
                                 </li>
                                 <li>
                                     <a href="{{ url('publico/evaluacion_proyectos') }}">Evaluación de proyectos</a>
-                                </li>                             
+                                </li>
                                 <li>
                                     <a href="{{ url('publico/biblioteca_publica') }}">Biblioteca / Info general</a>
                                 </li>
@@ -249,7 +249,7 @@
                                     <a href="{{ url('control/comparacion_censos') }}">Comparación de censos</a>
                                 </li>
                                  <li>
-                                    <a href="{{ url('publico/evaluacion_proyectos/evaluacionProyectosCensoIndex') }}">Evaluación de proyectos censo</a>
+                                    <a href="{{ url('publico/evaluacion_proyectos/evaluacionProyectosCensoIndex') }}">Evaluación de proyectos<br>censo</a>
                                 </li>
                             </ul>
 
