@@ -185,7 +185,7 @@
     </div>
 
 </div>
-<div class="xl:col-span-6 col-span-6 lg:col-span-7 ">
+<div class="xl:col-span-6 col-span-6 lg:col-span-7 p-6">
     <div class="card">
         <div class="card-body flex flex-col p-6">
             <header class="flex mb-5 items-center border-b border-slate-100 dark:border-slate-700 pb-5 -mx-6 px-6">
@@ -289,17 +289,15 @@
 
         </div>
     </div>
-</div>
 
-<div class="xl:col-span-6 col-span-6 lg:col-span-7 ">
     <div class="card">
         <div class="card-body flex flex-col p-6">
-            <header class="flex mb-5 items-center border-b border-slate-100 dark:border-slate-700 pb-5 -mx-6 px-6">
+            {{-- <header class="flex mb-5 items-center border-b border-slate-100 dark:border-slate-700 pb-5 -mx-6 px-6">
                 <div class="flex-1">
                     <div class="card-title text-slate-900 dark:text-white">Nuevo grafico
                     </div>
                 </div>
-            </header>
+            </header> --}}
 
             <div id="nuevo_grafico"></div>
 
@@ -307,6 +305,8 @@
         </div>
     </div>
 </div>
+
+
 <script type="text/javascript">
     var totalParque = {{ $resultados->sum('conteo') }};
     var tecnologia_sustituir = [];
@@ -506,7 +506,7 @@
     }
 
     function getTecnologiaSustituir() {
-        alert('hola');
+        //alert('hola');
         var tecno_susti_total_iluminarias = 0;
         var tecnologia_actual_array = [];
         @foreach ($resultados as $resultado)
@@ -515,29 +515,8 @@
             var luminariasInt = parseInt(luminarias);
 
             if (luminariasInt > 0) {
-                //console.log("luminarias: " + luminarias);
-                //var consumoMensual = $('#input_{{ $resultado->tipo_id }}_{{ $resultado->potencia_nominal }}_consumo_mensual_kwh').val();
-
-                //console.log("consumoMensual: " + {{ $resultado->id }});
-
                 tecnologia_actual_array.push({{$resultado->id}});
             }
-
-            /* // Utiliza jQuery para obtener el valor del input _consumo_mensual_kwh
-             var luminarias = $('#input_{{ $resultado->tipo_id }}_{{ $resultado->potencia_nominal }}').val();
-             //console.log("luminarias: " + luminarias);
-             var consumoMensual = $(
-                 '#input_{{ $resultado->tipo_id }}_{{ $resultado->potencia_nominal }}_consumo_mensual_kwh').val();
-             var luminariasInt = parseInt(luminarias);
-
-             if (luminariasInt > 0) {
-                 var newItem = {
-                     tipo_id: {{ $resultado->tipo_id }},
-                     potencia_nominal: {{ $resultado->potencia_nominal }},
-                     consumo_mensual_kwh: {{ $resultado->consumo_mensual }}
-                 };
-                 tecnologia_actual_array.push(newItem);
-             }*/
         @endforeach
 
         console.log("tecnologia_actual_array: " + tecnologia_actual_array);
