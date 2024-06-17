@@ -27,6 +27,7 @@
                             @csrf
                             <div class="input-area">
                                 <label for="largeInput" class="form-label">Departamento</label>
+                                <input type="hidden" id="tipo" value="2">
                                 <select class="form-control" id="departamento">
                                     <option value="" selected disabled>Seleccione...</option>
                                     @foreach ($departamentos as $obj)
@@ -91,7 +92,7 @@
     <script type="text/javascript">
         $(document).ready(function() {
             let chart;
-            $("#distrito").change();
+            //$("#distrito").change();
 
             $("#departamento").change(function() {
                 // var para la Departamento
@@ -100,15 +101,15 @@
                 $.get("{{ url('censo_luminaria/get_municipios') }}" + '/' + Departamento, function(data) {
                     //console.log(data);
                     muni = $("#municipio");
-                    muni.val(null).trigger("change");
-                    var _select = ''
+                    //muni.val(null).trigger("change");
+                    var _select = '<option value="">SELECCIONE</option>'
                     for (var i = 0; i < data.length; i++)
                         _select += '<option value="' + data[i].id + '">' + data[i].nombre +
                         '</option>';
                     muni.html(_select);
-                    muni.val(null).trigger("change");
-                    var Municipio = muni.val();
-                    getDistritos(Municipio);
+                    //muni.val(null).trigger("change");
+                    //var Municipio = muni.val();
+                    //getDistritos(Municipio);
 
                 });
             });

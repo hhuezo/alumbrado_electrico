@@ -176,7 +176,6 @@
                         placeholder="Total inversión">
                 </div>
             </div>
-            <br>
             <button id="btnCalcular" style=" float: right;" class="btn inline-flex justify-center btn-dark">Calcular
                 Analisis Financiero</button>
 
@@ -185,7 +184,7 @@
     </div>
 
 </div>
-<div class="xl:col-span-6 col-span-6 lg:col-span-7 p-6">
+<div class="xl:col-span-6 col-span-6 lg:col-span-7">
     <div class="card">
         <div class="card-body flex flex-col p-6">
             <header class="flex mb-5 items-center border-b border-slate-100 dark:border-slate-700 pb-5 -mx-6 px-6">
@@ -522,7 +521,8 @@
         console.log("tecnologia_actual_array: " + tecnologia_actual_array);
 
         let parametros = {
-            "tecnologia_actual_array": tecnologia_actual_array
+            "tecnologia_actual_array": tecnologia_actual_array,
+            "tipo": document.getElementById("tipo").value
         };
         $.ajax({
             type: "get",
@@ -616,7 +616,8 @@
         let parametros = {
             "tecnologia_sustituir": JSON.stringify(tecnologia_sustituir),
             "distrito": distrito,
-            "tecnologia_sustituir_id": tecnologia_sustituir_id
+            "tecnologia_sustituir_id": tecnologia_sustituir_id,
+            "tipo": document.getElementById("tipo").value
         };
         $.ajax({
             type: "get",
