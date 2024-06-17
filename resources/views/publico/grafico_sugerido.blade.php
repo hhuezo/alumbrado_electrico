@@ -11,7 +11,7 @@
         },
         title: {
             align: 'left',
-            text: 'Cantidad por tipo de luminaria'
+            text: 'Distribución de luminarias despues de la sustitución'
         },
         subtitle: {
             align: 'left',

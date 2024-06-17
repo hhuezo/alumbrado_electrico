@@ -32,8 +32,15 @@
                     <div class="card-title text-slate-900 dark:text-white">Evaluación de proyectos</div>
                 </div>
             </header>
+            <div class="flex-1">
+                <div class="text-slate-900 dark:text-white">Digitar la cantidad de luminarias que desea sustituir por
+                    cada una de las tecnologías
+                    y luego precionar el botón "Obtener tecnologías sugeridas"</div>
+            </div>
             <div class="card-text h-full ">
+
                 <div id="divFormTecnologias">
+                    <br>
                     <ul class="nav nav-tabs flex flex-col md:flex-row flex-wrap list-none border-b-0 pl-0 mb-4"
                         id="tabs-tab" role="tablist">
                         @php($i = 1)
@@ -68,7 +75,8 @@
                                             @foreach ($resultados->where('tipo_id', $tipo->id) as $resultado)
                                                 <tr>
                                                     <td class="editable th_td backgroundtd">
-                                                        {{ $resultado->potencia_nominal }} Vatios {{$resultado->id}}</td>
+                                                        {{ $resultado->potencia_nominal }} Vatios {{ $resultado->id }}
+                                                    </td>
                                                     <td class="editable th_td backgroundtd">
                                                         {{ $resultado->consumo_mensual }}</td>
                                                     <td class="editable th_td backgroundtd">{{ $resultado->conteo }}
@@ -122,12 +130,12 @@
 
 
 
-<div class="xl:col-span-6 col-span-6 lg:col-span-7 ">
+<div class="xl:col-span-6 col-span-12 lg:col-span-6">
     <div class="card">
         <div class="card-body flex flex-col p-6">
             <header class="flex mb-5 items-center border-b border-slate-100 dark:border-slate-700 pb-5 -mx-6 px-6">
                 <div class="flex-1">
-                    <div class="card-title text-slate-900 dark:text-white">TECNOLOGIA SUGERIDA A SUSTITUIR
+                    <div class="card-title text-slate-900 dark:text-white">TECNOLOGÍA SUGERIDA A SUSTITUIR
                     </div>
                 </div>
             </header>
@@ -145,6 +153,14 @@
                 </div>
             @endif
             <div class="space-y-4">
+                <div class="input-area relative pl-27">
+                    <ul>
+                        <li>* Elegir la tecnología a sustituir</li>
+                        <li>* Ingresar el precio de mercado</li>
+                        <li>* Presionar el botón "Calcular análisis financiero"</li>
+                    </ul>
+                </div>
+                <br>
                 <div class="input-area relative pl-27">
                     <label for="largeInput" class="form-label">Tecnología a sustituir</label>
                     <select class="form-control select2" id="tecnologia_sustituir">
@@ -176,6 +192,7 @@
                         placeholder="Total inversión">
                 </div>
             </div>
+            <br>
             <button id="btnCalcular" style=" float: right;" class="btn inline-flex justify-center btn-dark">Calcular
                 Analisis Financiero</button>
 
@@ -184,7 +201,7 @@
     </div>
 
 </div>
-<div class="xl:col-span-6 col-span-6 lg:col-span-7">
+<div class="xl:col-span-6 col-span-12 lg:col-span-6">
     <div class="card">
         <div class="card-body flex flex-col p-6">
             <header class="flex mb-5 items-center border-b border-slate-100 dark:border-slate-700 pb-5 -mx-6 px-6">
@@ -264,6 +281,10 @@
 
                 </tbody>
             </table>
+            <br>
+            <div class="flex-1">
+                <div class="text-slate-900 dark:text-white">Periodo de recuperación simple (PRS) se calcula el ahorro total de la inversión</div>
+            </div>
             <br>
             <div id="recomendable"
                 class="py-[18px] px-6 font-normal font-Inter text-sm rounded-md bg-success-500 text-white dark:bg-success-500
@@ -514,7 +535,7 @@
             var luminariasInt = parseInt(luminarias);
 
             if (luminariasInt > 0) {
-                tecnologia_actual_array.push({{$resultado->id}});
+                tecnologia_actual_array.push({{ $resultado->id }});
             }
         @endforeach
 
