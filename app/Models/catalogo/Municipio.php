@@ -18,7 +18,12 @@ class Municipio extends Model
 
     protected $fillable = [
         'nombre',
-        'departamento_id'
+        'departamento_id',
+        'convenio',
+        'nombre_responsable',
+        'correo_responsable',
+        'telefono_responsable',
+        'direccion_responsable'
     ];
 
     protected $guarded = [];

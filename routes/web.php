@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\catalogo\BibliotecaController;
 use App\Http\Controllers\catalogo\DistritoController;
+use App\Http\Controllers\catalogo\MunicipioController;
 use App\Http\Controllers\catalogo\ReporteFallaController;
 use App\Http\Controllers\control\ReporteFallaController as ControlReporteFallaController;
 use App\Http\Controllers\catalogo\TipoFallaController;
@@ -118,3 +119,4 @@ Route::resource('importacion/base_datos', BaseDatosController::class);
 Route::get('get_municipios/{id}', [DistritoController::class, 'get_municipios']);
 Route::get('get_distritos/{id}', [DistritoController::class, 'get_distritos']);
 Route::get('get_option/{id}', [DistritoController::class, 'get_option']);
+Route::resource('catalogo/municipio', MunicipioController::class);

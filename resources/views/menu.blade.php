@@ -99,39 +99,39 @@
         }
     </style>
 
-<script>
-    $(document).ready(function() {
-        if ($.fn.DataTable.isDataTable('#myTable')) {
-            $('#myTable').DataTable().destroy();
-        }
-        $('#myTable').DataTable({
-            "language": {
-                "sProcessing": "Procesando...",
-                "sLengthMenu": "Mostrar _MENU_ registros",
-                "sZeroRecords": "No se encontraron resultados",
-                "sEmptyTable": "Ningún dato disponible en esta tabla",
-                "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
-                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
-                "sInfoPostFix": "",
-                "sSearch": "Buscar:",
-                "sUrl": "",
-                "sInfoThousands": ",",
-                "sLoadingRecords": "Cargando...",
-                "oPaginate": {
-                    "sFirst": "Primero",
-                    "sLast": "Último",
-                    "sNext": "Siguiente",
-                    "sPrevious": "Anterior"
-                },
-                "oAria": {
-                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-                }
+    <script>
+        $(document).ready(function() {
+            if ($.fn.DataTable.isDataTable('#myTable')) {
+                $('#myTable').DataTable().destroy();
             }
+            $('#myTable').DataTable({
+                "language": {
+                    "sProcessing": "Procesando...",
+                    "sLengthMenu": "Mostrar _MENU_ registros",
+                    "sZeroRecords": "No se encontraron resultados",
+                    "sEmptyTable": "Ningún dato disponible en esta tabla",
+                    "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                    "sInfoPostFix": "",
+                    "sSearch": "Buscar:",
+                    "sUrl": "",
+                    "sInfoThousands": ",",
+                    "sLoadingRecords": "Cargando...",
+                    "oPaginate": {
+                        "sFirst": "Primero",
+                        "sLast": "Último",
+                        "sNext": "Siguiente",
+                        "sPrevious": "Anterior"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                    }
+                }
+            });
         });
-    });
-</script>
+    </script>
 </head>
 
 <body class=" font-inter dashcode-app" id="body_class">
@@ -143,7 +143,7 @@
             <div id="bodyOverlay"
                 class="w-screen h-screen fixed top-0 bg-slate-900 bg-opacity-50 backdrop-blur-sm z-10 hidden"></div>
             <div class="logo-segment">
-                <a class="flex items-center" href="{{ url('/') }}">
+                <a class="flex items-center" href="{{ url('/home') }}">
                     <img src="{{ asset('img/logo-blanco.png') }}" class="black_logo" alt="logo">
                     <img src="{{ asset('img/logo-blanco.png') }}" class="white_logo" alt="logo">
                     {{-- <span
@@ -151,13 +151,14 @@
                 </a>
                 <!-- Sidebar Type Button -->
                 <div id="sidebar_type" class="cursor-pointer text-slate-900 dark:text-white text-lg">
-                    <iconify-icon class="sidebarDotIcon extend-icon text-slate-900 dark:text-slate-200"
+                    <iconify-icon class="sidebarDotIcon extend-icon text-white"
                         icon="fa-regular:dot-circle"></iconify-icon>
-                    <iconify-icon class="sidebarDotIcon collapsed-icon text-slate-900 dark:text-slate-200"
+                    <iconify-icon class="sidebarDotIcon collapsed-icon text-white"
                         icon="material-symbols:circle-outline"></iconify-icon>
+
                 </div>
                 <button class="sidebarCloseIcon text-2xl">
-                    <iconify-icon class="text-slate-900 dark:text-slate-200" icon="clarity:window-close-line">
+                    <iconify-icon class="text-slate-900 dark:text-slate-200 text-white" icon="clarity:window-close-line">
                     </iconify-icon>
                 </button>
             </div>
@@ -222,12 +223,9 @@
                                 <li>
                                     <a href="{{ url('control/censo_luminaria/show_map') }}">Creación nuevo registro</a>
                                 </li>
-                                {{-- <li>
-                                    <a href="{{ url('control/censo_luminaria') }}">Censos</a>
-                                </li>
                                 <li>
-                                    <a href="#">Comparación censos</a>
-                                </li> --}}
+                                    <a href="#">Importacion de censo</a>
+                                </li>
                             </ul>
                         </li>
                     @endcan
@@ -248,8 +246,9 @@
                                 <li>
                                     <a href="{{ url('control/comparacion_censos') }}">Comparación de censos</a>
                                 </li>
-                                 <li>
-                                    <a href="{{ url('publico/evaluacion_proyectos/evaluacionProyectosCensoIndex') }}">Evaluación de proyectos<br>censo</a>
+                                <li>
+                                    <a href="{{ url('publico/evaluacion_proyectos/evaluacionProyectosCensoIndex') }}">Evaluación
+                                        de proyectos<br>censo</a>
                                 </li>
                             </ul>
 
@@ -302,6 +301,9 @@
                                     <a href="{{ url('catalogo/reporte_falla') }}">Reporte falla</a>
                                 </li>
                                 <li>
+                                    <a href="{{ url('catalogo/municipio') }}">Municipio</a>
+                                </li>
+                                <li>
                                     <a href="{{ url('catalogo/distrito') }}">Distritos</a>
                                 </li>
 
@@ -314,12 +316,12 @@
                                     <a href="{{ url('catalogo/tipo_falla') }}">Tipos de falla</a>
                                 </li>
                                 @can('menu precio energia')
-                                <li>
-                                    <a href="{{ url('control/valor_mensual_energia') }}">Precio energía mensual(kwh)</a>
-                                </li>
-                                <li>
-                                    <a href="{{ url('catalogo/valorkwh') }}">Valor Kwh</a>
-                                </li>
+                                    <li>
+                                        <a href="{{ url('control/valor_mensual_energia') }}">Precio energía mensual(kwh)</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ url('catalogo/valorkwh') }}">Valor Kwh</a>
+                                    </li>
                                 @endcan
                             </ul>
                         </li>
