@@ -92,6 +92,7 @@ class MunicipioController extends Controller
         $municipio->correo_responsable = $request->correo_responsable;
         $municipio->telefono_responsable = $request->telefono_responsable;
         $municipio->direccion_responsable = $request->direccion_responsable;
+        $municipio->puesto_responsable = $request->puesto_responsable;
         $municipio->update();
         alert()->success('El registro ha sido modificado correctamente');
         return back();

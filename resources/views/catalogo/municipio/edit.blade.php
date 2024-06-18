@@ -130,7 +130,7 @@
 
 
                                                 <div class="input-area relative">
-                                                    <label for="largeInput" class="form-label">Convenio</label>
+                                                    <label for="largeInput" class="form-label">Convenio firmado</label>
                                                     <label class="switch">
                                                         <input type="checkbox" name="convenio"
                                                             {{ $municipio->convenio == 1 ? 'checked' : '' }} id="convenio">
@@ -139,11 +139,24 @@
                                                 </div>
 
 
+                                                <div class="input-area relative">
+                                                    <label for="largeInput" class="form-label">&nbsp;</label>
+                                                </div>
+
+
 
                                                 <div class="input-area relative">
                                                     <label for="largeInput" class="form-label">Nombre responsable </label>
                                                     <input type="text" name="nombre_responsable" id="nombre_responsable"
                                                         disabled value="{{ $municipio->nombre_responsable }}"
+                                                        class="form-control">
+                                                </div>
+
+
+                                                <div class="input-area relative">
+                                                    <label for="largeInput" class="form-label">Puesto/Funciones encargado </label>
+                                                    <input type="text" name="puesto_responsable" id="puesto_responsable"
+                                                        disabled value="{{ $municipio->puesto_responsable }}"
                                                         class="form-control">
                                                 </div>
 
@@ -209,6 +222,8 @@
             const correoResponsable = document.getElementById('correo_responsable');
             const telefonoResponsable = document.getElementById('telefono_responsable');
             const direccionResponsable = document.getElementById('direccion_responsable');
+            const puestoResponsable = document.getElementById('puesto_responsable');
+
 
             function toggleInputs() {
                 const isChecked = convenioCheckbox.checked;
@@ -218,6 +233,7 @@
                 correoResponsable.disabled = !isChecked;
                 telefonoResponsable.disabled = !isChecked;
                 direccionResponsable.disabled = !isChecked;
+                puestoResponsable.disabled = !isChecked;
 
                 // Clear inputs if checkbox is unchecked
                 if (!isChecked) {
@@ -225,6 +241,7 @@
                     correoResponsable.value = '';
                     telefonoResponsable.value = '';
                     direccionResponsable.value = '';
+                    puestoResponsable.value = '';
                 }
             }
 

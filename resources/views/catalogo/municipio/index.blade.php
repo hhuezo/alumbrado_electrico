@@ -96,7 +96,7 @@
                                     <td>Id</td>
                                     <td>Nombre</td>
                                     <td>Departamento</td>
-                                    <td>Convenio</td>
+                                    <td>Convenio firmado</td>
                                     <td>opciones</td>
 
                                 </tr>

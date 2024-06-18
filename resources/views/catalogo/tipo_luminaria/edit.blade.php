@@ -3,7 +3,7 @@
     @include('sweetalert::alert', ['cdn' => 'https://cdn.jsdelivr.net/npm/sweetalert2@9'])
     <div class="grid grid-cols-12 gap-5 mb-5">
 
-        <div class="2xl:col-span-12 lg:col-span-12 col-span-12">
+        <div class="xl:col-span-6 col-span-12 lg:col-span-6">
             <div class="card">
                 <div class="card-body flex flex-col p-6">
                     <header class="flex mb-5 items-center border-b border-slate-100 dark:border-slate-700 pb-5 -mx-6 px-6">
@@ -61,11 +61,13 @@
                                                 <div class="grid pt-4 pb-3 px-4">
                                                     <div class="input-area relative">
                                                         @if ($tipo_luminaria->icono)
-                                                        <div class="md:h-[140px] md:w-[140px] h-[100px] w-[100px] md:ml-0 md:mr-0 ml-auto mr-auto md:mb-0 mb-4 rounded-full ring-4 ring-slate-100 relative">
-                                                            <img src="{{ asset('img/') }}/{{ $tipo_luminaria->icono }}" alt="" class="w-full h-full object-cover rounded-full">
+                                                            <div
+                                                                class="md:h-[140px] md:w-[140px] h-[100px] w-[100px] md:ml-0 md:mr-0 ml-auto mr-auto md:mb-0 mb-4 rounded-full ring-4 ring-slate-100 relative">
+                                                                <img src="{{ asset('img/') }}/{{ $tipo_luminaria->icono }}"
+                                                                    alt=""
+                                                                    class="w-full h-full object-cover rounded-full">
 
-                                                        </div>
-
+                                                            </div>
                                                         @endif
                                                     </div>
                                                 </div>
@@ -94,7 +96,7 @@
         </div>
 
 
-        <div class="2xl:col-span-12 lg:col-span-12 col-span-12">
+        <div class="xl:col-span-6 col-span-12 lg:col-span-6">
             <div class="card">
                 <div class="card-body flex flex-col p-6">
                     <header class="flex mb-5 items-center border-b border-slate-100 dark:border-slate-700 pb-5 -mx-6 px-6">
@@ -115,25 +117,45 @@
                                 <div class="grid grid-cols-12 gap-5">
                                     @if ($tipo_luminaria->potenciaPromedio->count() > 0)
                                         <div class="xl:col-span-12 col-span-12 lg:col-span-12">
-                                            <table class="display" cellspacing="0" width="100%">
-                                                <thead>
-                                                    <tr class="td-table">
-                                                        <td>Id</td>
-                                                        <td>Potencia</td>
-                                                        <td>Consumo promedio</td>
-                                                        <td>opciones</td>
+
+                                            <table
+                                                class="min-w-full divide-y divide-slate-100 table-fixed dark:divide-slate-700">
+                                                <thead class="bg-slate-200 dark:bg-slate-700">
+                                                    <tr>
+
+                                                        <th scope="col" class=" table-th ">
+                                                            Id
+                                                        </th>
+
+                                                        <th scope="col" class=" table-th ">
+                                                            Potencia
+                                                        </th>
+
+                                                        <th scope="col" class=" table-th ">
+                                                            Consumo promedio
+                                                        </th>
+
+                                                        <th scope="col" class=" table-th ">
+                                                            opciones
+                                                        </th>
+
                                                     </tr>
                                                 </thead>
-                                                <tbody>
+
+
+                                                <tbody
+                                                    class="bg-white divide-y divide-slate-100 dark:bg-slate-800 dark:divide-slate-700">
 
                                                     @foreach ($tipo_luminaria->potenciaPromedio as $obj)
-                                                        <tr>
-                                                            <td align="center">{{ $obj->id }}</td>
-                                                            <td>{{ $obj->potencia }}</td>
-                                                            <td>{{ $obj->consumo_promedio }} kwH</td>
-                                                            <td align="center">
-                                                                <a href="{{ url('catalogo/tipo_luminaria/create_tecnologia_sustituir') }}/{{ $obj->id }}/edit">
-                                                                    <iconify-icon icon="mdi:pencil-box" width="40"></iconify-icon>
+                                                        <tr class="even:bg-slate-50 dark:even:bg-slate-700">
+                                                            <td class="table-td" align="center">{{ $obj->id }}</td>
+                                                            <td class="table-td">{{ $obj->potencia }}</td>
+                                                            <td class="table-td">{{ $obj->consumo_promedio }} kwH</td>
+                                                            <td class="table-td" align="center">
+                                                                <a
+                                                                    href="{{ url('catalogo/tipo_luminaria/create_tecnologia_sustituir') }}/{{ $obj->id }}/edit">
+                                                                    <iconify-icon icon="bx:detail" width="40"
+                                                                        height="40"></iconify-icon>
                                                                 </a>
                                                                 &nbsp;&nbsp;
 
@@ -166,7 +188,9 @@
                 </div>
             </div>
         </div>
+
     </div>
+
 
 
 @endsection
