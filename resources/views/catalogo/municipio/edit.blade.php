@@ -77,7 +77,7 @@
                 <div class="card-body flex flex-col p-6">
                     <header class="flex mb-5 items-center border-b border-slate-100 dark:border-slate-700 pb-5 -mx-6 px-6">
                         <div class="flex-1">
-                            <div class="card-title text-slate-900 dark:text-white">Municipio
+                            <div class="card-title text-slate-900 dark:text-white">MUNICIPIO: {{ $municipio->nombre }}
 
                                 <a href="{{ url('catalogo/municipio') }}">
                                     <button class="btn btn-dark btn-sm float-right">
@@ -113,7 +113,7 @@
                                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-7">
 
 
-                                                <div class="input-area relative">
+                                                {{-- <div class="input-area relative">
                                                     <label for="largeInput" class="form-label">municipio</label>
                                                     <input type="text" value="{{ $municipio->nombre }}" readonly
                                                         class="form-control">
@@ -125,7 +125,7 @@
                                                     <label for="largeInput" class="form-label">Departamento</label>
                                                     <input type="text" value="{{ $municipio->departamento->nombre }}"
                                                         class="form-control" readonly>
-                                                </div>
+                                                </div> --}}
 
 
 
