@@ -320,7 +320,7 @@
                                         <a href="{{ url('control/valor_mensual_energia') }}">Precio energía mensual(kwh)</a>
                                     </li>
                                     <li>
-                                        <a href="{{ url('catalogo/valorkwh') }}">Valor Kwh</a>
+                                        <a href="{{ url('catalogo/valorkwh') }}">Valor Kwh (precio ref para<br>evaluación de proyectos)</a>
                                     </li>
                                 @endcan
                             </ul>
