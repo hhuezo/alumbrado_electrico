@@ -75,7 +75,7 @@
                                             @foreach ($resultados->where('tipo_id', $tipo->id) as $resultado)
                                                 <tr>
                                                     <td class="editable th_td backgroundtd">
-                                                        {{ $resultado->potencia_nominal }} Vatios {{ $resultado->id }}
+                                                        {{ $resultado->potencia_nominal }} Vatios
                                                     </td>
                                                     <td class="editable th_td backgroundtd">
                                                         {{ $resultado->consumo_mensual }}</td>
@@ -283,7 +283,8 @@
             </table>
             <br>
             <div class="flex-1">
-                <div class="text-slate-900 dark:text-white">Periodo de recuperación simple (PRS) se calcula el ahorro total de la inversión</div>
+                <div class="text-slate-900 dark:text-white">Periodo de recuperación simple (PRS) se calcula el ahorro
+                    total de la inversión</div>
             </div>
             <br>
             <div id="recomendable"
@@ -435,7 +436,19 @@
 
         //pr
         console.log(totalInversion, ahorro_mensual);
-        $('#pr').text(parseFloat(totalInversion) / parseFloat(ahorro_mensual * 12));
+
+        var pr = (parseFloat(totalInversion) / parseFloat(ahorro_mensual * 12)).toFixed(2);
+
+        $('#pr').text(pr);
+
+        if (pr < 3.00) {
+            $('#pr').css('background-color', '#28a745')
+                .css('color', '#fff'); // Verde
+        } else {
+            $('#pr').css('background-color', '#ff9800')
+                .css('color', '#fff'); // Naranja
+        }
+
 
         if (totalInversion !== 0 && parseFloat(ahorro_mensual) !== 0) {
             if (parseFloat($('#pr').text()) <= 3 && parseFloat($('#pr').text()) >= 0) {
