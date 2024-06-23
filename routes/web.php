@@ -65,7 +65,7 @@ Route::post('seguridad/role/link_permission', [RoleController::class, 'link_perm
 
 
 
-
+Route::get('control/censo_luminaria/edit_censo', [CensoLuminariaController::class, 'edit_censo']);
 Route::post('control/censo_luminaria/create_record', [CensoLuminariaController::class, 'create_record']);
 Route::get('control/censo_luminaria/show_map', [CensoLuminariaController::class, 'show_map']);
 Route::get('censo_luminaria/get_municipios/{id}', [CensoLuminariaController::class, 'get_municipios']);

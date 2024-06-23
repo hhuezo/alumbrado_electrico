@@ -29,6 +29,8 @@ class CensoLuminaria extends Model
         'usuario_ingreso',
         'codigo_luminaria',
         'decidad_luminicia',
+        'latitud',
+        'longitud',
         'direccion',
         'tipo_falla_id',
         'condicion_lampara',

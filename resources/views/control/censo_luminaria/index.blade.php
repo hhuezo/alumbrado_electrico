@@ -46,27 +46,31 @@
                                             <td>{{ $obj->distrito->nombre }}</td>
                                             <td>{{ $obj->tipo_falla ? $obj->tipo_falla->nombre : 'En buen estado' }}</td>
                                             <td align="center">
+                                                <div
+                                                    style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;">
 
-                                                <a href="{{ url('control/censo_luminaria') }}/{{ $obj->id }}">
-                                                    <button class="btn inline-flex justify-center btn-primary  btn-sm">
-                                                        <iconify-icon icon="ic:outline-remove-red-eye" width="24"
-                                                            height="24"></iconify-icon>
-                                                    </button>
-                                                </a>
+                                                    <a href="{{ url('control/censo_luminaria') }}/{{ $obj->id }}">
+                                                        <iconify-icon icon="pepicons-pencil:eye-circle-filled"
+                                                            width="40" height="40"></iconify-icon>
+                                                    </a>
 
-                                                @if ($obj->countCodigo($obj->codigo_luminaria) == 1)
-                                                    <button class="btn inline-flex justify-center btn-danger btn-sm"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#modal-delete-{{ $obj->id }}">
-                                                        <iconify-icon icon="mdi:trash" width="24"></iconify-icon>
-                                                    </button>
-                                                @else
-                                                    <button
-                                                        class="btn inline-flex justify-center btn-danger btn-sm"
-                                                        disabled="disabled"><iconify-icon icon="mdi:trash"
-                                                            width="24"></iconify-icon> </button>
-                                                @endif
+                                                    <a href="{{ url('control/censo_luminaria') }}/{{ $obj->id }}/edit">
+                                                        <iconify-icon icon="el:pencil-alt" width="40"
+                                                            height="40"></iconify-icon>
+                                                    </a>
 
+
+                                                    @if ($obj->countCodigo($obj->codigo_luminaria) == 1)
+                                                        <a href="#" data-bs-toggle="modal"
+                                                            data-bs-target="#modal-delete-{{ $obj->id }}">
+                                                            <iconify-icon icon="f7:trash-circle-fill" width="45"
+                                                                height="45"></iconify-icon>
+                                                        </a>
+                                                    @else
+                                                        <iconify-icon disabled="disabled" icon="f7:trash-circle-fill"
+                                                            width="45" height="45"></iconify-icon>
+                                                    @endif
+                                                </div>
                                             </td>
                                         </tr>
                                         @php($i++)
