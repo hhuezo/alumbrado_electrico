@@ -283,8 +283,7 @@
             </table>
             <br>
             <div class="flex-1">
-                <div class="text-slate-900 dark:text-white">Periodo de recuperación simple (PRS) se calcula el ahorro
-                    total de la inversión</div>
+                <div class="text-slate-900 dark:text-white">PR: Periodo de recuperacion simple es la inversion entre el ahorro anual.</div>
             </div>
             <br>
             <div id="recomendable"
