@@ -148,7 +148,7 @@
                                                 <div class="input-area relative">
                                                     <label for="largeInput" class="form-label">Nombre responsable </label>
                                                     <input type="text" name="nombre_responsable" id="nombre_responsable"
-                                                        disabled value="{{ $municipio->nombre_responsable }}"
+                                                     value="{{ $municipio->nombre_responsable }}"
                                                         class="form-control">
                                                 </div>
 
@@ -156,7 +156,7 @@
                                                 <div class="input-area relative">
                                                     <label for="largeInput" class="form-label">Puesto/Funciones encargado </label>
                                                     <input type="text" name="puesto_responsable" id="puesto_responsable"
-                                                        disabled value="{{ $municipio->puesto_responsable }}"
+                                                     value="{{ $municipio->puesto_responsable }}"
                                                         class="form-control">
                                                 </div>
 
@@ -164,7 +164,7 @@
                                                 <div class="input-area relative">
                                                     <label for="largeInput" class="form-label">Correo</label>
                                                     <input type="email" name="correo_responsable" id="correo_responsable"
-                                                        disabled value="{{ $municipio->correo_responsable }}"
+                                                     value="{{ $municipio->correo_responsable }}"
                                                         class="form-control">
                                                 </div>
 
@@ -174,7 +174,7 @@
                                                     <label for="largeInput" class="form-label">Teléfono</label>
                                                     <input type="text" name="telefono_responsable"
                                                         id="telefono_responsable"
-                                                        value="{{ $municipio->telefono_responsable }}" disabled
+                                                        value="{{ $municipio->telefono_responsable }}"
                                                         class="form-control">
                                                 </div>
 
@@ -183,7 +183,7 @@
                                                 <div class="input-area relative">
                                                     <label for="largeInput" class="form-label">Dirección</label>
                                                     <input type="text" name="direccion_responsable"
-                                                        id="direccion_responsable" disabled
+                                                        id="direccion_responsable"
                                                         value="{{ $municipio->direccion_responsable }}"
                                                         class="form-control">
                                                 </div>
@@ -217,44 +217,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const convenioCheckbox = document.getElementById('convenio');
-            const nombreResponsable = document.getElementById('nombre_responsable');
-            const correoResponsable = document.getElementById('correo_responsable');
-            const telefonoResponsable = document.getElementById('telefono_responsable');
-            const direccionResponsable = document.getElementById('direccion_responsable');
-            const puestoResponsable = document.getElementById('puesto_responsable');
-
-
-            function toggleInputs() {
-                const isChecked = convenioCheckbox.checked;
-
-                // Toggle disabled attribute based on checkbox state
-                nombreResponsable.disabled = !isChecked;
-                correoResponsable.disabled = !isChecked;
-                telefonoResponsable.disabled = !isChecked;
-                direccionResponsable.disabled = !isChecked;
-                puestoResponsable.disabled = !isChecked;
-
-                // Clear inputs if checkbox is unchecked
-                if (!isChecked) {
-                    nombreResponsable.value = '';
-                    correoResponsable.value = '';
-                    telefonoResponsable.value = '';
-                    direccionResponsable.value = '';
-                    puestoResponsable.value = '';
-                }
-            }
-
-            // Apply input mask to the telefonoResponsable input
-            if (telefonoResponsable) {
-                Inputmask("9999-9999").mask(telefonoResponsable);
-            }
-
-            // Add event listener for change event
-            convenioCheckbox.addEventListener('change', toggleInputs);
-
-            // Execute the function when the page loads
-            toggleInputs();
+            Inputmask("9999-9999").mask(telefonoResponsable);
         });
     </script>
 
