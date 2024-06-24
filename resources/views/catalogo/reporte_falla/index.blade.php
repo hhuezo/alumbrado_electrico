@@ -47,6 +47,10 @@
                                             <td>{{ $obj->nombre_contacto }}</td>
                                             <td>{{ $obj->telefono_contacto }}</td>
                                             <td align="center">
+                                                <a href="{{ url('reporte_falla') }}/{{ $obj->id }}">
+                                                    <iconify-icon icon="pepicons-pop:eye-circle-filled" width="40" height="40"></iconify-icon>
+                                                </a>
+                                                &nbsp;&nbsp;
                                                 <a href="{{ url('catalogo/reporte_falla') }}/{{ $obj->id }}/edit">
                                                     <iconify-icon icon="mdi:pencil-box" width="40"></iconify-icon>
                                                 </a>

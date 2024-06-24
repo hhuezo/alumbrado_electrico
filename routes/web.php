@@ -94,6 +94,7 @@ Route::resource('catalogo/valorkwh', ValorKWHController::class);
 Route::get('catalogo/reporte_falla/get_distrito_id/{name}', [ReporteFallaController::class, 'getDistritoId']);
 Route::get('catalogo/reporte_falla/get_departamento_id/{name}', [ReporteFallaController::class, 'getDepartamentoId']);
 Route::resource('catalogo/distrito', DistritoController::class);
+Route::post('reporte_falla/registrar_falla', [ControlReporteFallaController::class,'registrar_falla']);
 Route::resource('reporte_falla', ControlReporteFallaController::class);
 
 
