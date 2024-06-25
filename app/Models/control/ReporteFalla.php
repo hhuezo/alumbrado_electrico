@@ -34,7 +34,7 @@ class ReporteFalla extends Model
         'usuario_modificacion',
         'fecha_creacion',
         'fecha_modificacion',
-
+        'censo_luminaria_id'
     ];
 
     protected $guarded =[
@@ -54,5 +54,10 @@ class ReporteFalla extends Model
     public function estado()
     {
         return $this->belongsTo(EstadoReporteFalla::class, 'estado_reporte_id', 'id');
+    }
+
+    public function seguimiento()
+    {
+        return $this->hasMany(ReporteFallaSeguimiento::class);
     }
 }

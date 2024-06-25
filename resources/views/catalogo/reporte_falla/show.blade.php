@@ -34,15 +34,15 @@
 <script src="{{ asset('assets/js/iconify-icon.min.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<form id="form_map" method="POST" action="{{ url('reporte_falla/registrar_falla') }}">
-    @csrf
+<form id="form_map" method="GET" action="{{ url('reporte_falla/registrar_falla') }}">
+
     <input type="hidden" name="id" value="{{ $reporte_falla->id }}">
     <input type="hidden" id="latitude" name="latitude" value="{{ $reporte_falla->latitud }}">
     <input type="hidden" id="longitude" name="longitude" value="{{ $reporte_falla->longitud }}">
     <input type="hidden" name="censo_id" id="censo_id">
     <div id="map"></div>
     <button id="floating-button" type="button" onclick="sendData()">Aceptar Ubicación</button>
-    <a href="{{ url('control/censo_luminaria/') }}">
+    <a href="{{ url('reporte_falla/') }}">
         <button id="back-button" type="button">
             <iconify-icon icon="icon-park-solid:back" style="color: white;" width="25">
             </iconify-icon>

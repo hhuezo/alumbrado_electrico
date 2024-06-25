@@ -27,6 +27,7 @@
                                     <td>Tipo falla</td>
                                     <td>Nombre</td>
                                     <td>Telefono</td>
+                                    <td>Estado</td>
                                     <td>opciones</td>
 
                                 </tr>
@@ -46,6 +47,7 @@
                                             <td>{{ $obj->tipo_falla->nombre }}</td>
                                             <td>{{ $obj->nombre_contacto }}</td>
                                             <td>{{ $obj->telefono_contacto }}</td>
+                                            <td>{{ $obj->estado->nombre }}</td>
                                             <td align="center">
                                                 <a href="{{ url('reporte_falla') }}/{{ $obj->id }}">
                                                     <iconify-icon icon="pepicons-pop:eye-circle-filled" width="40" height="40"></iconify-icon>
