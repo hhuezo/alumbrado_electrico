@@ -189,6 +189,7 @@
                             <!-- BEGIN: Breadcrumb -->
                             <div class="mb-5">
                                 <ul class="m-0 p-0 list-none">
+                                    <a href="{{url('publico/reporte_falla_publico')}}">
                                     <button
                                         class="btn btn-white float-left  dark:bg-slate-700 dark:text-slate-300 m-1 active"
                                         id="pills-grid-tab" data-bs-toggle="pill" data-bs-target="#pills-grid"
@@ -199,6 +200,7 @@
                                             <span>Reporte de falla</span>
                                         </span>
                                     </button>
+                                    </a>
                                 </ul>
                             </div>
                             <!-- END: BreadCrumb -->

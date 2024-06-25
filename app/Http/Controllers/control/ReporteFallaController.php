@@ -131,9 +131,6 @@ class ReporteFallaController extends Controller
         }
 
 
-        $departamentos = Departamento::get();
-        $tipos = TipoFalla::get();
-        return view('control.reporte_falla.create', compact('departamentos', 'tipos'));
     }
 
 

@@ -34,12 +34,12 @@
 <script src="{{ asset('assets/js/iconify-icon.min.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<form id="form_map" method="GET" action="{{ url('control/censo_luminaria/create') }}">
+<form id="form_map" method="GET" action="{{ url('publico/reporte_falla_publico/create') }}">
     <input type="hidden" id="latitude" name="latitude">
     <input type="hidden" id="longitude" name="longitude">
     <div id="map"></div>
     <button id="floating-button" type="button" onclick="sendData()">Aceptar Ubicación</button>
-    <a href="{{ url('control/censo_luminaria/') }}">
+    <a href="{{ url('/') }}">
         <button id="back-button" type="button">
             <iconify-icon icon="icon-park-solid:back" style="color: white;" width="25">
             </iconify-icon>
