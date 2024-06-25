@@ -267,7 +267,7 @@
                             </a>
                             <ul class="sidebar-submenu">
                                 <li>
-                                    <a href="{{ url('publico/reporte_falla_publico') }}">Crear reporte de falla</a>
+                                    <a href="{{ url('reporte_falla/show_map') }}">Crear reporte de falla</a>
                                 </li>
                                 <li>
                                     <a href="{{ url('reporte_falla') }}">Seguimiento de reportes</a>

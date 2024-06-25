@@ -96,6 +96,7 @@ Route::get('catalogo/reporte_falla/get_departamento_id/{name}', [ReporteFallaCon
 Route::resource('catalogo/distrito', DistritoController::class);
 Route::post('reporte_falla/finalizar_falla', [ControlReporteFallaController::class,'finalizar_falla']);
 Route::post('reporte_falla/registrar_falla', [ControlReporteFallaController::class,'store_falla']);
+Route::get('reporte_falla/show_map', [ControlReporteFallaController::class,'show_map']);
 Route::get('reporte_falla/registrar_falla', [ControlReporteFallaController::class,'registrar_falla']);
 Route::resource('reporte_falla', ControlReporteFallaController::class);
 

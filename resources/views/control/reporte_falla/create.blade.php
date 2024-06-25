@@ -28,7 +28,7 @@
                         <div class="flex-1">
                             <div class="card-title text-slate-900 dark:text-white">Reporte falla
 
-                                <a href="{{ url('catalogo/reporte_falla') }}">
+                                <a href="{{ url('reporte_falla/show_map') }}">
                                     <button class="btn btn-dark btn-sm float-right">
                                         <iconify-icon icon="icon-park-solid:back" style="color: white;" width="18">
                                         </iconify-icon>
@@ -55,7 +55,7 @@
                                                 </ul>
                                             </div>
                                         @endif
-                                        <form method="POST" action="{{ url('catalogo/reporte_falla') }}"
+                                        <form method="POST" action="{{ url('reporte_falla') }}"
                                             enctype="multipart/form-data">
                                             @csrf
 
@@ -65,41 +65,40 @@
                                             </div>
 
                                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-7">
-                                                <input type="hidden" id="latitud" name="latitud" class="form-control">
-                                                <input type="hidden" id="longitud"  name="longitud" class="form-control">
+                                                <input type="hidden" name="latitud" value="{{ $latitude }}" class="form-control">
+                                                <input type="hidden" name="longitud" value="{{ $longitude }}" class="form-control">
 
-                                                <div class="input-area relative">
-                                                    <label for="largeInput" class="form-label">Localización</label>
-                                                    <div class="relative">
-                                                        <input type="text" id="localizacion" required class="form-control !pr-12"
-                                                            readonly>
-                                                        <button onclick="obtenerUbicacion()" type="button"
-                                                            class="absolute btn-dark right-0 top-1/2 -translate-y-1/2 w-9 h-full border-l border-l-slate-200 dark:border-l-slate-700 flex items-center justify-center">
-                                                            <iconify-icon icon="mdi:location" style="color: white;"
-                                                                width="24"></iconify-icon>
-                                                        </button>
-                                                    </div>
-                                                </div>
-
-                                                <div class="input-area relative">
-                                                    <label for="largeInput" class="form-label">Fecha</label>
-                                                    <input type="date" name="fecha" value="{{ old('fecha') }}"
-                                                        required class="form-control">
-                                                </div>
 
                                                 <div class="input-area">
                                                     <label for="largeInput" class="form-label">Departamento</label>
-                                                    <select class="form-control" id="departamento" name="departamento_id">
-                                                        <option value="">Seleccione</option>
+                                                    <select class="form-control" id="departamento">
                                                         @foreach ($departamentos as $obj)
-                                                            <option value="{{ $obj->id }}" {{old('departamento_id') == $obj->id ? 'selected':''}}>{{ $obj->nombre }}</option>
+                                                            <option value="{{ $obj->id }}"
+                                                                {{ $id_departamento == $obj->id ? 'selected' : '' }}>{{ $obj->nombre }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+
+
+                                                <div class="input-area">
+                                                    <label for="largeInput" class="form-label">Municipio</label>
+                                                    <select class="form-control" id="municipio">
+                                                        @foreach ($municipios as $obj)
+                                                            <option value="{{ $obj->id }}"
+                                                                {{ $municipio_id == $obj->id ? 'selected' : '' }}>{{ $obj->nombre }}
+                                                            </option>
                                                         @endforeach
                                                     </select>
                                                 </div>
 
                                                 <div class="input-area">
                                                     <label for="largeInput" class="form-label">Distrito</label>
-                                                    <select class="form-control" required name="distrito_id" id="distrito">
+                                                    <select class="form-control" name="distrito_id" id="distrito" required>
+                                                        @foreach ($distritos as $obj)
+                                                            <option value="{{ $obj->id }}"
+                                                                {{ $id_distrito == $obj->id ? 'selected' : '' }}>{{ $obj->nombre }}</option>
+                                                        @endforeach
                                                     </select>
                                                 </div>
 
@@ -107,7 +106,7 @@
                                                 <div class="input-area relative">
                                                     <label for="largeInput" class="form-label">Tipo falla</label>
                                                     <select name="tipo_falla_id" class="form-control" required>
-                                                        @foreach ($tipos as $obj)
+                                                        @foreach ($tipos_falla as $obj)
                                                             <option value="{{ $obj->id }}">{{ $obj->nombre }}
                                                             </option>
                                                         @endforeach
@@ -123,13 +122,18 @@
 
                                                 <div class="input-area relative">
                                                     <label for="largeInput" class="form-label">Nombre</label>
-                                                    <input type="text" name="nombre_contacto" value="{{ old('nombre_contacto') }}"
+                                                    <input type="text" name="nombre_contacto" value="{{ auth()->user()->name }}"
                                                         required class="form-control">
                                                 </div>
 
                                                 <div class="input-area relative">
+                                                    <label for="largeInput" class="form-label">Correo</label>
+                                                    <input type="text" name="correo_contacto" value="{{ auth()->user()->email }}"  class="form-control">
+                                                </div>
+
+                                                <div class="input-area relative">
                                                     <label for="largeInput" class="form-label">Telefono</label>
-                                                    <input type="text" name="telefono_contacto" value="{{ old('telefono_contacto') }}" data-inputmask="'mask': ['9999-9999']" class="form-control">
+                                                    <input type="text" name="telefono_contacto" value="" data-inputmask="'mask': ['9999-9999']" class="form-control">
                                                 </div>
 
 

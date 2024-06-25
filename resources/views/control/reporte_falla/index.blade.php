@@ -7,9 +7,7 @@
         <header class=" card-header noborder">
             <h4 class="card-title">Reporte de fallas
             </h4>
-            <a href="{{ url('catalogo/reporte_falla/create') }}">
-                <button class="btn btn-outline-dark">Nuevo</button>
-            </a>
+
         </header>
         <div class="card-body px-6 pb-6">
             <div style=" margin-left:20px; margin-right:20px; ">
@@ -53,7 +51,7 @@
                                                     <iconify-icon icon="pepicons-pop:eye-circle-filled" width="40" height="40"></iconify-icon>
                                                 </a>
                                                 &nbsp;&nbsp;
-                                                <a href="{{ url('catalogo/reporte_falla') }}/{{ $obj->id }}/edit">
+                                                <a href="{{ url('control/reporte_falla') }}/{{ $obj->id }}/edit">
                                                     <iconify-icon icon="mdi:pencil-box" width="40"></iconify-icon>
                                                 </a>
                                                 &nbsp;&nbsp;
@@ -65,7 +63,7 @@
                                             </td>
                                         </tr>
 
-                                        @include('catalogo.reporte_falla.modal')
+                                        @include('control.reporte_falla.modal')
                                     @endforeach
                                 @endif
                                 </thead>

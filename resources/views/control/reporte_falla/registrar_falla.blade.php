@@ -329,6 +329,22 @@
                                         <div class="card-title text-slate-900 dark:text-white">Reporte falla</div>
                                     </div>
 
+                                    <div class="input-area">
+                                        <label for="largeInput" class="form-label">Contacto</label>
+                                        <input type="text" value="{{ $reporte_falla->nombre_contacto }}" readonly
+                                            class="form-control">
+                                    </div>
+                                    <div class="input-area">
+                                        <label for="largeInput" class="form-label">Teléfono</label>
+                                        <input type="text" value="{{ $reporte_falla->telefono_contacto }}" readonly
+                                            class="form-control">
+                                    </div>
+                                    <div class="input-area">
+                                        <label for="largeInput" class="form-label">Correo</label>
+                                        <input type="text" value="{{ $reporte_falla->correo_contacto }}" readonly
+                                            class="form-control">
+                                    </div>
+
                                     <div class="input-area relative">
                                         <label for="largeInput" class="form-label">Fecha</label>
                                         <input type="date"
@@ -406,6 +422,14 @@
                                         <div class="card-title text-slate-900 dark:text-white">Información de luminaria
                                         </div>
                                     </div>
+
+
+
+
+
+
+
+
                                     <div class="input-area">
                                         <label for="largeInput" class="form-label">Código luminaria</label>
                                         <input type="text" value="{{ $censo->codigo_luminaria }}" readonly
