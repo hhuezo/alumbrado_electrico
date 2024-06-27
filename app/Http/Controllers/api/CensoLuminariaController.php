@@ -32,7 +32,7 @@ class CensoLuminariaController extends Controller
         return $response;
     }
 
-    public function get_data_create($departamento_id, $distrito_id, $latitude, $longitude,$usuario_id)
+    public function get_data_create($departamento_id, $distrito_id, $latitude, $longitude, $usuario_id)
     {
 
         //verificar si existe algun punto cerca
@@ -55,7 +55,7 @@ class CensoLuminariaController extends Controller
             $municipios = Municipio::where('departamento_id', $departamento_id)->get();
             $primerMunicipio = Municipio::where('departamento_id', $departamento_id)->first();
             $distritos = Distrito::where('municipio_id', $primerMunicipio->id)->get();
-            $companias = Compania::where('activo',1)->get();
+            $companias = Compania::where('activo', 1)->get();
         } else {
             $distrito = Distrito::findOrFail($distrito_id);
             $distritos = Distrito::where('municipio_id', $distrito->municipio_id)->get();
@@ -77,10 +77,8 @@ class CensoLuminariaController extends Controller
             $distritos = Distrito::whereIn('id', $distritos_id)->get();
             $departamentos = $user->get_departamentos($user->id);
 
-            if($distrito_id != null)
-            {
-                if(!in_array($distrito_id,$distritos_id ))
-                {
+            if ($distrito_id != null) {
+                if (!in_array($distrito_id, $distritos_id)) {
                     $id_distrito_valido = false;
                 }
             }
@@ -89,7 +87,7 @@ class CensoLuminariaController extends Controller
         $response = [
             "departamentos" => $departamentos, "municipios" => $municipios, "distritos" => $distritos,
             "tipos" => $tipos, "tipos_falla" => $tipos_falla, 'puntosCercanos' => $puntosCercanos,
-            'id_distrito_valido'=>$id_distrito_valido,'companias'=>$companias
+            'id_distrito_valido' => $id_distrito_valido, 'companias' => $companias
         ];
 
         return $response;
@@ -125,15 +123,12 @@ class CensoLuminariaController extends Controller
 
     public function get_companias($id)
     {
-        try{
+        try {
             $distrito = Distrito::findOrFail($id);
             return $distrito->companias;
-        }
-        catch(Exception $e)
-        {
+        } catch (Exception $e) {
             return null;
         }
-
     }
 
     public function store(Request $request)
@@ -147,6 +142,19 @@ class CensoLuminariaController extends Controller
             $censo->compania_id = $request->compania_id;
             $censo->tipo_luminaria_id = $request->tipo_luminaria_id;
             $censo->codigo_luminaria = $codigo;
+
+            if ($request->potencia_nominal=="") {
+                $potencia_promedio = PotenciaPromedio::findOrFail($request->potencia_promedio);
+                $censo->potencia_nominal =  $potencia_promedio->potencia;
+                //return ["value" => 0, "mensaje" => "", "codigo" => $request->potencia_promedio];
+
+            } else {
+                $censo->potencia_nominal =  $request->potencia_nominal;
+                //return ["value" => 0, "mensaje" => $request->potencia_nominal, "codigo" => ""];
+
+            }
+
+
 
             // Validar y asignar consumo_mensual
             $censo->consumo_mensual = !empty($request->consumo_mensual) ? $request->consumo_mensual : null;
@@ -199,45 +207,38 @@ class CensoLuminariaController extends Controller
 
     public function show($id)
     {
-        try{
+        try {
             $censos = DB::table('censo_luminaria')
-            ->join('tipo_luminaria as tipo', 'censo_luminaria.tipo_luminaria_id', '=', 'tipo.id')
-            ->join('distrito', 'censo_luminaria.distrito_id', '=', 'distrito.id')
-            ->join('municipio', 'distrito.municipio_id', '=', 'municipio.id')
-            ->join('departamento', 'municipio.departamento_id', '=', 'departamento.id')
-            ->select(
-                'censo_luminaria.id',
-                'censo_luminaria.codigo_luminaria',
-                'tipo.nombre as tipo_luminaria',
-                'censo_luminaria.potencia_nominal',
-                'censo_luminaria.latitud',
-                'censo_luminaria.longitud',
-                DB::raw("DATE_FORMAT(censo_luminaria.fecha_creacion, '%d/%m/%Y') as fecha"),
-                'distrito.nombre as distrito',
-                'departamento.nombre as departamento',
-                'censo_luminaria.direccion',
-                'censo_luminaria.observacion'
-            )
-            ->where('censo_luminaria.usuario_ingreso', $id)
-            ->get();
+                ->join('tipo_luminaria as tipo', 'censo_luminaria.tipo_luminaria_id', '=', 'tipo.id')
+                ->join('distrito', 'censo_luminaria.distrito_id', '=', 'distrito.id')
+                ->join('municipio', 'distrito.municipio_id', '=', 'municipio.id')
+                ->join('departamento', 'municipio.departamento_id', '=', 'departamento.id')
+                ->select(
+                    'censo_luminaria.id',
+                    'censo_luminaria.codigo_luminaria',
+                    'tipo.nombre as tipo_luminaria',
+                    'censo_luminaria.potencia_nominal',
+                    'censo_luminaria.latitud',
+                    'censo_luminaria.longitud',
+                    DB::raw("DATE_FORMAT(censo_luminaria.fecha_creacion, '%d/%m/%Y') as fecha"),
+                    'distrito.nombre as distrito',
+                    'departamento.nombre as departamento',
+                    'censo_luminaria.direccion',
+                    'censo_luminaria.observacion'
+                )
+                ->where('censo_luminaria.usuario_ingreso', $id)
+                ->get();
 
-            if($censos)
-            {
+            if ($censos) {
                 $response = ["value" => 1, "mensaje" => "ok", "censos" => $censos];
-            }
-            else{
+            } else {
                 $response = ["value" => 0, "mensaje" => "error", "censos" => null];
             }
-
-
-        }
-        catch(Exception $e)
-        {
+        } catch (Exception $e) {
             $response = ["value" => 0, "mensaje" => "error", "censos" => null];
         }
 
-            return  $response;
-
+        return  $response;
     }
 
     public function edit($id)
