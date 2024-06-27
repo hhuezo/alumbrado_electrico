@@ -224,6 +224,11 @@ class CensoLuminariaController extends Controller
         $censo = new CensoLuminaria();
         $censo->tipo_luminaria_id = $request->tipo_luminaria_id;
         $censo->potencia_nominal = $request->potencia_nominal;
+        if ($request->potencia_nominal != null) {
+            $censo->potencia_nominal = $request->potencia_nominal;
+        } else {
+            $censo->potencia_nominal = PotenciaPromedio::findOrFail($request->potencia_promedio)->potencia;
+        }
         $censo->consumo_mensual = $request->consumo_mensual;
         $censo->distrito_id = $request->distrito_id;
         $censo->usuario_ingreso = auth()->user()->id;
