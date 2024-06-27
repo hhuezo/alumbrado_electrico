@@ -59,6 +59,10 @@ class ReporteFallaController extends Controller
             $fechaActual = Carbon::now();
 
             $reporte_falla = new ReporteFalla();
+
+            if($request->usuario_id !=""){
+                $reporte_falla->usuario_creacion = $request->usuario_id;
+            }
             $reporte_falla->fecha = $fechaActual->format('Y-m-d');
             $reporte_falla->distrito_id = $request->distrito_id;
             $reporte_falla->tipo_falla_id = $request->tipo_falla_id;
