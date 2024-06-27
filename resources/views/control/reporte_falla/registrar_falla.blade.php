@@ -410,7 +410,7 @@
                                     <div class="input-area relative">
                                         @if ($reporte_falla->url_foto)
                                             <img src="{{ asset('docs') }}/{{ $reporte_falla->url_foto }}"
-                                                style="max-width: 50px">
+                                                style="max-width: 200px">
                                         @endif
 
                                     </div>
