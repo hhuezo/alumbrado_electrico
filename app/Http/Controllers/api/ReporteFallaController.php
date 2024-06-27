@@ -67,6 +67,7 @@ class ReporteFallaController extends Controller
             $reporte_falla->longitud = $request->longitud;
             $reporte_falla->telefono_contacto = $request->telefono_contacto;
             $reporte_falla->nombre_contacto = $request->nombre_contacto;
+            $reporte_falla->correo_contacto = $request->correo_contacto;
             $reporte_falla->estado_reporte_id = 1;
             if ($request->imagen) {
                 $base64Image = $request->input('imagen'); // Obtener la cadena de base64 desde la solicitud
