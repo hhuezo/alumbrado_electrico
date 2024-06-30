@@ -39,8 +39,17 @@
                             Inicie sesión con su cuenta
                         </div>
                     </div>
+                    @if (count($errors) > 0)
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
                     <!-- BEGIN: Login Form -->
-                    <form class="space-y-4" method="POST" action="{{ route('login') }}">
+                    <form class="space-y-4" method="POST" id="myform" action="{{ route('login') }}">
                         @csrf
                         <div class="fromGroup">
                             <label class="block capitalize form-label">Correo electrónico</label>
@@ -71,7 +80,8 @@
                             </div>
                         </div>
 
-                        <button class="btn btn-dark block w-full text-center">Iniciar sesión</button>
+                        <button type="button" id="loginButton" onclick="submitForm()"
+                            class="btn btn-dark block w-full text-center">Iniciar sesión</button>
                     </form>
                     <!-- END: Login Form -->
                     <div class=" relative border-b-[#9AA2AF] border-opacity-[16%] border-b pt-6">
@@ -98,8 +108,17 @@
         </div>
 
     </div>
-    </div>
+
     <!-- Core Js -->
     <script src="{{ asset('assets/js/jquery-3.6.0.min.js') }}"></script>
     <script src="{{ asset('assets/js/rt-plugins.js') }}"></script>
     <script src="{{ asset('assets/js/app.js') }}"></script>
+
+    <script>
+        function submitForm() {
+            document.getElementById("loginButton").disabled = true;
+            document.getElementById("loginButton").innerHTML =
+                '<iconify-icon icon="line-md:loading-twotone-loop" width="24" height="24"></iconify-icon>';
+            document.getElementById("myform").submit();
+        }
+    </script>

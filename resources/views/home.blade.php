@@ -302,7 +302,7 @@
 
             function showData(id) {
                 $.ajax({
-                    url: '{{ url('home/rango_potencia_data ') }}/' + id + '/' + {{ $anio }} + '/' +
+                    url: '{{ url('home/rango_potencia_data') }}/' + id + '/' + {{ $anio }} + '/' +
                         {{ $mes }},
                     type: 'GET',
                     success: function(response) {

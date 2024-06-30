@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\catalogo\BibliotecaController;
 use App\Http\Controllers\catalogo\DistritoController;
 use App\Http\Controllers\catalogo\MunicipioController;
@@ -62,7 +63,7 @@ Route::resource('seguridad/user', UsuarioController::class);
 Route::resource('seguridad/role', RoleController::class);
 Route::post('seguridad/role/unlink_permission', [RoleController::class, 'unlink_permission']);
 Route::post('seguridad/role/link_permission', [RoleController::class, 'link_permission']);
-
+Route::post('verificacion_dos_pasos',[LoginController::class, 'verificacion_dos_pasos']);
 
 
 Route::get('control/censo_luminaria/edit_censo', [CensoLuminariaController::class, 'edit_censo']);
