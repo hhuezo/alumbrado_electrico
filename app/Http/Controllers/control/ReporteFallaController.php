@@ -41,7 +41,11 @@ class ReporteFallaController extends Controller
             $url = "https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat={$latitude}&lon={$longitude}";
 
             $client = new Client();
-            $response = $client->get($url);
+            $response = $client->request('GET', $url, [
+                'headers' => [
+                    'User-Agent' => 'MyLaravelApp/1.0 (contact@myapp.com)'
+                ]
+            ]);
             $data = json_decode($response->getBody(), true);
 
             $id_departamento = null;
