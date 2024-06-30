@@ -9,6 +9,7 @@ use App\Http\Controllers\control\ReporteFallaController as ControlReporteFallaCo
 use App\Http\Controllers\catalogo\TipoFallaController;
 use App\Http\Controllers\catalogo\TipoLuminariaController;
 use App\Http\Controllers\catalogo\ValorKWHController;
+use App\Http\Controllers\ConfiguracionController;
 use App\Http\Controllers\control\CensoLuminariaController;
 use App\Http\Controllers\control\ComparacionCensosController;
 use App\Http\Controllers\control\ValorEnergiaController;
@@ -51,6 +52,10 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::get('home/rango_potencia_data/{id}/{anio}/{mes}', [HomeController::class, 'show_data']);
 Route::get('welcome/rango_potencia_data/{id}/{anio}/{mes}', [WelcomeController::class, 'show_data']);
+
+
+Route::get('configuracion/correo', [ConfiguracionController::class, 'correo']);
+Route::post('configuracion/correo', [ConfiguracionController::class, 'correo_update']);
 
 
 Route::resource('seguridad/permission', PermissionController::class);

@@ -348,6 +348,10 @@
                                 <li>
                                     <a href="{{ url('seguridad/role') }}">Rol</a>
                                 </li>
+                                <li>
+                                    <a href="{{ url('configuracion/correo') }}">Configuración</a>
+                                </li>
+
                                 {{-- <li>
                                     <a href="{{ url('seguridad/permission') }}">Permisos</a>
                                 </li> --}}
