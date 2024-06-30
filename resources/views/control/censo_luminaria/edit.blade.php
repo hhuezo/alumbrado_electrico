@@ -128,7 +128,7 @@
                             </div>
 
                             <div class="input-area">
-                                <label for="largeInput" class="form-label">Consumo mensual (Kwh)</label>
+                                <label for="largeInput" class="form-label">Consumo mensual (kWh)</label>
                                 <input type="number" step="0.001" name="consumo_mensual" id="consumo_mensual"
                                     value="{{ $censo->consumo_mensual }}" required class="form-control">
                             </div>

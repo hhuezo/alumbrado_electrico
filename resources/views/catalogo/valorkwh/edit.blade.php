@@ -8,7 +8,7 @@
                 <div class="card-body flex flex-col p-6">
                     <header class="flex mb-5 items-center border-b border-slate-100 dark:border-slate-700 pb-5 -mx-6 px-6">
                         <div class="flex-1">
-                            <div class="card-title text-slate-900 dark:text-white">Valor Kwh
+                            <div class="card-title text-slate-900 dark:text-white">Valor kWh
 
                                 <a href="{{ url('catalogo/valorkwh') }}">
                                     <button class="btn btn-dark btn-sm float-right">
@@ -50,7 +50,7 @@
 
                                                 <div class="grid pt-4 pb-3 px-4">
                                                     <div class="input-area relative">
-                                                        <label for="largeInput" class="form-label">Valor Kwh</label>
+                                                        <label for="largeInput" class="form-label">Valor kWh</label>
                                                         <input type="number" name="valor_kwh"
                                                             value="{{ rtrim($configuracion->valor_kwh,'0') }}" required
                                                             class="form-control" step="0.01">

@@ -150,7 +150,7 @@
                                                         <tr class="even:bg-slate-50 dark:even:bg-slate-700">
                                                             <td class="table-td" align="center">{{ $obj->id }}</td>
                                                             <td class="table-td">{{ $obj->potencia }}</td>
-                                                            <td class="table-td">{{ $obj->consumo_promedio }} kwH</td>
+                                                            <td class="table-td">{{ $obj->consumo_promedio }} kWh</td>
                                                             <td class="table-td" align="center">
                                                                 <a
                                                                     href="{{ url('catalogo/tipo_luminaria/create_tecnologia_sustituir') }}/{{ $obj->id }}/edit">

@@ -126,7 +126,7 @@
                                             <tr>
                                                 <td align="center">{{ $obj->id }}</td>
                                                 <td>{{ $obj->tipo_luminaria->nombre.' de '. $obj->potencia.' Vatios' }}</td>
-                                                <td>{{ $obj->consumo_promedio }} kwH</td>
+                                                <td>{{ $obj->consumo_promedio }} kWh</td>
                                                 <td align="center">
                                                     <iconify-icon icon="mdi:trash" data-bs-toggle="modal"
                                                         data-bs-target="#modal-delete-{{ $obj->id }}" width="40">

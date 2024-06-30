@@ -36,6 +36,8 @@ class HomeController extends Controller
         $mes = null;
         $anio = null;
         $id_distrito = null;
+        $id_municipio = null;
+        $id_departamento = null;
         $nombre_distrito = 'Todos';
         if ($request->mes) {
             $mes  = $request->mes;
@@ -132,8 +134,6 @@ class HomeController extends Controller
                     'id' => $tipo->id
                 ];
             }
-
-
         } else {
             $data_tipo_luminaria = null;
             $data_numero_luminaria = null;
@@ -141,13 +141,24 @@ class HomeController extends Controller
         }
         $meses = ["01" => "Enero", "02" => "Febrero", "03" => "Marzo", "04" => "Abril", "05" => "Mayo", "06" => "Junio", "07" => "Julio", "08" => "Agosto", "09" => "Septiembre", "10" => "Octubre", "11" => "Noviembre", "12" => "Diciembre"];
         $departamentos = Departamento::get();
-        $municipios = Municipio::get();
-        $distritos = Distrito::get();
+        if ($request->departamento) {
+            $id_departamento = $request->departamento;
+            $municipios = Municipio::where('departamento_id', $request->departamento)->get();
+        } else {
+            $municipios = null;
+        }
 
-        /*
-        $data_censo_siget = [];
-        $data_censo_propio = [];
-        $data_censo_facturado = [];*/
+        if ($request->municipio) {
+            $id_municipio = $request->municipio;
+            $distritos = Distrito::where('municipio_id', $request->municipio)->get();
+        } else {
+            $distritos = null;
+        }
+
+        if ($request->id_distrito) {
+            $id_distrito = $request->id_distrito;
+        }
+
 
 
         return view('home', compact(
@@ -162,6 +173,9 @@ class HomeController extends Controller
             'data_rango_potencia_instalada',
             'meses',
             'verificacion_data',
+            'id_departamento',
+            'id_municipio',
+            'id_distrito',
         ));
     }
 
@@ -185,7 +199,7 @@ class HomeController extends Controller
         $data_rango = [];
         foreach ($resultados as $resultado) {
             $data_rango[] = [
-                'name' => $resultado->potencia_nominal . ' kwh',
+                'name' => $resultado->potencia_nominal . ' kWh',
                 'y' => $resultado->cantidad + 0,
                 'drilldown' => $resultado->potencia_nominal
             ];

@@ -317,10 +317,10 @@
                                 </li>
                                 @can('menu precio energia')
                                     <li>
-                                        <a href="{{ url('control/valor_mensual_energia') }}">Precio energía mensual(kwh)</a>
+                                        <a href="{{ url('control/valor_mensual_energia') }}">Precio energía mensual(kWh)</a>
                                     </li>
                                     <li>
-                                        <a href="{{ url('catalogo/valorkwh') }}">Valor Kwh (precio ref para<br>evaluación de proyectos)</a>
+                                        <a href="{{ url('catalogo/valorkwh') }}">Valor kWh (precio ref para<br>evaluación de proyectos)</a>
                                     </li>
                                 @endcan
                             </ul>

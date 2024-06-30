@@ -218,7 +218,7 @@ class WelcomeController extends Controller
         $data_rango = [];
         foreach ($resultados as $resultado) {
             $data_rango[] = [
-                'name' => $resultado->potencia_nominal . ' kwh',
+                'name' => $resultado->potencia_nominal . ' kWh',
                 'y' => $resultado->cantidad + 0,
                 'drilldown' => $resultado->potencia_nominal
             ];

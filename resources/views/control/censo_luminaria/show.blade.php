@@ -374,7 +374,7 @@
                                                                             </p>
                                                                             <p class="mb-0">CONSUMO MENSUAL:
                                                                                 <strong>{{ $registro->consumo_mensual }}
-                                                                                    KWH</strong>
+                                                                                    kWh</strong>
                                                                             </p>
                                                                             <p class="mb-0">OBSERVACIÓN:
                                                                                 <strong>{{ $registro->observacion }}</strong>

@@ -5,7 +5,7 @@
 
     <div class="card">
         <header class=" card-header noborder">
-            <h4 class="card-title">Valor Kwh
+            <h4 class="card-title">Valor kWh
             </h4>
         </header>
         <div class="card-body px-6 pb-6">

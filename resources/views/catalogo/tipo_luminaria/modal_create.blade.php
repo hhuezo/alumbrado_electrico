@@ -39,7 +39,7 @@
                         </div>
                         <div class="grid pt-4 pb-3 px-4">
                             <div class="input-area relative">
-                                <label for="largeInput" class="form-label">Consumo promedio (Kwh)</label>
+                                <label for="largeInput" class="form-label">Consumo promedio (kWh)</label>
                                 <input type="number" step="0.01" name="consumo_promedio" required
                                     class="form-control">
                             </div>

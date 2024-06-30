@@ -380,7 +380,7 @@
                                         },
                                         title: {
                                             align: 'left',
-                                            text: 'Consumo por tipo de luminaria (kwh) <br>{{ $meses[$mes] }} {{ $anio }} '
+                                            text: 'Consumo por tipo de luminaria (kWh) <br>{{ $meses[$mes] }} {{ $anio }} '
                                         },
                                         subtitle: {
                                             align: 'left',
@@ -419,7 +419,7 @@
                                                 return '<span style="font-size:11px">' + this.series.name + '</span><br>' +
                                                     '<span style="color:' + this.point.color + '">' + this.point.name +
                                                     '</span>: <b>' + Highcharts.numberFormat(this.point.y, 2, '.', ',') +
-                                                    '</b> Kwh<br/>';
+                                                    '</b> kWh<br/>';
                                             }
                                         },
 
@@ -437,7 +437,7 @@
                                         },
                                         title: {
                                             align: 'left',
-                                            text: 'Consumo por tipo de luminaria  (kwh)<br>{{ $meses[$mes] }} {{ $anio }} '
+                                            text: 'Consumo por tipo de luminaria  (kWh)<br>{{ $meses[$mes] }} {{ $anio }} '
                                         },
                                         subtitle: {
                                             align: 'left',
@@ -480,7 +480,7 @@
                                             formatter: function() {
                                                 return '<span style="color:' + this.point.color + '">' + this.point.name +
                                                     '</span>: <b>' + Highcharts.numberFormat(this.point.y, 2, '.', ',') +
-                                                    ' Kwh</b>';
+                                                    ' kWh</b>';
                                             }
                                         },
 
@@ -847,7 +847,7 @@
                                     },
                                     title: {
                                         align: 'left',
-                                        text: 'Consumo por tipo de luminaria (kwh) <br>{{ $meses[$mes] }} {{ $anio }} '
+                                        text: 'Consumo por tipo de luminaria (kWh) <br>{{ $meses[$mes] }} {{ $anio }} '
                                     },
                                     subtitle: {
                                         align: 'left',
@@ -886,7 +886,7 @@
                                             return '<span style="font-size:11px">' + this.series.name + '</span><br>' +
                                                 '<span style="color:' + this.point.color + '">' + this.point.name +
                                                 '</span>: <b>' + Highcharts.numberFormat(this.point.y, 2, '.', ',') +
-                                                '</b> Kwh<br/>';
+                                                '</b> kWh<br/>';
                                         }
                                     },
 
@@ -947,7 +947,7 @@
                                         formatter: function() {
                                             return '<span style="color:' + this.point.color + '">' + this.point.name +
                                                 '</span>: <b>' + Highcharts.numberFormat(this.point.y, 2, '.', ',') +
-                                                ' Kwh</b>';
+                                                ' kWh</b>';
                                         }
                                     },
 

@@ -65,7 +65,7 @@
                                         <thead>
                                             <tr>
                                                 <th class="th_td backgroundth">Potencia</th>
-                                                <th class="th_td backgroundth">Kwh</th>
+                                                <th class="th_td backgroundth">kWh</th>
                                                 <th class="th_td backgroundth">N° Luminarias</th>
                                                 <th class="th_td backgroundth">Cantidad</th>
                                                 <th class="th_td backgroundth">Porcentaje</th>
@@ -211,7 +211,7 @@
                 </div>
             </header>
             <label for="" class="card-title dark:bg-slate-800 dark:border-slate-700 text-primary-500"> Valor
-                kwh:
+                kWh:
                 ${{ rtrim($configuracion->valor_kwh, '0') }}</label></br>
             <table class="min-w-full divide-y divide-slate-100 table-fixed dark:divide-slate-700">
                 <thead class="">
