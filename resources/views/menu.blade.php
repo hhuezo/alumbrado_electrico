@@ -343,9 +343,9 @@
                                 <li>
                                     <a href="{{ url('seguridad/role') }}">Rol</a>
                                 </li>
-                                <li>
+                                {{-- <li>
                                     <a href="{{ url('seguridad/permission') }}">Permisos</a>
-                                </li>
+                                </li> --}}
                             </ul>
                         </li>
                     @endcan

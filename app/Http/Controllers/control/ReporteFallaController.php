@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\catalogo\Compania;
 use App\Models\catalogo\Departamento;
 use App\Models\catalogo\Distrito;
+use App\Models\catalogo\EstadoReporteFalla;
 use App\Models\catalogo\Municipio;
 use App\Models\catalogo\TipoFalla;
 use App\Models\catalogo\TipoLuminaria;
@@ -22,11 +23,53 @@ use Illuminate\Support\Facades\Redirect;
 
 class ReporteFallaController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $reporte_fallas = ReporteFalla::get();
+        // Inicializar la consulta sin filtrar por defecto
+        $query = ReporteFalla::query();
 
-        return view('control.reporte_falla.index', compact('reporte_fallas'));
+        // Filtrar por distrito_id si está presente en la solicitud
+        if ($request->distrito_id) {
+            $query->where('distrito_id', $request->distrito_id);
+        }
+
+        // Filtrar por estado_id si está presente en la solicitud
+        if ($request->estado_id) {
+            $query->where('estado_id', $request->estado_id);
+        }
+
+        // Obtener los reportes de falla según los filtros aplicados
+        $reporte_fallas = $query->get();
+
+        $departamento_id = $request->departamento_id ?? null;
+        $municipio_id = $request->municipio_id ?? null;
+        $distrito_id = $request->distrito_id ?? null;
+        $estado_id = $request->estado_id ?? null;
+
+        $departamentos = Departamento::get();
+        $municipios = null;
+        $distritos = null;
+
+        if ($request->departamento_id) {
+            $municipios = Municipio::where('departamento_id', $request->departamento_id)->get();
+        }
+
+        if ($request->municipio_id) {
+            $distritos = Distrito::where('municipio_id', $request->municipio_id)->get();
+        }
+
+        $estados = EstadoReporteFalla::get();
+
+        return view('control.reporte_falla.index', compact(
+            'reporte_fallas',
+            'departamentos',
+            'municipios',
+            'distritos',
+            'departamento_id',
+            'municipio_id',
+            'distrito_id',
+            'estados','estado_id'
+        ));
     }
 
     public function create(Request $request)
@@ -56,7 +99,7 @@ class ReporteFallaController extends Controller
             $municipio_id = null;
             $id_distrito_valido = 1;
 
-            $companias = Compania::where('activo',1)->get();
+            $companias = Compania::where('activo', 1)->get();
 
             if (isset($data['address'])) {
                 $api_departamento = $data['address']['state'];
@@ -110,7 +153,6 @@ class ReporteFallaController extends Controller
                 $municipios = $user->get_municipios($user->id);
                 $distritos = Distrito::whereIn('id', $distritos_id)->get();
                 $departamentos = $user->get_departamentos($user->id);
-
             }
 
 
@@ -133,8 +175,6 @@ class ReporteFallaController extends Controller
             alert()->error('la ubicacion es incorrecta');
             return back();
         }
-
-
     }
 
 
@@ -170,10 +210,9 @@ class ReporteFallaController extends Controller
     public function show($id)
     {
         $reporte_falla = ReporteFalla::findOrFail($id);
-          if($reporte_falla->censo_luminaria_id != null)
-        {
+        if ($reporte_falla->censo_luminaria_id != null) {
 
-            return Redirect::to('reporte_falla/registrar_falla?id='.$reporte_falla->id.'&censo_id='.$reporte_falla->censo_luminaria_id);
+            return Redirect::to('reporte_falla/registrar_falla?id=' . $reporte_falla->id . '&censo_id=' . $reporte_falla->censo_luminaria_id);
         }
         $configuracion = Configuracion::first();
 
