@@ -158,13 +158,13 @@
 
                 </div>
                 <button class="sidebarCloseIcon text-2xl">
-                    <iconify-icon class="text-slate-900 dark:text-slate-200 text-white" icon="clarity:window-close-line">
+                    <iconify-icon class="text-slate-900 dark:text-slate-200 text-white"
+                        icon="clarity:window-close-line">
                     </iconify-icon>
                 </button>
             </div>
             <div id="nav_shadow"
-                class="nav_shadow h-[60px] absolute top-[80px] nav-shadow z-[1] w-full transition-all duration-200 pointer-events-none
-      opacity-0">
+                class="nav_shadow h-[60px] absolute top-[80px] nav-shadow z-[1] w-full transition-all duration-200 pointer-events-none opacity-0">
             </div>
             <div class="sidebar-menus bg-white dark:bg-slate-800 py-2 px-4 h-[calc(100%-80px)] overflow-y-auto z-50"
                 id="sidebar_menus">
@@ -179,38 +179,42 @@
                             </span>
                         </a>
                     </li>
-                    @can('read menu informacion publica')
-                        <li class="">
+
+                    <li class="">
 
 
-                            <a href="#" class="navItem">
-                                <span class="flex items-center">
-                                    <iconify-icon class=" nav-icon" icon="heroicons-outline:user-group"></iconify-icon>
-                                    <span>Información pública</span>
-                                </span>
-                                <iconify-icon class="icon-arrow" icon="heroicons-outline:chevron-right"></iconify-icon>
-                            </a>
-                            <ul class="sidebar-submenu">
+                        <a href="#" class="navItem">
+                            <span class="flex items-center">
+                                <iconify-icon class=" nav-icon" icon="heroicons-outline:user-group"></iconify-icon>
+                                <span>Información pública</span>
+                            </span>
+                            <iconify-icon class="icon-arrow" icon="heroicons-outline:chevron-right"></iconify-icon>
+                        </a>
+                        <ul class="sidebar-submenu">
+                            @can('importacion')
                                 <li>
                                     <a href="{{ url('importacion/base_datos') }}">Importación de censo<br>general</a>
                                 </li>
-                                {{-- <li>
+                            @endcan
+
+                            {{-- <li>
                                     <a href="#">Gráficos</a>
                                 </li> --}}
-                                <li>
-                                    <a href="#">Estimación de factura<br>general</a>
-                                </li>
-                                <li>
-                                    <a href="{{ url('publico/evaluacion_proyectos') }}">Evaluación de proyectos</a>
-                                </li>
-                                <li>
-                                    <a href="{{ url('publico/biblioteca_publica') }}">Biblioteca / Info general</a>
-                                </li>
-                            </ul>
-                        </li>
-                    @endcan
+                            <li>
+                                <a href="#">Estimación de factura<br>general</a>
+                            </li>
+                            <li>
+                                <a href="{{ url('publico/evaluacion_proyectos') }}">Evaluación de proyectos</a>
+                            </li>
+                            <li>
+                                <a href="{{ url('publico/biblioteca_publica') }}">Biblioteca / Info general</a>
+                            </li>
+                        </ul>
+                    </li>
+                    {{-- @can('read menu informacion publica')
+                    @endcan --}}
 
-                    @can('read menu elaboracion censo')
+                    @if (Session::has('convenio') && Session::get('convenio') == 1)
                         <li class="">
                             <a href="#" class="navItem">
                                 <span class="flex items-center">
@@ -228,7 +232,7 @@
                                 </li>
                             </ul>
                         </li>
-                    @endcan
+                    @endif
 
                     @can('read menu gestion parque')
                         <li class="">
@@ -320,7 +324,8 @@
                                         <a href="{{ url('control/valor_mensual_energia') }}">Precio energía mensual(kWh)</a>
                                     </li>
                                     <li>
-                                        <a href="{{ url('catalogo/valorkwh') }}">Valor kWh (precio ref para<br>evaluación de proyectos)</a>
+                                        <a href="{{ url('catalogo/valorkwh') }}">Valor kWh (precio ref para<br>evaluación de
+                                            proyectos)</a>
                                     </li>
                                 @endcan
                             </ul>
