@@ -201,9 +201,6 @@
                                     <a href="#">Gráficos</a>
                                 </li> --}}
                             <li>
-                                <a href="#">Estimación de factura<br>general</a>
-                            </li>
-                            <li>
                                 <a href="{{ url('publico/evaluacion_proyectos') }}">Evaluación de proyectos</a>
                             </li>
                             <li>
@@ -253,6 +250,9 @@
                                 <li>
                                     <a href="{{ url('publico/evaluacion_proyectos/evaluacionProyectosCensoIndex') }}">Evaluación
                                         de proyectos<br>censo</a>
+                                </li>
+                                <li>
+                                    <a href="{{ url('control/EstimacionFacturaGeneral') }}">Estimación de factura<br>general</a>
                                 </li>
                             </ul>
 

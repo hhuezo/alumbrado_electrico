@@ -12,6 +12,7 @@ use App\Http\Controllers\catalogo\ValorKWHController;
 use App\Http\Controllers\ConfiguracionController;
 use App\Http\Controllers\control\CensoLuminariaController;
 use App\Http\Controllers\control\ComparacionCensosController;
+use App\Http\Controllers\control\EstimacionFacturaGeneralController;
 use App\Http\Controllers\control\ValorEnergiaController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\importacion\BaseDatosController;
@@ -130,3 +131,6 @@ Route::get('get_municipios/{id}', [DistritoController::class, 'get_municipios'])
 Route::get('get_distritos/{id}', [DistritoController::class, 'get_distritos']);
 Route::get('get_option/{id}', [DistritoController::class, 'get_option']);
 Route::resource('catalogo/municipio', MunicipioController::class);
+
+Route::resource('control/EstimacionFacturaGeneral', EstimacionFacturaGeneralController::class);
+
