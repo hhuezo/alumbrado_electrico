@@ -25,8 +25,14 @@ class ReporteFallaController extends Controller
         //
     }
 
-    public function create()
+    public function create(Request $request)
     {
+        $authorizationHeader = $request->header('Authorization');
+
+        if ($authorizationHeader !== 'Basic dXNlcjpwYXNz') {
+            return response()->json(['value' => 0, 'mensaje' => 'Encabezado de autorización incorrecto'], 401);
+        }
+
         $departamentos = Departamento::get();
         $tipos = TipoFalla::get();
 
@@ -37,16 +43,28 @@ class ReporteFallaController extends Controller
 
 
 
-    public function getMunicipios($id)
+    public function getMunicipios(Request $request,$id)
     {
+        $authorizationHeader = $request->header('Authorization');
+
+        if ($authorizationHeader !== 'Basic dXNlcjpwYXNz') {
+            return response()->json(['value' => 0, 'mensaje' => 'Encabezado de autorización incorrecto'], 401);
+        }
+
         $municipios = Municipio::where('departamento_id', '=', $id)->get();
 
         return ["municipios" => $municipios];
     }
 
 
-    public function getDistritos($id)
+    public function getDistritos(Request $request,$id)
     {
+        $authorizationHeader = $request->header('Authorization');
+
+        if ($authorizationHeader !== 'Basic dXNlcjpwYXNz') {
+            return response()->json(['value' => 0, 'mensaje' => 'Encabezado de autorización incorrecto'], 401);
+        }
+
         $distritos = Distrito::where('municipio_id', '=', $id)->get();
 
         return ["distritos" => $distritos];
@@ -54,6 +72,12 @@ class ReporteFallaController extends Controller
 
     public function store(Request $request)
     {
+        $authorizationHeader = $request->header('Authorization');
+
+        if ($authorizationHeader !== 'Basic dXNlcjpwYXNz') {
+            return response()->json(['value' => 0, 'mensaje' => 'Encabezado de autorización incorrecto'], 401);
+        }
+
         try {
 
             $fechaActual = Carbon::now();
@@ -99,8 +123,14 @@ class ReporteFallaController extends Controller
     }
 
 
-    public function getDepartamentoId($name)
+    public function getDepartamentoId(Request $request,$name)
     {
+        $authorizationHeader = $request->header('Authorization');
+
+        if ($authorizationHeader !== 'Basic dXNlcjpwYXNz') {
+            return response()->json(['value' => 0, 'mensaje' => 'Encabezado de autorización incorrecto'], 401);
+        }
+
         $nombreSinDepartamento = str_replace("Departamento de", "", $name);
         $nombreFinal = trim($nombreSinDepartamento);
 
@@ -110,8 +140,14 @@ class ReporteFallaController extends Controller
         return response()->json(['departamentoId' => $departamentoId]);
     }
 
-    public function getMunicipioId($distrito_id)
+    public function getMunicipioId(Request $request,$distrito_id)
     {
+        $authorizationHeader = $request->header('Authorization');
+
+        if ($authorizationHeader !== 'Basic dXNlcjpwYXNz') {
+            return response()->json(['value' => 0, 'mensaje' => 'Encabezado de autorización incorrecto'], 401);
+        }
+
         if ($distrito_id != 0) {
             $distrito = Distrito::findOrFail($distrito_id);
 
@@ -123,8 +159,14 @@ class ReporteFallaController extends Controller
         return response()->json(['municipioId' => $municipioId]);
     }
 
-    public function getDistritoId($name)
+    public function getDistritoId(Request $request,$name)
     {
+        $authorizationHeader = $request->header('Authorization');
+
+        if ($authorizationHeader !== 'Basic dXNlcjpwYXNz') {
+            return response()->json(['value' => 0, 'mensaje' => 'Encabezado de autorización incorrecto'], 401);
+        }
+
         $nombreSinDistrito = str_replace("Municipio de", "", $name);
         $nombreFinal = trim($nombreSinDistrito);
 
@@ -134,8 +176,14 @@ class ReporteFallaController extends Controller
         return response()->json(['distritoId' => $distritoId]);
     }
 
-    public function data_distrito($distrito,$departamento)
+    public function data_distrito(Request $request,$distrito,$departamento)
     {
+        $authorizationHeader = $request->header('Authorization');
+
+        if ($authorizationHeader !== 'Basic dXNlcjpwYXNz') {
+            return response()->json(['value' => 0, 'mensaje' => 'Encabezado de autorización incorrecto'], 401);
+        }
+
         if($distrito>0)
         {
             $distrito = Distrito::findOrfail($distrito);
@@ -158,8 +206,14 @@ class ReporteFallaController extends Controller
     }
 
 
-    public function getDistritoUsuario($name, $usuario_id)
+    public function getDistritoUsuario(Request $request,$name, $usuario_id)
     {
+        $authorizationHeader = $request->header('Authorization');
+
+        if ($authorizationHeader !== 'Basic dXNlcjpwYXNz') {
+            return response()->json(['value' => 0, 'mensaje' => 'Encabezado de autorización incorrecto'], 401);
+        }
+
         $id_distrito_valido = true;
         $nombreSinDistrito = str_replace("Municipio de", "", $name);
         $nombreFinal = trim($nombreSinDistrito);

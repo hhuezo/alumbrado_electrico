@@ -22,8 +22,16 @@ class CensoLuminariaController extends Controller
     {
     }
 
-    public function create()
+    public function create(Request $request)
     {
+        // Extraer el encabezado de autorización
+        $authorizationHeader = $request->header('Authorization');
+
+        // Verificar que el encabezado de autorización esté presente y sea correcto
+        if ($authorizationHeader !== 'Basic dXNlcjpwYXNz') {
+            return response()->json(['value' => 0, 'mensaje' => 'Encabezado de autorización incorrecto'], 401);
+        }
+
         $tipos = TipoLuminaria::where('Activo', '=', 1)->get();
         $departamentos = Departamento::get();
 
@@ -32,8 +40,16 @@ class CensoLuminariaController extends Controller
         return $response;
     }
 
-    public function get_data_create($departamento_id, $distrito_id, $latitude, $longitude, $usuario_id)
+    public function get_data_create(Request $request,$departamento_id, $distrito_id, $latitude, $longitude, $usuario_id)
     {
+
+        // Extraer el encabezado de autorización
+        $authorizationHeader = $request->header('Authorization');
+
+        // Verificar que el encabezado de autorización esté presente y sea correcto
+        if ($authorizationHeader !== 'Basic dXNlcjpwYXNz') {
+            return response()->json(['value' => 0, 'mensaje' => 'Encabezado de autorización incorrecto'], 401);
+        }
 
         //verificar si existe algun punto cerca
         $radio = 10; //radio en metros a la redonda
@@ -93,18 +109,38 @@ class CensoLuminariaController extends Controller
         return $response;
     }
 
-    public function get_municipios($id)
+    public function get_municipios(Request $request,$id)
     {
+        // Extraer el encabezado de autorización
+        $authorizationHeader = $request->header('Authorization');
+
+        // Verificar que el encabezado de autorización esté presente y sea correcto
+        if ($authorizationHeader !== 'Basic dXNlcjpwYXNz') {
+            return response()->json(['value' => 0, 'mensaje' => 'Encabezado de autorización incorrecto'], 401);
+        }
         return Municipio::where('departamento_id', '=', $id)->orderBy('nombre')->get();
     }
 
-    public function get_distritos($id)
+    public function get_distritos(Request $request,$id)
     {
+        $authorizationHeader = $request->header('Authorization');
+
+
+        if ($authorizationHeader !== 'Basic dXNlcjpwYXNz') {
+            return response()->json(['value' => 0, 'mensaje' => 'Encabezado de autorización incorrecto'], 401);
+        }
+
         return Distrito::where('municipio_id', '=', $id)->get();
     }
 
-    public function get_potencia_promedio($id)
+    public function get_potencia_promedio(Request $request,$id)
     {
+        $authorizationHeader = $request->header('Authorization');
+
+        if ($authorizationHeader !== 'Basic dXNlcjpwYXNz') {
+            return response()->json(['value' => 0, 'mensaje' => 'Encabezado de autorización incorrecto'], 401);
+        }
+
         $potencia_promedio = PotenciaPromedio::where('tipo_luminaria_id', '=', $id)->select('id', 'potencia')->get();
         if ($potencia_promedio->count() > 0) {
             $response = ["value" => 1, "potencia_promedio" => $potencia_promedio];
@@ -115,15 +151,26 @@ class CensoLuminariaController extends Controller
         return $response;
     }
 
-    public function get_consumo_mensual($id)
+    public function get_consumo_mensual(Request $request,$id)
     {
+        $authorizationHeader = $request->header('Authorization');
+
+        if ($authorizationHeader !== 'Basic dXNlcjpwYXNz') {
+            return response()->json(['value' => 0, 'mensaje' => 'Encabezado de autorización incorrecto'], 401);
+        }
         return PotenciaPromedio::select('consumo_promedio')->findOrFail($id);
     }
 
 
-    public function get_companias($id)
+    public function get_companias(Request $request,$id)
     {
         try {
+            $authorizationHeader = $request->header('Authorization');
+
+            if ($authorizationHeader !== 'Basic dXNlcjpwYXNz') {
+                return response()->json(['value' => 0, 'mensaje' => 'Encabezado de autorización incorrecto'], 401);
+            }
+
             $distrito = Distrito::findOrFail($id);
             return $distrito->companias;
         } catch (Exception $e) {
@@ -133,7 +180,11 @@ class CensoLuminariaController extends Controller
 
     public function store(Request $request)
     {
+        $authorizationHeader = $request->header('Authorization');
 
+        if ($authorizationHeader !== 'Basic dXNlcjpwYXNz') {
+            return response()->json(['value' => 0, 'mensaje' => 'Encabezado de autorización incorrecto'], 401);
+        }
 
         try {
             $codigo = $this->getCodigo($request->distrito_id);
@@ -205,8 +256,13 @@ class CensoLuminariaController extends Controller
         return  $codigo;
     }
 
-    public function show($id)
+    public function show(Request $request,$id)
     {
+        $authorizationHeader = $request->header('Authorization');
+
+        if ($authorizationHeader !== 'Basic dXNlcjpwYXNz') {
+            return response()->json(['value' => 0, 'mensaje' => 'Encabezado de autorización incorrecto'], 401);
+        }
         try {
             $censos = DB::table('censo_luminaria')
                 ->join('tipo_luminaria as tipo', 'censo_luminaria.tipo_luminaria_id', '=', 'tipo.id')
