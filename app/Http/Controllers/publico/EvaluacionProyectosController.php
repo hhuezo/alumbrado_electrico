@@ -77,57 +77,58 @@ class EvaluacionProyectosController extends Controller
     public function getTecnologiasSugeridas(Request $request)
     {
 
-        if ($request->tipo == 1) {
-            $tecnologia_actual_array = $request->input('tecnologia_actual_array');
+        $tecnologia_actual_array = $request->input('tecnologia_actual_array');
 
-            $registros_siget = BaseDatosSiget::whereIn('id', $tecnologia_actual_array)->get();
+        if ($tecnologia_actual_array != null) {
 
-            $potencia_promedio_array = [];
+            if ($request->tipo == 1) {
 
-            foreach ($registros_siget as $registro) {
-                $potencia_promedio = PotenciaPromedio::where('tipo_luminaria_id', $registro->tipo_luminaria_id)
-                    ->where('potencia', $registro->potencia_nominal)->first();
+                $registros_siget = BaseDatosSiget::whereIn('id', $tecnologia_actual_array)->get();
 
-                array_push($potencia_promedio_array, $potencia_promedio->id);
+                $potencia_promedio_array = [];
+
+                foreach ($registros_siget as $registro) {
+                    $potencia_promedio = PotenciaPromedio::where('tipo_luminaria_id', $registro->tipo_luminaria_id)
+                        ->where('potencia', $registro->potencia_nominal)->first();
+                    if ($potencia_promedio != null) {
+                        array_push($potencia_promedio_array, $potencia_promedio->id);
+                    }
+                }
+
+
+                $tecnologia_sustituir = TecnologiaSustituir::whereIn('tecnologia_actual_id', $potencia_promedio_array)->get();
+
+
+                $tecnologias_sustituir_array = $tecnologia_sustituir->pluck('tecnologia_sustituir_id')->unique()->toArray();
+
+                $potencias_finales = PotenciaPromedio::whereIn('id', $tecnologias_sustituir_array)->get();
+            } else {
+
+                $registros_censo = CensoLuminaria::whereIn('id', $tecnologia_actual_array)->get();
+
+
+                $potencia_promedio_array = [];
+
+                foreach ($registros_censo as $registro) {
+
+                    $potencia_promedio = PotenciaPromedio::where('tipo_luminaria_id', $registro->tipo_luminaria_id)
+                        ->where('potencia', $registro->potencia_nominal)->first();
+
+                    if ($potencia_promedio != null) {
+                        array_push($potencia_promedio_array, $potencia_promedio->id);
+                    }
+                }
+
+                $tecnologia_sustituir = TecnologiaSustituir::whereIn('tecnologia_actual_id', $potencia_promedio_array)->get();
+
+
+                $tecnologias_sustituir_array = $tecnologia_sustituir->pluck('tecnologia_sustituir_id')->unique()->toArray();
+
+                $potencias_finales = PotenciaPromedio::whereIn('id', $tecnologias_sustituir_array)->get();
             }
-
-
-            $tecnologia_sustituir = TecnologiaSustituir::whereIn('tecnologia_actual_id', $potencia_promedio_array)->get();
-
-
-            $tecnologias_sustituir_array = $tecnologia_sustituir->pluck('tecnologia_sustituir_id')->unique()->toArray();
-
-            $potencias_finales = PotenciaPromedio::whereIn('id', $tecnologias_sustituir_array)->get();
         } else {
-
-            $tecnologia_actual_array = $request->input('tecnologia_actual_array');
-
-
-
-            $registros_censo = CensoLuminaria::whereIn('id', $tecnologia_actual_array)->get();
-
-
-            $potencia_promedio_array = [];
-
-            foreach ($registros_censo as $registro) {
-
-                $potencia_promedio = PotenciaPromedio::where('tipo_luminaria_id', $registro->tipo_luminaria_id)
-                    ->where('potencia', $registro->potencia_nominal)->first();
-
-                array_push($potencia_promedio_array, $potencia_promedio->id);
-            }
-
-            $tecnologia_sustituir = TecnologiaSustituir::whereIn('tecnologia_actual_id', $potencia_promedio_array)->get();
-
-
-            $tecnologias_sustituir_array = $tecnologia_sustituir->pluck('tecnologia_sustituir_id')->unique()->toArray();
-
-            $potencias_finales = PotenciaPromedio::whereIn('id', $tecnologias_sustituir_array)->get();
+            $potencias_finales = [];
         }
-
-
-
-
 
 
         //dd($potencias_finales|);
@@ -277,25 +278,24 @@ class EvaluacionProyectosController extends Controller
                     "drilldown" => $resultado->tipo,
                 ];
             })->all();
-        }
-        else{
+        } else {
 
             $distrito_id = $request->distrito;
             $resultados = DB::table('censo_luminaria')
-            ->join('tipo_luminaria', 'censo_luminaria.tipo_luminaria_id', '=', 'tipo_luminaria.id')
-            ->join('distrito', 'distrito.id', '=', 'censo_luminaria.distrito_id')
-            ->select(
-                'tipo_luminaria.id as tipo_luminaria_id',
-                'tipo_luminaria.nombre as tipo',
-                DB::raw('COUNT(*) as numero_luminarias'),
-                'distrito.nombre',
-                'censo_luminaria.potencia_nominal'
-            )
-            ->where('distrito.codigo', $distrito_id)
-            ->where('censo_luminaria.potencia_nominal', '<>', null)
-            ->where('censo_luminaria.consumo_mensual', '<>', null)
-            ->groupBy('distrito.nombre', 'distrito.id', 'tipo_luminaria.nombre')
-            ->get();
+                ->join('tipo_luminaria', 'censo_luminaria.tipo_luminaria_id', '=', 'tipo_luminaria.id')
+                ->join('distrito', 'distrito.id', '=', 'censo_luminaria.distrito_id')
+                ->select(
+                    'tipo_luminaria.id as tipo_luminaria_id',
+                    'tipo_luminaria.nombre as tipo',
+                    DB::raw('COUNT(*) as numero_luminarias'),
+                    'distrito.nombre',
+                    'censo_luminaria.potencia_nominal'
+                )
+                ->where('distrito.codigo', $distrito_id)
+                ->where('censo_luminaria.potencia_nominal', '<>', null)
+                ->where('censo_luminaria.consumo_mensual', '<>', null)
+                ->groupBy('distrito.nombre', 'distrito.id', 'tipo_luminaria.nombre')
+                ->get();
 
             BaseDatosSigetTemp::where('user_id', auth()->user()->id)->delete();
 
@@ -352,7 +352,7 @@ class EvaluacionProyectosController extends Controller
                     DB::raw('base_datos_siget_temp.consumo_mensual as consumo_mensual')
                 )
                 ->groupBy('distrito.nombre', 'distrito.id', 'tipo_luminaria.nombre')
-                ->having('conteo','>',0)
+                ->having('conteo', '>', 0)
                 ->get();
 
             $data_numero_luminaria = $resultados->map(function ($resultado) {
@@ -365,7 +365,6 @@ class EvaluacionProyectosController extends Controller
 
 
             return view('publico.grafico_sugerido', compact('data_numero_luminaria'));
-
         }
 
 
