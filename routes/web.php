@@ -134,3 +134,6 @@ Route::resource('catalogo/municipio', MunicipioController::class);
 
 Route::resource('control/EstimacionFacturaGeneral', EstimacionFacturaGeneralController::class);
 
+//base excel
+Route::get('importar_luminarias',[BaseDatosController::class,'importar_base']);
+Route::post('importar_censo_luminaria',[BaseDatosController::class,'importar_censo_luminaria']);

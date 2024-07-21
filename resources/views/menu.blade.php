@@ -359,7 +359,14 @@
                         </li>
                     @endcan
 
-
+                    <li>
+                        <a href="{{ url('importar_luminarias') }}" class="navItem">
+                            <span class="flex items-center">
+                                <iconify-icon class="nav-icon" icon="material-symbols:add-notes" style="color: white;"></iconify-icon>
+                                <span>Importar de Excel</span>
+                            </span>
+                        </a>
+                    </li>
 
                     @can('menu mapa')
                         <li>
