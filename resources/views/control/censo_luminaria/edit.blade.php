@@ -166,7 +166,7 @@
                             <div class="input-area" id="div_tipo_falla"
                                 style="display: {{ $censo->condicion_lampara == 1 ? 'none' : 'block' }}">
                                 <label for="largeInput" class="form-label">Tipo falla</label>
-                                <select class="form-control" name="tipo_falla_id" id="tipo_falla_id" required>
+                                <select class="form-control" name="tipo_falla_id" id="tipo_falla_id" {{ $censo->condicion_lampara == 1 ?  : 'required' }}>
                                     <option value="">Seleccione</option>
                                     @foreach ($tipos_falla as $obj)
                                         <option value="{{ $obj->id }}"
