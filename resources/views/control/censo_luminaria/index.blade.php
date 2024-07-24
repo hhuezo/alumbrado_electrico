@@ -151,7 +151,7 @@
 
 
                         // Create select element and listener
-                        var select = $('<select><option value="">Todos</option></select>')
+                        var select = $('<select class="form-control"><option value="">Todos</option></select>')
                             .appendTo(filterCell)
                             .on('change', function () {
                                 column

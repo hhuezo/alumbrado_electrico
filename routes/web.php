@@ -112,6 +112,7 @@ Route::resource('reporte_falla', ControlReporteFallaController::class);
 //acceso publico
 Route::resource('publico/biblioteca_publica', BibliotecaPublicaController::class);
 Route::get('publico/reporte_falla_publico/get_distritos/{id}', [ReporteFallaPublicoController::class, 'get_distritos']);
+Route::get('publico/reporte_falla_publico/get_municipios/{id}', [ReporteFallaPublicoController::class, 'get_municipios']);
 Route::resource('publico/reporte_falla_publico', ReporteFallaPublicoController::class);
 Route::get('publico/evaluacion_proyectos/get_grafico_sugerido', [EvaluacionProyectosController::class, 'get_grafico_sugerido']);
 Route::get('publico/evaluacion_proyectos/get_grafico/{distrito}', [EvaluacionProyectosController::class, 'get_grafico']);
