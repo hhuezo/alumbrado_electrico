@@ -191,13 +191,13 @@
                             <iconify-icon class="icon-arrow" icon="heroicons-outline:chevron-right"></iconify-icon>
                         </a>
                         <ul class="sidebar-submenu">
-                            @can('importacion')
+                             {{-- @can('importacion')
                                 <li>
                                     <a href="{{ url('importacion/base_datos') }}">Importación de censo<br>general</a>
                                 </li>
                             @endcan
 
-                            {{-- <li>
+                           <li>
                                     <a href="#">Gráficos</a>
                                 </li> --}}
                             <li>
@@ -276,9 +276,9 @@
                                 <li>
                                     <a href="{{ url('reporte_falla') }}">Seguimiento de reportes</a>
                                 </li>
-                                <li>
+                                {{-- <li>
                                     <a href="#">Informes</a>
-                                </li>
+                                </li> --}}
                             </ul>
                         </li>
                     @endcan
@@ -300,10 +300,10 @@
                                 <li>
                                     <a href="{{ url('catalogo/biblioteca') }}">Biblioteca</a>
                                 </li>
-
+{{--
                                 <li>
                                     <a href="{{ url('catalogo/reporte_falla') }}">Reporte falla</a>
-                                </li>
+                                </li> --}}
                                 <li>
                                     <a href="{{ url('catalogo/municipio') }}">Municipio</a>
                                 </li>
@@ -359,14 +359,14 @@
                         </li>
                     @endcan
 
-                    <li>
+                    {{-- <li>
                         <a href="{{ url('importar_luminarias') }}" class="navItem">
                             <span class="flex items-center">
                                 <iconify-icon class="nav-icon" icon="material-symbols:add-notes" style="color: white;"></iconify-icon>
                                 <span>Importar de Excel</span>
                             </span>
                         </a>
-                    </li>
+                    </li> --}}
 
                     @can('menu mapa')
                         <li>
