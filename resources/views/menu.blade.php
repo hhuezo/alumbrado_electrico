@@ -191,13 +191,13 @@
                             <iconify-icon class="icon-arrow" icon="heroicons-outline:chevron-right"></iconify-icon>
                         </a>
                         <ul class="sidebar-submenu">
-                             {{-- @can('importacion')
+                            @can('importacion')
                                 <li>
                                     <a href="{{ url('importacion/base_datos') }}">Importación de censo<br>general</a>
                                 </li>
                             @endcan
 
-                           <li>
+                           {{--  <li>
                                     <a href="#">Gráficos</a>
                                 </li> --}}
                             <li>
@@ -224,9 +224,9 @@
                                 <li>
                                     <a href="{{ url('control/censo_luminaria/show_map') }}">Creación nuevo registro</a>
                                 </li>
-                                <li>
+                                {{-- <li>
                                     <a href="#">Importacion de censo</a>
-                                </li>
+                                </li> --}}
                             </ul>
                         </li>
                     @endif
