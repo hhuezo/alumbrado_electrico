@@ -68,14 +68,15 @@ class ReporteFallaController extends Controller
             'departamento_id',
             'municipio_id',
             'distrito_id',
-            'estados','estado_id'
+            'estados',
+            'estado_id'
         ));
     }
 
     public function create(Request $request)
     {
 
-        if ($request->latitude && $request->longitude) {
+        /*if ($request->latitude && $request->longitude) {
             $latitude = $request->latitude;
             $longitude = $request->longitude;
 
@@ -154,6 +155,100 @@ class ReporteFallaController extends Controller
                 $distritos = Distrito::whereIn('id', $distritos_id)->get();
                 $departamentos = $user->get_departamentos($user->id);
             }
+
+
+
+            return view('control.reporte_falla.create', compact(
+                'departamentos',
+                'distritos',
+                'municipios',
+                'configuracion',
+                'latitude',
+                'longitude',
+                'id_departamento',
+                'id_distrito',
+                'municipio_id',
+                'direccion',
+                'tipos_falla',
+                'id_distrito_valido'
+            ));
+        } else {
+            alert()->error('la ubicacion es incorrecta');
+            return back();
+        }*/
+
+
+        if ($request->latitude && $request->longitude) {
+            $latitude = $request->latitude;
+            $longitude = $request->longitude;
+
+
+
+            $url = "https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat={$latitude}&lon={$longitude}";
+
+            $client = new Client();
+            $response = $client->request('GET', $url, [
+                'headers' => [
+                    'User-Agent' => 'MyLaravelApp/1.0 (contact@myapp.com)'
+                ]
+            ]);
+            $data = json_decode($response->getBody(), true);
+
+
+            $id_departamento = null;
+            $id_distrito = null;
+            $distritos = null;
+            $direccion = null;
+            $municipios = null;
+            $municipio_id = null;
+            $id_distrito_valido = 1;
+
+            //dd($data['address']);
+
+            if (isset($data['address'])) {
+
+                $api_departamento = $data['address']['state'];
+                $api_departamento = str_replace("Departamento de ", "", $api_departamento);
+                $departamento = Departamento::where('nombre', $api_departamento)->first();
+                if ($departamento) {
+                    $id_departamento = $departamento->id;
+                }
+
+                if (isset($data['address']['state_district'])) {
+                    $api_municipio = $data['address']['state_district'];
+                    $municipio = Municipio::where('nombre', $api_municipio)->first();
+                    if ($municipio) {
+                        $municipio_id = $municipio->id;
+                    }
+                }
+
+
+                $api_distrito = $data['address']['city'] ?? $data['address']['town'] ?? $data['address']['village'] ?? ($data['address']['county'] ?? null);
+                $distrito_nombre = str_replace("Distrito de ", "", $api_distrito);
+                $distrito = Distrito::where('nombre', $distrito_nombre)->first();
+                if ($distrito) {
+                    $id_distrito = $distrito->id;
+                }
+
+                $direccion = $data['display_name'];
+            } else {
+                // Manejar la situación donde no se pudo obtener la información de ubicación
+                \Log::error("No se pudo obtener la información de ubicación.");
+            }
+
+
+            $departamentos = Departamento::get();
+            if ($id_departamento != null) {
+                $municipios = Municipio::where('departamento_id', $id_departamento)->get();
+            }
+
+            if ($municipio_id != null) {
+                $distritos = Distrito::where('municipio_id', $municipio_id)->get();
+            }
+            $configuracion = Configuracion::first();
+            $tipos_falla = TipoFalla::where('activo', '1')->get();
+
+
 
 
 

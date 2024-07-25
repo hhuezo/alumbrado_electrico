@@ -84,35 +84,7 @@ class ReporteFallaPublicoController extends Controller
 
                 $direccion = $data['display_name'];
 
-                // if ($api_departamento) {
-                //     $departamento = Departamento::where('nombre', $api_departamento)->first();
-                //     if ($departamento) {
-                //         $id_departamento = $departamento->id;
-                //         $municipios =  Municipio::where('departamento_id', $id_departamento)->get();
 
-                //         if ($api_municipio) {
-
-                //             $distrito = Distrito::select('distrito.id', 'distrito.nombre', 'distrito.municipio_id')
-                //                 ->join('municipio', 'municipio.id', '=', 'distrito.municipio_id')->where('municipio.departamento_id', $id_departamento)
-                //                 ->where('distrito.nombre', $api_municipio)->first();
-
-                //             // dd($distrito);
-
-                //             if ($distrito) {
-                //                 $companias = $distrito->companias;
-                //                 $distritos = Distrito::where('municipio_id', $distrito->municipio_id)->get();
-
-                //                 $id_distrito = $distrito->id;
-                //                 $municipio_id = $distrito->municipio_id;
-                //             }
-                //         } else {
-
-                //             $municipio = $municipios->first();
-                //             $municipio_id  = $municipio->id;
-                //             $distritos = Distrito::where('municipio_id', $municipio_id)->get();
-                //         }
-                //     }
-                // }
             } else {
                 // Manejar la situación donde no se pudo obtener la información de ubicación
                 \Log::error("No se pudo obtener la información de ubicación.");
