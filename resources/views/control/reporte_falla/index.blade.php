@@ -16,37 +16,37 @@
                 <div class="inline-block min-w-full align-middle">
                     <div class="overflow-hidden " style=" margin-bottom:20px ">
                         <table id="myTable" class="display" cellspacing="0" width="100%">
-                            <thead>
-                                <tr class="td-table">
+                            <thead class=" border-t border-slate-100 dark:border-slate-800">
+                                <tr >
 
-                                    <td>Id</td>
-                                    <td>Fecha</td>
-                                    <td>Distrito</td>
-                                    <td>Tipo falla</td>
-                                    <td>Nombre</td>
-                                    <td>Telefono</td>
-                                    <td>Estado</td>
-                                    <td>opciones</td>
+                                    <th scope="col" class=" table-th ">Id</td>
+                                    <th scope="col" class=" table-th ">Fecha</td>
+                                    <th scope="col" class=" table-th ">Distrito</td>
+                                    <th scope="col" class=" table-th ">Tipo falla</td>
+                                    <th scope="col" class=" table-th ">Nombre</td>
+                                    <th scope="col" class=" table-th ">Telefono</td>
+                                    <th scope="col" class=" table-th ">Estado</td>
+                                    <th scope="col" class=" table-th ">opciones</td>
 
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody class="bg-white divide-y divide-slate-100 dark:bg-slate-800 dark:divide-slate-700">
                                 @if ($reporte_fallas->count() > 0)
                                     @foreach ($reporte_fallas as $obj)
                                         <tr>
-                                            <td align="center">{{ $obj->id }}</td>
+                                            <td align="center" class="table-td">{{ $obj->id }}</td>
                                             @if ($obj->fecha)
-                                                <td>{{ date('d/m/Y', strtotime($obj->fecha)) }}</td>
+                                                <td class="table-td">{{ date('d/m/Y', strtotime($obj->fecha)) }}</td>
                                             @else
-                                                <td></td>
+                                                <td class="table-td"></td>
                                             @endif
 
-                                            <td>{{ $obj->distrito->nombre }}</td>
-                                            <td>{{ $obj->tipo_falla->nombre }}</td>
-                                            <td>{{ $obj->nombre_contacto }}</td>
-                                            <td>{{ $obj->telefono_contacto }}</td>
-                                            <td>{{ $obj->estado->nombre }}</td>
-                                            <td align="center">
+                                            <td class="table-td">{{ $obj->distrito->nombre }}</td>
+                                            <td class="table-td">{{ $obj->tipo_falla->nombre }}</td>
+                                            <td class="table-td">{{ $obj->nombre_contacto }}</td>
+                                            <td class="table-td">{{ $obj->telefono_contacto }}</td>
+                                            <td class="table-td">{{ $obj->estado->nombre }}</td>
+                                            <td align="center" class="table-td">
                                                 <a href="{{ url('reporte_falla') }}/{{ $obj->id }}">
                                                     <iconify-icon icon="pepicons-pop:eye-circle-filled" width="40"
                                                         height="40"></iconify-icon>

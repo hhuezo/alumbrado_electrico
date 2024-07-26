@@ -10,8 +10,7 @@
                     <div class="flex-1">
                         <div class="card-title text-slate-900 dark:text-white">Agregar tecnología recomendada para sustituir
 
-                            <a
-                                href="{{ url('catalogo/tipo_luminaria/'.$PotenciaPromedio->tipo_luminaria_id.'/edit') }}">
+                            <a href="{{ url('catalogo/tipo_luminaria/'.$PotenciaPromedio->tipo_luminaria_id.'/edit') }}">
                                 <button class="btn btn-dark btn-sm float-right">
                                     <iconify-icon icon="icon-park-solid:back" style="color: white;" width="18">
                                     </iconify-icon>
@@ -37,9 +36,7 @@
 
                                 <div class="xl:col-span-12 col-span-12 lg:col-span-12">
 
-                                    <form method="POST"
-                                        action="{{ route('tipo_luminaria.store_tecnologia_sustituir', $PotenciaPromedio->id) }}"
-                                        enctype="multipart/form-data">
+                                    <form method="POST" action="{{ route('tipo_luminaria.store_tecnologia_sustituir', $PotenciaPromedio->id) }}" enctype="multipart/form-data">
                                         @method('POST')
                                         @csrf
 
@@ -48,21 +45,19 @@
                                             <div class="grid pt-4 pb-3 px-4">
                                                 <div class="input-area relative">
                                                     <label for="largeInput" class="form-label">Nombre</label>
-                                                    <input readonly type="text" name="nombre"
-                                                        value="{{ $PotenciaPromedio->tipo_luminaria->nombre.' '.$PotenciaPromedio->potencia.' Vatios' }}"
-                                                        class="form-control">
+                                                    <input readonly type="text" name="nombre" value="{{ $PotenciaPromedio->tipo_luminaria->nombre.' '.$PotenciaPromedio->potencia.' Vatios' }}" class="form-control">
                                                 </div>
                                             </div>
                                             <div class="grid pt-4 pb-3 px-4">
                                                 <div class="input-area relative">
                                                     <label for="largeInput" class="form-label">Iluminarias</label>
-                                                    <select required class="form-control select2"  name="tecnologia_sustituir_id" id="tecnologia_sustituir_id">
+                                                    <select required class="form-control select2" name="tecnologia_sustituir_id" id="tecnologia_sustituir_id">
                                                         <option value="" selected disabled>Seleccione...</option>
                                                         @foreach ($iluminarias as $obj)
                                                         @if ($PotenciaPromedio->id!=$obj->id)
-                                                            <option value="{{ $obj->id }}">
-                                                                {{ $obj->tipo_luminaria->nombre.' '.$obj->potencia.' Vatios' }}
-                                                            </option>
+                                                        <option value="{{ $obj->id }}">
+                                                            {{ $obj->tipo_luminaria->nombre.' '.$obj->potencia.' Vatios' }}
+                                                        </option>
                                                         @endif
                                                         @endforeach
                                                     </select>
@@ -71,8 +66,7 @@
 
                                         </div>
                                         <div style="text-align: right;">
-                                            <button type="submit" style="margin-right: 18px"
-                                                class="btn btn-dark">Agregar</button>
+                                            <button type="submit" style="margin-right: 18px" class="btn btn-dark">Agregar</button>
                                         </div>
                                     </form>
                                 </div>
@@ -112,24 +106,24 @@
                                 @if ($tecnologiasRemplazar->count() > 0)
                                 <div class="xl:col-span-12 col-span-12 lg:col-span-12">
                                     <table class="display" cellspacing="0" width="100%">
-                                        <thead>
-                                            <tr class="td-table">
-                                                <td>Id</td>
-                                                <td>Iluminaria</td>
-                                                <td>Consumo promedio</td>
-                                                <td>opciones</td>
+                                        <thead class=" border-t border-slate-100 dark:border-slate-800">
+                                            <tr>
+
+                                                <th scope="col" class=" table-th ">Id</td>
+                                                <th scope="col" class=" table-th ">Iluminaria</td>
+                                                <th scope="col" class=" table-th ">Consumo promedio</td>
+                                                <th scope="col" class=" table-th ">opciones</td>
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody class="bg-white divide-y divide-slate-100 dark:bg-slate-800 dark:divide-slate-700">
 
                                             @foreach ($tecnologiasRemplazar as $obj)
                                             <tr>
-                                                <td align="center">{{ $obj->id }}</td>
-                                                <td>{{ $obj->tipo_luminaria->nombre.' de '. $obj->potencia.' Vatios' }}</td>
-                                                <td>{{ $obj->consumo_promedio }} kWh</td>
-                                                <td align="center">
-                                                    <iconify-icon icon="mdi:trash" data-bs-toggle="modal"
-                                                        data-bs-target="#modal-delete-{{ $obj->id }}" width="40">
+                                                <td align="center" class="table-td">{{ $obj->id }}</td>
+                                                <td class="table-td">{{ $obj->tipo_luminaria->nombre.' de '. $obj->potencia.' Vatios' }}</td>
+                                                <td class="table-td">{{ $obj->consumo_promedio }} kWh</td>
+                                                <td align="center" class="table-td">
+                                                    <iconify-icon icon="mdi:trash" data-bs-toggle="modal" data-bs-target="#modal-delete-{{ $obj->id }}" width="40">
                                                     </iconify-icon>
                                                 </td>
                                             </tr>

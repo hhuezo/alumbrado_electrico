@@ -90,33 +90,33 @@
                 <div class="inline-block min-w-full align-middle">
                     <div class="overflow-hidden " style=" margin-bottom:20px ">
                         <table id="myTable" class="display" cellspacing="0" width="100%">
-                            <thead>
-                                <tr class="td-table">
+                        <thead class=" border-t border-slate-100 dark:border-slate-800">
+                                <tr >
 
-                                    <td>Id</td>
-                                    <td>Nombre</td>
-                                    <td>Departamento</td>
-                                    <td>Convenio firmado</td>
-                                    <td>opciones</td>
+                                    <th scope="col" class=" table-th ">Id</td>
+                                    <th scope="col" class=" table-th ">Nombre</td>
+                                    <th scope="col" class=" table-th ">Departamento</td>
+                                    <th scope="col" class=" table-th ">Convenio firmado</td>
+                                    <th scope="col" class=" table-th ">opciones</td>
 
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody class="bg-white divide-y divide-slate-100 dark:bg-slate-800 dark:divide-slate-700">
                                 @if ($municipios->count() > 0)
                                     @foreach ($municipios as $obj)
                                         <tr>
-                                            <td align="center">{{ $obj->id }}</td>
-                                            <td>{{ $obj->nombre }}</td>
-                                            <td>{{ $obj->departamento ? $obj->departamento->nombre : '' }}</td>
+                                            <td align="center" class="table-td">{{ $obj->id }}</td>
+                                            <td class="table-td">{{ $obj->nombre }}</td>
+                                            <td class="table-td">{{ $obj->departamento ? $obj->departamento->nombre : '' }}</td>
 
-                                            <td>
+                                            <td class="table-td">
                                                 <label class="switch">
                                                     <input type="checkbox" name="convenio"
                                                         {{ $obj->convenio == 1 ? 'checked' : '' }} id="convenio">
                                                     <span class="slider round"></span>
                                                 </label>
                                             </td>
-                                            <td align="center">
+                                            <td align="center" class="table-td">
                                                 <a href="{{ url('catalogo/municipio') }}/{{ $obj->id }}/edit">
                                                     <iconify-icon icon="mdi:pencil-box" width="40"></iconify-icon>
                                                 </a>
