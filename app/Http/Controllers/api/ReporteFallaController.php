@@ -167,7 +167,7 @@ class ReporteFallaController extends Controller
             return response()->json(['value' => 0, 'mensaje' => 'Encabezado de autorización incorrecto'], 401);
         }
 
-        $nombreSinDistrito = str_replace("Municipio de", "", $name);
+        $nombreSinDistrito = str_replace("Distrito de", "", $name);
         $nombreFinal = trim($nombreSinDistrito);
 
         $distritoModel = new Distrito();
