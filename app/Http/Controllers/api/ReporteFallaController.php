@@ -215,7 +215,7 @@ class ReporteFallaController extends Controller
         }
 
         $id_distrito_valido = true;
-        $nombreSinDistrito = str_replace("Municipio de", "", $name);
+        $nombreSinDistrito = str_replace("Distrito de", "", $name);
         $nombreFinal = trim($nombreSinDistrito);
 
         $distritoModel = new Distrito();
