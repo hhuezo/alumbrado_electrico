@@ -33,23 +33,23 @@
                 <div class="inline-block min-w-full align-middle">
                     <div class="overflow-hidden " style=" margin-bottom:20px ">
                         <table id="myTable" class="display" cellspacing="0" width="100%">
-                            <thead>
-                                <tr class="td-table">
+                            <thead class=" border-t border-slate-100 dark:border-slate-800">
+                                <tr >
 
-                                    <td style="text-align: center">Fecha inicio</td>
-                                    <td style="text-align: center">Fecha final</td>
-                                    <td style="text-align: center">opciones</td>
+                                    <th scope="col" class=" table-th ">Fecha inicio</td>
+                                    <th scope="col" class=" table-th ">Fecha final</td>
+                                    <th scope="col" class=" table-th ">opciones</td>
 
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody class="bg-white divide-y divide-slate-100 dark:bg-slate-800 dark:divide-slate-700">
                                 @if ($valor_energia->count() > 0)
                                     @foreach ($valor_energia as $obj)
                                         <tr>
-                                            <td>{{ $obj->fecha_inicio ?  date('d/m/Y', strtotime($obj->fecha_inicio)) : '' }}</td>
-                                            <td>{{ $obj->fecha_inicio ?  date('d/m/Y', strtotime($obj->fecha_final)) : '' }}</td>
+                                            <td class="table-td">{{ $obj->fecha_inicio ?  date('d/m/Y', strtotime($obj->fecha_inicio)) : '' }}</td>
+                                            <td class="table-td">{{ $obj->fecha_inicio ?  date('d/m/Y', strtotime($obj->fecha_final)) : '' }}</td>
 
-                                            <td align="center">
+                                            <td align="center" class="table-td">
                                                 <a href="{{url('control/valor_mensual_energia')}}/{{$obj->id}}/edit"
                                                 <button>
                                                 <iconify-icon icon="mdi:pencil-box" width="40" data-bs-toggle="modal" data-bs-target="#modal-edit-{{$obj->id}}"></iconify-icon>
