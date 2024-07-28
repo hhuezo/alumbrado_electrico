@@ -104,7 +104,7 @@ class TipoLuminariaController extends Controller
     public function edit($id)
     {
         $tipo_luminaria = TipoLuminaria::findOrFail($id);
-        return view('catalogo.tipo_luminaria.edit', compact('tipo_luminaria'));
+        return view('catalogo.tipo_luminaria.edit', compact('tipo_luminaria','id'));
     }
 
     public function update(Request $request, $id)

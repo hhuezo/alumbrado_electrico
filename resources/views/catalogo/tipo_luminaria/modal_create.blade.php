@@ -34,13 +34,13 @@
                         <div class="grid pt-4 pb-3 px-4">
                             <div class="input-area relative">
                                 <label for="largeInput" class="form-label">Potencia</label>
-                                <input type="number" name="potencia" class="form-control" required>
+                                <input type="number" id="potencia" name="potencia" class="form-control" required>
                             </div>
                         </div>
                         <div class="grid pt-4 pb-3 px-4">
                             <div class="input-area relative">
                                 <label for="largeInput" class="form-label">Consumo promedio (kWh)</label>
-                                <input type="number" step="0.01" name="consumo_promedio" required
+                                <input type="number" step="0.01" id="consumo_promedio" name="consumo_promedio" required
                                     class="form-control">
                             </div>
                         </div>

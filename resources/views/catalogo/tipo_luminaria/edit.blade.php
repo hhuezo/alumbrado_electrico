@@ -155,13 +155,15 @@
                                                                 <a
                                                                     href="{{ url('catalogo/tipo_luminaria/create_tecnologia_sustituir') }}/{{ $obj->id }}/edit">
                                                                     <iconify-icon icon="bx:detail" width="40"
-                                                                        height="40"></iconify-icon>
+                                                                        height="40">
+                                                                    </iconify-icon>
                                                                 </a>
                                                                 &nbsp;&nbsp;
 
                                                                 <iconify-icon icon="mdi:trash" data-bs-toggle="modal"
                                                                     data-bs-target="#modal-delete-{{ $obj->id }}"
-                                                                    width="40"></iconify-icon>
+                                                                    width="40">
+                                                                </iconify-icon>
                                                             </td>
                                                         </tr>
                                                         @include('catalogo.tipo_luminaria.modal')
@@ -190,7 +192,20 @@
         </div>
 
     </div>
-
+    <script>
+        $("#potencia").keyup(function() {
+            if ({{ $id }} === 1) {
+                var potencia_nominal = parseFloat($(this).val());
+                var consumo_mensual = (potencia_nominal * 360) / 1000;
+                document.getElementById('consumo_promedio').value = consumo_mensual;
+            }
+        });
+        $("#potencia").change(function() {
+            if (!($(this).val() > 0)) {
+                document.getElementById('potencia').value = "";
+            }
+        });
+    </script>
 
 
 @endsection
