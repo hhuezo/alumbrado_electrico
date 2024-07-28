@@ -18,23 +18,23 @@
                 <div class="inline-block min-w-full align-middle">
                     <div class="overflow-hidden " style=" margin-bottom:20px ">
                         <table id="myTable" class="display" cellspacing="0" width="100%">
-                            <thead>
-                                <tr class="td-table">
+                        <thead class=" border-t border-slate-100 dark:border-slate-800">
+                                <tr >
 
-                                    <td>Id</td>
-                                    <td>Descripción</td>
-                                    <td>opciones</td>
+                                    <th scope="col" class=" table-th ">Id</td>
+                                    <th scope="col" class=" table-th ">Descripción</td>
+                                    <th scope="col" class=" table-th ">opciones</td>
 
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody class="bg-white divide-y divide-slate-100 dark:bg-slate-800 dark:divide-slate-700">
                                 @if ($tipos_falla->count() > 0)
                                     @foreach ($tipos_falla as $obj)
                                     <tr>
-                                        <td align="center">{{ $obj->id }}</td>
-                                        <td>{{ $obj->nombre }}</td>
+                                    <td align="center" class="table-td">{{ $obj->id }}</td>
+                                        <td class="table-td">{{ $obj->nombre }}</td>
 
-                                        <td align="center">
+                                        <td align="center" class="table-td">
                                             <a href="{{ url('catalogo/tipo_falla') }}/{{ $obj->id }}/edit">
                                                 <iconify-icon icon="mdi:pencil-box" width="40"></iconify-icon>
                                             </a>

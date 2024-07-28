@@ -374,7 +374,7 @@
                             <script>
                                 $(document).ready(function() {
                                     // consumo por tipo luminaria
-                                    Highcharts.chart('container_tipo_luminaria', {
+                                    Highcharts.chart('container_tipo_luminaria', {  
                                         chart: {
                                             type: 'column'
                                         },
@@ -428,7 +428,18 @@
                                             colorByPoint: true,
                                             data: @json($data_tipo_luminaria)
 
-                                        }]
+                                        }],
+                                        colors: [
+                                            '#004291', // Color for the first segment
+                                            '#0067b6', // Color for the second segment
+                                            '#088bda', // Color for the third segment
+                                            '#2caffe', // Color for the fourth segment
+                                            '#50d3ff', // Color for the fifth segment
+                                            '#74f7ff', // Color for the sixth segment
+                                            '#74f7ff', // Color for the seventh segment
+                             
+                                            // Add more colors as needed
+                                        ]
                                     });
 
                                     Highcharts.chart('container_tipo_luminaria_pie', {
@@ -489,7 +500,18 @@
                                             colorByPoint: true,
                                             data: @json($data_tipo_luminaria)
 
-                                        }]
+                                        }],
+                                        colors: [
+                                            '#f88f1f', // Color for the first segment
+                                            '#f79e3f', // Color for the second segment
+                                            '#f3b475', // Color for the sixth segment
+                                            '#fbbf7f', // Color for the third segment
+                                            '#f3c891', // Color for the fourth segment
+                                            '#ffeccc', // Color for the fifth segment
+                                            '#74f7ff', // Color for the seventh segment
+                             
+                                            // Add more colors as needed
+                                        ]   
                                     });
 
                                     // conteo por tipo luminaria
@@ -543,7 +565,18 @@
                                             colorByPoint: true,
                                             data: @json($data_numero_luminaria)
 
-                                        }]
+                                        }],
+                                        colors: [
+                                            '#cf108c', // Color for the first segment
+                                            '#d54d9d', // Color for the second segment
+                                            '#da6ea9', // Color for the sixth segment
+                                            '#df8cba', // Color for the third segment
+                                            '#e7a8cd', // Color for the fourth segment
+                                            '#f0c7e0', // Color for the fifth segment
+                                            '#f0c7e0', // Color for the seventh segment
+                             
+                                            // Add more colors as needed
+                                        ]  
                                     });
 
                                     Highcharts.chart('container_conteo_luminaria_pie', {
@@ -597,7 +630,18 @@
                                             colorByPoint: true,
                                             data: @json($data_numero_luminaria)
 
-                                        }]
+                                        }],
+                                        colors: [
+                                            '#3ab44b', // Color for the first segment
+                                            '#63bb5e', // Color for the second segment
+                                            '#83c678', // Color for the sixth segment
+                                            '#9bd093', // Color for the third segment
+                                            '#b7deaf', // Color for the fourth segment
+                                            '#b6f7a4', // Color for the fifth segment
+                                            '#74f7ff', // Color for the seventh segment
+                             
+                                            // Add more colors as needed
+                                        ]   
                                     });
 
                                     Highcharts.chart('container_data_rango_potencia_instalada', {
@@ -654,7 +698,18 @@
                                             name: 'Browsers',
                                             colorByPoint: true,
                                             data: @json($data_rango_potencia_instalada)
-                                        }]
+                                        }],
+                                        colors: [
+                                            '#131a7b', // Color for the first segment
+                                            '#383fa0', // Color for the second segment
+                                            '#5c63c4', // Color for the third segment
+                                            '#8087e8', // Color for the fourth segment
+                                            '#a4abff', // Color for the fifth segment
+                                            '#c8cfff', // Color for the sixth segment
+                                            '#c8cfff', // Color for the seventh segment
+                             
+                                            // Add more colors as needed
+                                        ]
                                     });
                                 });
 
