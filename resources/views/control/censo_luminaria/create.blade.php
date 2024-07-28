@@ -184,31 +184,46 @@
                             <label for="largeInput" class="form-label">Departamento</label>
                             <select class="form-control" id="departamento">
                                 @foreach ($departamentos as $obj)
-                                <option value="{{ $obj->id }}" {{ $id_departamento==$obj->id ? 'selected' : '' }}>{{
-                                    $obj->nombre }}
-                                </option>
+                                    <option value="{{ $obj->id }}"
+                                        {{ $id_departamento == $obj->id ? 'selected' : '' }}>
+                                        {{ $obj->nombre }}
+                                    </option>
                                 @endforeach
                             </select>
                         </div>
 
+
                         <div class="input-area">
                             <label for="largeInput" class="form-label">Municipio</label>
                             <select class="form-control" id="municipio">
-                                @foreach ($municipios as $obj)
-                                <option value="{{ $obj->id }}" {{ $municipio_id==$obj->id ? 'selected' : '' }}>{{
-                                    $obj->nombre }}
+                                <option value="{{ $obj->id }}">SELECCIONE
                                 </option>
-                                @endforeach
+                                @if ($municipios)
+                                    @foreach ($municipios as $obj)
+                                        @if ($municipio_id == null)
+
+                                        @endif
+                                        <option value="{{ $obj->id }}"
+                                            {{ $municipio_id == $obj->id ? 'selected' : '' }}>
+                                            {{ $obj->nombre }}
+                                        </option>
+                                    @endforeach
+                                @endif
                             </select>
                         </div>
 
                         <div class="input-area">
                             <label for="largeInput" class="form-label">Distrito</label>
-                            <select class="form-control" name="distrito_id" id="distrito" required>
-                                @foreach ($distritos as $obj)
-                                <option value="{{ $obj->id }}" {{ $id_distrito==$obj->id ? 'selected' : '' }}>{{
-                                    $obj->nombre }}</option>
-                                @endforeach
+                            <select class="form-control" name="distrito_id" id="distrito"
+                                required>
+                                @if ($distritos)
+                                    @foreach ($distritos as $obj)
+                                        <option value="{{ $obj->id }}"
+                                            {{ $id_distrito == $obj->id ? 'selected' : '' }}>
+                                            {{ $obj->nombre }}</option>
+                                    @endforeach
+                                @endif
+
                             </select>
                         </div>
 
@@ -337,7 +352,7 @@
 
                 $.get("{{ url('censo_luminaria/get_municipios') }}" + '/' + Departamento, function(data) {
                     console.log(data);
-                    var _select = ''
+                    var _select = '<option value="">SELECCIONE</option>'
                     for (var i = 0; i < data.length; i++)
                         _select += '<option value="' + data[i].id + '">' + data[i].nombre +
                         '</option>';

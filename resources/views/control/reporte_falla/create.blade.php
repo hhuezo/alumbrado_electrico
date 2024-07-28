@@ -74,7 +74,8 @@
                                                     <select class="form-control" id="departamento">
                                                         @foreach ($departamentos as $obj)
                                                             <option value="{{ $obj->id }}"
-                                                                {{ $id_departamento == $obj->id ? 'selected' : '' }}>{{ $obj->nombre }}
+                                                                {{ $id_departamento == $obj->id ? 'selected' : '' }}>
+                                                                {{ $obj->nombre }}
                                                             </option>
                                                         @endforeach
                                                     </select>
@@ -84,21 +85,34 @@
                                                 <div class="input-area">
                                                     <label for="largeInput" class="form-label">Municipio</label>
                                                     <select class="form-control" id="municipio">
-                                                        @foreach ($municipios as $obj)
-                                                            <option value="{{ $obj->id }}"
-                                                                {{ $municipio_id == $obj->id ? 'selected' : '' }}>{{ $obj->nombre }}
-                                                            </option>
-                                                        @endforeach
+                                                        <option value="{{ $obj->id }}">SELECCIONE
+                                                        </option>
+                                                        @if ($municipios)
+                                                            @foreach ($municipios as $obj)
+                                                                @if ($municipio_id == null)
+
+                                                                @endif
+                                                                <option value="{{ $obj->id }}"
+                                                                    {{ $municipio_id == $obj->id ? 'selected' : '' }}>
+                                                                    {{ $obj->nombre }}
+                                                                </option>
+                                                            @endforeach
+                                                        @endif
                                                     </select>
                                                 </div>
 
                                                 <div class="input-area">
                                                     <label for="largeInput" class="form-label">Distrito</label>
-                                                    <select class="form-control" name="distrito_id" id="distrito" required>
-                                                        @foreach ($distritos as $obj)
-                                                            <option value="{{ $obj->id }}"
-                                                                {{ $id_distrito == $obj->id ? 'selected' : '' }}>{{ $obj->nombre }}</option>
-                                                        @endforeach
+                                                    <select class="form-control" name="distrito_id" id="distrito"
+                                                        required>
+                                                        @if ($distritos)
+                                                            @foreach ($distritos as $obj)
+                                                                <option value="{{ $obj->id }}"
+                                                                    {{ $id_distrito == $obj->id ? 'selected' : '' }}>
+                                                                    {{ $obj->nombre }}</option>
+                                                            @endforeach
+                                                        @endif
+
                                                     </select>
                                                 </div>
 

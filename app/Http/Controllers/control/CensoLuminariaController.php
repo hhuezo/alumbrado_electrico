@@ -98,39 +98,31 @@ class CensoLuminariaController extends Controller
             $companias = Compania::where('activo',1)->get();
 
             if (isset($data['address'])) {
+
                 $api_departamento = $data['address']['state'];
                 $api_departamento = str_replace("Departamento de ", "", $api_departamento);
-                $api_municipio = $data['address']['city'] ?? $data['address']['town'] ?? $data['address']['village'] ?? ($data['address']['county'] ?? null);
+                $departamento = Departamento::where('nombre', $api_departamento)->first();
+                if ($departamento) {
+                    $id_departamento = $departamento->id;
+                }
 
-                $api_municipio = str_replace("Municipio de ", "", $api_municipio);
-                $direccion = $data['display_name'];
-
-                if ($api_departamento) {
-                    $departamento = Departamento::where('nombre', $api_departamento)->first();
-                    if ($departamento) {
-                        $id_departamento = $departamento->id;
-                        $municipios =  Municipio::where('departamento_id', $id_departamento)->get();
-
-                        if ($api_municipio) {
-                            $distrito = Distrito::select('distrito.id', 'distrito.nombre', 'distrito.municipio_id')
-                                ->join('municipio', 'municipio.id', '=', 'distrito.municipio_id')->where('municipio.departamento_id', $id_departamento)
-                                ->where('distrito.nombre', $api_municipio)->first();
-
-                            if ($distrito) {
-                                $companias = $distrito->companias;
-                                $distritos = Distrito::where('municipio_id', $distrito->municipio_id)->get();
-
-                                $id_distrito = $distrito->id;
-                                $municipio_id = $distrito->municipio_id;
-                            }
-                        } else {
-
-                            $municipio = $municipios->first();
-                            $municipio_id  = $municipio->id;
-                            $distritos = Distrito::where('municipio_id', $municipio_id)->get();
-                        }
+                if (isset($data['address']['state_district'])) {
+                    $api_municipio = $data['address']['state_district'];
+                    $municipio = Municipio::where('nombre', $api_municipio)->first();
+                    if ($municipio) {
+                        $municipio_id = $municipio->id;
                     }
                 }
+
+
+                $api_distrito = $data['address']['city'] ?? $data['address']['town'] ?? $data['address']['village'] ?? ($data['address']['county'] ?? null);
+                $distrito_nombre = str_replace("Distrito de ", "", $api_distrito);
+                $distrito = Distrito::where('nombre', $distrito_nombre)->first();
+                if ($distrito) {
+                    $id_distrito = $distrito->id;
+                }
+
+                $direccion = $data['display_name'];
             } else {
                 // Manejar la situación donde no se pudo obtener la información de ubicación
                 \Log::error("No se pudo obtener la información de ubicación.");
@@ -139,6 +131,13 @@ class CensoLuminariaController extends Controller
 
             $tipos = TipoLuminaria::where('Activo', '=', 1)->get();
             $departamentos = Departamento::get();
+            if ($id_departamento != null) {
+                $municipios = Municipio::where('departamento_id', $id_departamento)->get();
+            }
+
+            if ($municipio_id != null) {
+                $distritos = Distrito::where('municipio_id', $municipio_id)->get();
+            }
             $configuracion = Configuracion::first();
             $tipos_falla = TipoFalla::where('activo', '1')->get();
 
