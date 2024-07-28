@@ -179,7 +179,6 @@ class WelcomeController extends Controller
 
         $departamentos = Departamento::get();
         $departamento_id = $departamento;
-
         return view('welcome', compact('anio', 'mes', 'data_tipo_luminaria', 'data_numero_luminaria', 'data_rango_potencia_instalada', 'meses', 'opcion', 'departamentos','departamento_id'));
     }
 

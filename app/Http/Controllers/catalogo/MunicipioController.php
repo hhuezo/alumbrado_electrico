@@ -98,6 +98,13 @@ class MunicipioController extends Controller
         return back();
     }
 
+    public function convenioFirmado(Request $request){
+
+        Municipio::findOrFail($request->MunicipioId)->update(['convenio' => $request->convenio]);
+
+        return response()->json(['exito' => 1]);
+    }
+
     /**
      * Remove the specified resource from storage.
      *

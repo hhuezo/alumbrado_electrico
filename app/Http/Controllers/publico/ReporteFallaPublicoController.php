@@ -173,9 +173,6 @@ class ReporteFallaPublicoController extends Controller
         $reporte_falla->save();
         alert()->success('El registro ha sido creado correctamente');
         return Redirect::to('/');
-
-        return view('publico.reporte_falla_mensaje');
-        //return back();
     }
 
 

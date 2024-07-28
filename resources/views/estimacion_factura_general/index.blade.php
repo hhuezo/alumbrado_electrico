@@ -1,17 +1,17 @@
 @extends('menu')
 @section('contenido')
-    <script src="https://code.highcharts.com/highcharts.js"></script>
-    <script src="https://code.highcharts.com/modules/exporting.js"></script>
-    <script src="https://code.highcharts.com/modules/export-data.js"></script>
-    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
 
-    <style>
-        .highcharts-credits {
-            display: none;
-        }
-    </style>
-        <script>
-            $(document).ready(function() {
+<style>
+    .highcharts-credits {
+        display: none;
+    }
+</style>
+<script>
+    $(document).ready(function() {
 
                 // consumo por tipo luminaria
                 Highcharts.chart('container_base_siget', {
@@ -130,182 +130,121 @@
                     $("#nombre_distrito").val(data.nombre);
                 });
             }
-        </script>
+</script>
 
-    <div class="card">
-        <div class="card-body flex flex-col p-6">
-            <header class="flex mb-5 items-center border-b border-slate-100 dark:border-slate-700 pb-5 -mx-6 px-6">
-                <div class="flex-1">
-                    <div class="card-title text-slate-900 dark:text-white">Estimación de factura general
-                        <button class="btn btn-dark btn-sm float-right" data-bs-toggle="modal" data-bs-target="#default_modal">
-                            <iconify-icon icon="mdi:filter" width="20" height="20"></iconify-icon>
-                        </button>
-                    </div>
+<div class="card">
+    <div class="card-body flex flex-col p-6">
+        <header class="flex mb-5 items-center border-b border-slate-100 dark:border-slate-700 pb-5 -mx-6 px-6">
+            <div class="flex-1">
+                <div class="card-title text-slate-900 dark:text-white">Estimación de factura general
                 </div>
-            </header>
+            </div>
+        </header>
 
-            <div class="card-body flex flex-col p-4">
+        <div class="card-body flex flex-col p-4">
+            <form method="GET" action="{{ url('control/EstimacionFacturaGeneral') }}">
+
                 <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-7">
                     <div class="input-area relative">
                         <label for="largeInput" class="form-label">Año</label>
-                        <input type="text" readonly class="form-control" value="{{ $anio ? $anio : date('Y') }}">
+                        <select class="form-control" name="anio">
+                            @for ($i = date('Y'); $i >= 2023; $i--)
+                            <option value="{{ $i }}" {{ $anio==$i ? 'selected' : '' }}>
+                                {{ $i }}
+                            </option>
+                            @endfor
+                        </select>
                     </div>
                     <div class="input-area relative">
                         <label for="largeInput" class="form-label">Mes</label>
-                        <input type="text" readonly class="form-control"
-                            value="{{ $mes ? $meses[$mes] : $meses[date('m')] }}">
+                        <select class="form-control" name="mes">
+                            @foreach ($meses as $key => $value)
+                            <option value="{{ $key }}" {{ $mes==$key ? 'selected' : '' }}>
+                                {{ $value }}
+                            </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="input-area relative">
+                        <label for="largeInput" class="form-label">Departamento</label>
+                        <select name="departamento" id="departamento" class="form-control w-full mt-2"
+                            onchange="getMunicipio(this.value)" required>
+                            <option value="">Seleccione</option>
+                            @foreach ($departamentos as $obj)
+                            <option value="{{ $obj->id }}" {{ $id_departamento==$obj->id ? 'selected' : '' }}>
+                                {{ $obj->nombre }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="input-area relative">
+                        <label for="largeInput" class="form-label">Municipio</label>
+                        <select name="municipio" id="municipio" class="form-control w-full mt-2"
+                            onchange="getDistrito(this.value)" required>
+                            <option value="">Seleccione</option>
+                            @if ($municipios)
+                            @foreach ($municipios as $obj)
+                            <option value="{{ $obj->id }}" {{ $id_municipio==$obj->id ? 'selected' : '' }}>
+                                {{ $obj->nombre }}</option>
+                            @endforeach
+                            @endif
+                        </select>
                     </div>
                     <div class="input-area">
                         <label for="largeInput" class="form-label">Distrito</label>
                         <div class="relative">
-                            <input type="text" class="form-control !pr-12" readonly value="{{ $nombre_distrito }}">
-                            <!-- <button data-bs-toggle="modal" data-bs-target="#default_modal" class="absolute right-0 top-1/2 -translate-y-1/2 w-9 h-full border-l border-l-slate-200 dark:border-l-slate-700 flex items-center justify-center">
-                                    <iconify-icon icon="heroicons-solid:search"></iconify-icon>
-                                </button> -->
+                            <select id="distrito" name="id_distrito" class="form-control w-full mt-2">
+                                <option value="">Seleccione</option>
+                                @if ($municipios)
+                                @foreach ($distritos as $obj)
+                                <option value="{{ $obj->id }}" {{ $id_distrito==$obj->id ? 'selected' : '' }}>
+                                    {{ $obj->nombre }}</option>
+                                @endforeach
+                                @endif
+                            </select>
                         </div>
                     </div>
+                </div>
+                <br>
+                <br>
+                <div
+                    class="flex items-center justify-end p-6 space-x-2 border-t border-slate-200 rounded-b dark:border-slate-600">
+                    <button type="submit"
+                        class="btn inline-flex justify-center text-white bg-black-500">Aceptar</button>
+                </div>
+            </form>
+        </div>
 
-                    <div class="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto"
-                        id="default_modal" tabindex="-1" aria-labelledby="default_modal" aria-hidden="true">
-                        <form method="GET" action="{{ url('control/EstimacionFacturaGeneral') }}">
-                            <div class="modal-dialog relative w-auto pointer-events-none">
-                                <div
-                                    class="modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-white bg-clip-paddingrounded-md outline-none text-current">
-                                    <div class="relative bg-white rounded-lg shadow dark:bg-slate-700">
-                                        <!-- Modal header -->
-                                        <div
-                                            class="flex items-center justify-between p-5 border-b rounded-t dark:border-slate-600 bg-black-500">
-                                            <h3 class="text-xl font-medium text-white dark:text-white capitalize">
-                                                Seleccione distrito
-                                            </h3>
-                                            <button type="button"
-                                                class="text-slate-400 bg-transparent hover:text-slate-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center
-                                            dark:hover:bg-slate-600 dark:hover:text-white"
-                                                data-bs-dismiss="modal">
-                                                <svg aria-hidden="true" class="w-5 h-5" fill="#ffffff" viewbox="0 0 20 20"
-                                                    xmlns="http://www.w3.org/2000/svg">
-                                                    <path fill-rule="evenodd"
-                                                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10
-                                                            11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                                        clip-rule="evenodd"></path>
-                                                </svg>
-                                                <span class="sr-only">Close modal</span>
-                                            </button>
-                                        </div>
-                                        <!-- Modal body -->
+    </div>
+</div>
+<div class="content-wrapper transition-all duration-150 " id="content_wrapper">
 
-                                        <div class="p-6 space-y-4">
-                                            <div class="input-area relative">
-                                                <label for="largeInput" class="form-label">Año</label>
-                                                <select class="form-control" name="anio">
-                                                    @for ($i = date('Y'); $i >= 2023; $i--)
-                                                        <option value="{{ $i }}"
-                                                            {{ $anio == $i ? 'selected' : '' }}>
-                                                            {{ $i }}
-                                                        </option>
-                                                    @endfor
-                                                </select>
-                                            </div>
-                                            <div class="input-area relative">
-                                                <label for="largeInput" class="form-label">Mes</label>
-                                                <select class="form-control" name="mes">
-                                                    @foreach ($meses as $key => $value)
-                                                        <option value="{{ $key }}"
-                                                            {{ $mes == $key ? 'selected' : '' }}>
-                                                            {{ $value }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                            <div>
-                                                <label for="basicSelect" class="form-label">Departamento</label>
-                                                <select name="departamento" id="departamento"
-                                                    class="form-control w-full mt-2" onchange="getMunicipio(this.value)"
-                                                    required>
-                                                    <option value="">Seleccione</option>
-                                                    @foreach ($departamentos as $obj)
-                                                        <option value="{{ $obj->id }}"
-                                                            {{ $id_departamento == $obj->id ? 'selected' : '' }}>
-                                                            {{ $obj->nombre }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                            <div>
-                                                <label for="basicSelect" class="form-label">Municipio</label>
-                                                <select name="municipio" id="municipio" class="form-control w-full mt-2"
-                                                    onchange="getDistrito(this.value)" required>
-                                                    <option value="">Seleccione</option>
-                                                    @if ($municipios)
-                                                        @foreach ($municipios as $obj)
-                                                            <option value="{{ $obj->id }}"
-                                                                {{ $id_municipio == $obj->id ? 'selected' : '' }}>
-                                                                {{ $obj->nombre }}</option>
-                                                        @endforeach
-                                                    @endif
-                                                </select>
-                                            </div>
-                                            <div>
-                                                <label for="basicSelect" class="form-label">Distrito</label>
-                                                <select id="distrito" name="id_distrito" class="form-control w-full mt-2"
-                                                    >
-                                                    <option value="">Seleccione</option>
-                                                    @if ($municipios)
-                                                        @foreach ($distritos as $obj)
-                                                            <option value="{{ $obj->id }}"
-                                                                {{ $id_distrito == $obj->id ? 'selected' : '' }}>
-                                                                {{ $obj->nombre }}</option>
-                                                        @endforeach
-                                                    @endif
-                                                </select>
-                                            </div>
-                                        </div>
+    @if ($verificacion_data > 0 && $municipios)
+    <div class="page-content">
 
-                                        <!-- Modal footer -->
-                                        <div
-                                            class="flex items-center justify-end p-6 space-x-2 border-t border-slate-200 rounded-b dark:border-slate-600">
-                                            <button type="submit"
-                                                class="btn inline-flex justify-center text-white bg-black-500">Aceptar</button>
-                                        </div>
-                                    </div>
+        <div class="transition-all duration-150 container-fluid" id="page_layout">
+            <div id="content_layout">
+
+
+
+                <div class="space-y-5">
+                    <div class="grid grid-cols-12 gap-5">
+                        <div class="xl:col-span-12 col-span-12 lg:col-span-12">
+                            <div class="card p-6 h-full">
+                                <div class="space-y-5">
+                                    <div id="container_base_siget"></div>
                                 </div>
                             </div>
-                        </form>
+                        </div>
+
+
+
                     </div>
 
                 </div>
-            </div>
 
+            </div>
         </div>
     </div>
-    <div class="content-wrapper transition-all duration-150 " id="content_wrapper">
-
-        @if ($verificacion_data > 0 && $municipios)
-            <div class="page-content">
-
-                <div class="transition-all duration-150 container-fluid" id="page_layout">
-                    <div id="content_layout">
-
-
-
-                        <div class="space-y-5">
-                            <div class="grid grid-cols-12 gap-5">
-                                <div class="xl:col-span-12 col-span-12 lg:col-span-12">
-                                    <div class="card p-6 h-full">
-                                        <div class="space-y-5">
-                                            <div id="container_base_siget"></div>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-
-                            </div>
-
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        @endif
-    </div>
+    @endif
+</div>
 @endsection

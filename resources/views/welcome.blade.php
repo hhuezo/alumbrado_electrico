@@ -28,6 +28,8 @@
     <!-- select 2 -->
     <link rel="stylesheet" href="{{ asset('assets/select2/select2.min.css') }}">
 
+
+
     <style>
         .sidebar-wrapper {
             height: auto;
@@ -71,6 +73,8 @@
 </head>
 
 <body class=" font-inter dashcode-app" id="body_class">
+    @include('sweetalert::alert', ['cdn' => 'https://cdn.jsdelivr.net/npm/sweetalert2@9'])
+
     <!-- [if IE]> <p class="browserupgrade"> You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security. </p> <![endif] -->
     <main class="app-wrapper">
         <!-- BEGIN: Sidebar -->
@@ -124,72 +128,70 @@
 
                                 <div class="md:block hidden w-full">
                                     @auth
-                                        <a class="block px-4 py-2 hover:bg-slate-100 dark:hover:bg-slate-600 dark:hover:text-white font-inter text-sm text-slate-600
-                                                    dark:text-white font-normal"
-                                            href="{{ route('logout') }}"
-                                            onclick="event.preventDefault();
+                                    <a class="block px-4 py-2 hover:bg-slate-100 dark:hover:bg-slate-600 dark:hover:text-white font-inter text-sm text-slate-600
+                                                    dark:text-white font-normal" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                         document.getElementById('logout-form').submit();">
-                                            <button
-                                                class="text-slate-800 dark:text-white focus:ring-0 focus:outline-none font-medium rounded-lg text-sm text-center inline-flex items-center"
-                                                type="button" aria-expanded="false">
-                                                <div
-                                                    class="lg:h-8 lg:w-8 h-7 w-7 rounded-full flex-1 ltr:mr-[10px] rtl:ml-[10px]">
-                                                    <iconify-icon icon="mdi:account-remove" width="36"
-                                                        height="36"></iconify-icon>
-                                                </div>
-                                                <span
-                                                    class="flex-none text-slate-600 dark:text-white text-sm font-normal items-center lg:flex hidden overflow-hidden text-ellipsis whitespace-nowrap">
-                                                    Cerrar sesión</span>
+                                        <button
+                                            class="text-slate-800 dark:text-white focus:ring-0 focus:outline-none font-medium rounded-lg text-sm text-center inline-flex items-center"
+                                            type="button" aria-expanded="false">
+                                            <div
+                                                class="lg:h-8 lg:w-8 h-7 w-7 rounded-full flex-1 ltr:mr-[10px] rtl:ml-[10px]">
+                                                <iconify-icon icon="mdi:account-remove" width="36" height="36">
+                                                </iconify-icon>
+                                            </div>
+                                            <span
+                                                class="flex-none text-slate-600 dark:text-white text-sm font-normal items-center lg:flex hidden overflow-hidden text-ellipsis whitespace-nowrap">
+                                                Cerrar sesión</span>
 
-                                            </button>
+                                        </button>
 
-                                        </a>
+                                    </a>
                                     @else
-                                        <a href="{{ url('/login') }}">
-                                            <button
-                                                class="text-slate-800 dark:text-white focus:ring-0 focus:outline-none font-medium rounded-lg text-sm text-center  inline-flex items-center"
-                                                type="button" aria-expanded="false">
-                                                <div
-                                                    class="lg:h-8 lg:w-8 h-7 w-7 rounded-full flex-1 ltr:mr-[10px] rtl:ml-[10px]">
-                                                    <iconify-icon icon="mdi:account-lock" width="36"
-                                                        height="36"></iconify-icon>
-                                                </div>
-                                                <span
-                                                    class="flex-none text-slate-600 dark:text-white text-sm font-normal items-center lg:flex hidden overflow-hidden text-ellipsis whitespace-nowrap">
-                                                    Iniciar sesión</span>
+                                    <a href="{{ url('/login') }}">
+                                        <button
+                                            class="text-slate-800 dark:text-white focus:ring-0 focus:outline-none font-medium rounded-lg text-sm text-center  inline-flex items-center"
+                                            type="button" aria-expanded="false">
+                                            <div
+                                                class="lg:h-8 lg:w-8 h-7 w-7 rounded-full flex-1 ltr:mr-[10px] rtl:ml-[10px]">
+                                                <iconify-icon icon="mdi:account-lock" width="36" height="36">
+                                                </iconify-icon>
+                                            </div>
+                                            <span
+                                                class="flex-none text-slate-600 dark:text-white text-sm font-normal items-center lg:flex hidden overflow-hidden text-ellipsis whitespace-nowrap">
+                                                Iniciar sesión</span>
 
-                                            </button>
-                                        </a>
+                                        </button>
+                                    </a>
 
-                                        @endif
+                                    @endif
 
 
-                                        <form id="logout-form" action="{{ route('logout') }}" method="POST"
-                                            style="display: none;">
-                                            @csrf
-                                        </form>
-
-                                    </div>
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                        style="display: none;">
+                                        @csrf
+                                    </form>
 
                                 </div>
-                                <!-- end nav tools -->
+
                             </div>
+                            <!-- end nav tools -->
                         </div>
                     </div>
+                </div>
 
 
 
 
-                    <br>
-                    <div class=" md:flex justify-between items-center">
-                        <div>
+                <br>
+                <div class=" md:flex justify-between items-center">
+                    <div>
 
 
 
-                            <!-- BEGIN: Breadcrumb -->
-                            <div class="mb-5">
-                                <ul class="m-0 p-0 list-none">
-                                    <a href="{{url('publico/reporte_falla_publico')}}">
+                        <!-- BEGIN: Breadcrumb -->
+                        <div class="mb-5">
+                            <ul class="m-0 p-0 list-none">
+                                <a href="{{url('publico/reporte_falla_publico')}}">
                                     <button
                                         class="btn btn-white float-left  dark:bg-slate-700 dark:text-slate-300 m-1 active"
                                         id="pills-grid-tab" data-bs-toggle="pill" data-bs-target="#pills-grid"
@@ -200,42 +202,168 @@
                                             <span>Reporte de falla</span>
                                         </span>
                                     </button>
-                                    </a>
-                                </ul>
-                            </div>
-                            <!-- END: BreadCrumb -->
-                        </div>
-                        <div class="flex flex-wrap ">
-                            <ul class="nav nav-pills flex items-center flex-wrap list-none pl-0 mr-4" id="pills-tabVertical"
-                                role="tablist">
-
-
-                                <li class="nav-item flex-grow text-center" role="presentation">
-                                    <a href="{{ url('/') }}?opcion=1">
-                                        <button
-                                            class="btn inline-flex justify-center btn-white dark:bg-slate-700 dark:text-slate-300 m-1 active"
-                                            id="pills-grid-tab" data-bs-toggle="pill" data-bs-target="#pills-grid"
-                                            role="tab" aria-controls="pills-grid" aria-selected="true">
-                                            <span class="flex items-center">
-                                                <iconify-icon class="text-xl ltr:mr-2 rtl:ml-2"
-                                                    icon="heroicons-outline:view-grid"></iconify-icon>
-                                                <span>Nacional</span>
-                                            </span>
-                                        </button>
-                                    </a>
-
-                                </li>
+                                </a>
                             </ul>
-                            <a href="{{ url('/') }}?opcion=2">
-                                <button
-                                    class="btn inline-flex justify-center btn-white dark:bg-slate-700 dark:text-slate-300 m-1 ">
-                                    <span class="flex items-center">
-                                        <iconify-icon class="text-xl ltr:mr-2 rtl:ml-2"
-                                            icon="heroicons-outline:filter"></iconify-icon>
-                                        <span>Departamental</span>
-                                    </span>
-                                </button>
-                            </a>
+                        </div>
+                        <!-- END: BreadCrumb -->
+                    </div>
+                    <div class="flex flex-wrap ">
+                        <ul class="nav nav-pills flex items-center flex-wrap list-none pl-0 mr-4" id="pills-tabVertical"
+                            role="tablist">
+
+
+                            <li class="nav-item flex-grow text-center" role="presentation">
+                                <a href="{{ url('/') }}?opcion=1">
+                                    <button
+                                        class="btn inline-flex justify-center btn-white dark:bg-slate-700 dark:text-slate-300 m-1 active"
+                                        id="pills-grid-tab" data-bs-toggle="pill" data-bs-target="#pills-grid"
+                                        role="tab" aria-controls="pills-grid" aria-selected="true">
+                                        <span class="flex items-center">
+                                            <iconify-icon class="text-xl ltr:mr-2 rtl:ml-2"
+                                                icon="heroicons-outline:view-grid"></iconify-icon>
+                                            <span>Nacional</span>
+                                        </span>
+                                    </button>
+                                </a>
+
+                            </li>
+                        </ul>
+                        <a href="{{ url('/') }}?opcion=2">
+                            <button
+                                class="btn inline-flex justify-center btn-white dark:bg-slate-700 dark:text-slate-300 m-1 ">
+                                <span class="flex items-center">
+                                    <iconify-icon class="text-xl ltr:mr-2 rtl:ml-2" icon="heroicons-outline:filter">
+                                    </iconify-icon>
+                                    <span>Departamental</span>
+                                </span>
+                            </button>
+                        </a>
+
+                    </div>
+                </div>
+
+
+
+
+
+
+
+                @if ($opcion == 1)
+                <div class="page-content" id="div_nacional">
+                    <div class="transition-all duration-150 container-fluid" id="page_layout">
+                        <div id="content_layout">
+
+
+                            <div class="content-wrapper transition-all duration-150 " id="content_wrapper">
+                                <div class="page-content" style="display: none">
+                                    <form method="GET" action="{{ url('home') }}">
+                                        <div class="card xl:col-span-2">
+                                            <div class="card-body flex flex-col p-4">
+                                                <div class="space-y-6">
+                                                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
+                                                        <div class="input-area relative">
+                                                            <label for="largeInput" class="form-label">Año</label>
+                                                            <select class="form-control" name="anio">
+                                                                @for ($i = date('Y'); $i >= 2023; $i--)
+                                                                <option value="{{ $i }}" {{ $anio==$i ? 'selected' : ''
+                                                                    }}>
+                                                                    {{ $i }}</option>
+                                                                @endfor
+                                                            </select>
+                                                        </div>
+                                                        <div class="input-area relative">
+                                                            <label for="largeInput" class="form-label">Mes</label>
+                                                            <select class="form-control" name="mes">
+                                                                @foreach ($meses as $key => $value)
+                                                                <option value="{{ $key }}" {{ $mes==$key ? 'selected'
+                                                                    : '' }}>
+                                                                    {{ $value }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                        <div class="input-area relative">
+                                                            <label for="largeInput" class="form-label">&nbsp;
+                                                            </label>
+                                                            <button class="btn btn-dark btn-sm"
+                                                                type="submit">Aceptar</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+
+                                <div class="page-content">
+
+                                    <div class="transition-all duration-150 container-fluid" id="page_layout">
+                                        <div id="content_layout">
+
+
+
+                                            <div class="space-y-5">
+                                                <div class="grid grid-cols-12 gap-5">
+                                                    <div class="xl:col-span-5 col-span-12 lg:col-span-5 ">
+                                                        <div class="card p-6 h-full">
+                                                            <div class="space-y-5">
+                                                                <div id="container_tipo_luminaria_pie"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="xl:col-span-7 col-span-12 lg:col-span-7">
+                                                        <div class="card p-6 h-full">
+                                                            <div class="space-y-5">
+                                                                <div id="container_tipo_luminaria"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="xl:col-span-5 col-span-12 lg:col-span-5 ">
+                                                        <div class="card p-6 h-full">
+                                                            <div class="space-y-5">
+                                                                <div id="container_conteo_luminaria_pie"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="xl:col-span-7 col-span-12 lg:col-span-7">
+                                                        <div class="card p-6 h-full">
+                                                            <div class="space-y-5">
+                                                                <div id="container_conteo_luminaria"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="xl:col-span-12 col-span-12 lg:col-span-12 ">
+                                                        <div class="card p-6 h-full">
+                                                            <div class="space-y-5">
+                                                                <div id="container_data_rango_potencia_instalada">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="xl:col-span-12 col-span-12 lg:col-span-12 ">
+                                                        <div class="card p-6 h-full">
+                                                            <div class="space-y-5" id="rango_data">
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
 
                         </div>
                     </div>
@@ -244,137 +372,10 @@
 
 
 
-
-
-                    @if ($opcion == 1)
-                        <div class="page-content" id="div_nacional">
-                            <div class="transition-all duration-150 container-fluid" id="page_layout">
-                                <div id="content_layout">
-
-
-                                    <div class="content-wrapper transition-all duration-150 " id="content_wrapper">
-                                        <div class="page-content" style="display: none">
-                                            <form method="GET" action="{{ url('home') }}">
-                                                <div class="card xl:col-span-2">
-                                                    <div class="card-body flex flex-col p-4">
-                                                        <div class="space-y-6">
-                                                            <div
-                                                                class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
-                                                                <div class="input-area relative">
-                                                                    <label for="largeInput" class="form-label">Año</label>
-                                                                    <select class="form-control" name="anio">
-                                                                        @for ($i = date('Y'); $i >= 2023; $i--)
-                                                                            <option value="{{ $i }}"
-                                                                                {{ $anio == $i ? 'selected' : '' }}>
-                                                                                {{ $i }}</option>
-                                                                        @endfor
-                                                                    </select>
-                                                                </div>
-                                                                <div class="input-area relative">
-                                                                    <label for="largeInput" class="form-label">Mes</label>
-                                                                    <select class="form-control" name="mes">
-                                                                        @foreach ($meses as $key => $value)
-                                                                            <option value="{{ $key }}"
-                                                                                {{ $mes == $key ? 'selected' : '' }}>
-                                                                                {{ $value }}</option>
-                                                                        @endforeach
-                                                                    </select>
-                                                                </div>
-                                                                <div class="input-area relative">
-                                                                    <label for="largeInput" class="form-label">&nbsp;
-                                                                    </label>
-                                                                    <button class="btn btn-dark btn-sm"
-                                                                        type="submit">Aceptar</button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-
-                                        <div class="page-content">
-
-                                            <div class="transition-all duration-150 container-fluid" id="page_layout">
-                                                <div id="content_layout">
-
-
-
-                                                    <div class="space-y-5">
-                                                        <div class="grid grid-cols-12 gap-5">
-                                                            <div class="xl:col-span-5 col-span-12 lg:col-span-5 ">
-                                                                <div class="card p-6 h-full">
-                                                                    <div class="space-y-5">
-                                                                        <div id="container_tipo_luminaria_pie"></div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="xl:col-span-7 col-span-12 lg:col-span-7">
-                                                                <div class="card p-6 h-full">
-                                                                    <div class="space-y-5">
-                                                                        <div id="container_tipo_luminaria"></div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-
-                                                            <div class="xl:col-span-5 col-span-12 lg:col-span-5 ">
-                                                                <div class="card p-6 h-full">
-                                                                    <div class="space-y-5">
-                                                                        <div id="container_conteo_luminaria_pie"></div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-
-                                                            <div class="xl:col-span-7 col-span-12 lg:col-span-7">
-                                                                <div class="card p-6 h-full">
-                                                                    <div class="space-y-5">
-                                                                        <div id="container_conteo_luminaria"></div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="xl:col-span-12 col-span-12 lg:col-span-12 ">
-                                                                <div class="card p-6 h-full">
-                                                                    <div class="space-y-5">
-                                                                        <div id="container_data_rango_potencia_instalada">
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="xl:col-span-12 col-span-12 lg:col-span-12 ">
-                                                                <div class="card p-6 h-full">
-                                                                    <div class="space-y-5" id="rango_data">
-
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-
-
-
-
-                                </div>
-                            </div>
-
-
-
-
-
-                            <script>
-                                $(document).ready(function() {
+                    <script>
+                        $(document).ready(function() {
                                     // consumo por tipo luminaria
-                                    Highcharts.chart('container_tipo_luminaria', {  
+                                    Highcharts.chart('container_tipo_luminaria', {
                                         chart: {
                                             type: 'column'
                                         },
@@ -437,7 +438,7 @@
                                             '#50d3ff', // Color for the fifth segment
                                             '#74f7ff', // Color for the sixth segment
                                             '#74f7ff', // Color for the seventh segment
-                             
+
                                             // Add more colors as needed
                                         ]
                                     });
@@ -509,9 +510,9 @@
                                             '#f3c891', // Color for the fourth segment
                                             '#ffeccc', // Color for the fifth segment
                                             '#74f7ff', // Color for the seventh segment
-                             
+
                                             // Add more colors as needed
-                                        ]   
+                                        ]
                                     });
 
                                     // conteo por tipo luminaria
@@ -574,9 +575,9 @@
                                             '#e7a8cd', // Color for the fourth segment
                                             '#f0c7e0', // Color for the fifth segment
                                             '#f0c7e0', // Color for the seventh segment
-                             
+
                                             // Add more colors as needed
-                                        ]  
+                                        ]
                                     });
 
                                     Highcharts.chart('container_conteo_luminaria_pie', {
@@ -639,9 +640,9 @@
                                             '#b7deaf', // Color for the fourth segment
                                             '#b6f7a4', // Color for the fifth segment
                                             '#74f7ff', // Color for the seventh segment
-                             
+
                                             // Add more colors as needed
-                                        ]   
+                                        ]
                                     });
 
                                     Highcharts.chart('container_data_rango_potencia_instalada', {
@@ -707,7 +708,7 @@
                                             '#a4abff', // Color for the fifth segment
                                             '#c8cfff', // Color for the sixth segment
                                             '#c8cfff', // Color for the seventh segment
-                             
+
                                             // Add more colors as needed
                                         ]
                                     });
@@ -728,164 +729,156 @@
                                         }
                                     });
                                 }
-                            </script>
+                    </script>
 
 
 
 
 
-                        </div>
-                    @endif
-                    @if ($opcion == 2)
-                        <div class="page-content" id="div_departamental">
-                            <div class=" md:flex justify-between items-center">
-                                <div>
+                </div>
+                @endif
+                @if ($opcion == 2)
+                <div class="page-content" id="div_departamental">
+                    <div class=" md:flex justify-between items-center">
+                        <div>
 
 
 
-                                    <!-- BEGIN: Breadcrumb -->
-                                    <div class="mb-5">
-                                        <ul class="m-0 p-0 list-none">
+                            <!-- BEGIN: Breadcrumb -->
+                            <div class="mb-5">
+                                <ul class="m-0 p-0 list-none">
 
-                                        </ul>
-                                    </div>
-                                    <!-- END: BreadCrumb -->
-                                </div>
-                                <div class="flex flex-wrap ">
-                                    <ul class="nav nav-pills flex items-center flex-wrap list-none pl-0 mr-4"
-                                        id="pills-tabVertical" role="tablist">
-                                        <select class="form-control" name="departamento" id="departamento"
-                                            onchange="get_data_dep(this.value)">
-                                            @foreach ($departamentos as $departamento)
-                                                <option value="{{ $departamento->id }}"
-                                                    {{ $departamento_id == $departamento->id ? 'selected' : '' }}>
-                                                    {{ $departamento->nombre }}</option>
-                                            @endforeach
-                                        </select>
-                                    </ul>
-
-
-
-                                </div>
+                                </ul>
                             </div>
+                            <!-- END: BreadCrumb -->
+                        </div>
+                        <div class="flex flex-wrap ">
+                            <ul class="nav nav-pills flex items-center flex-wrap list-none pl-0 mr-4"
+                                id="pills-tabVertical" role="tablist">
+                                <select class="form-control" name="departamento" id="departamento"
+                                    onchange="get_data_dep(this.value)">
+                                    @foreach ($departamentos as $departamento)
+                                    <option value="{{ $departamento->id }}" {{ $departamento_id==$departamento->id ?
+                                        'selected' : '' }}>
+                                        {{ $departamento->nombre }}</option>
+                                    @endforeach
+                                </select>
+                            </ul>
+
+
 
                         </div>
+                    </div>
 
-                        <div class="transition-all duration-150 container-fluid" id="page_layout">
-                            <div id="content_layout">
+                </div>
+
+                <div class="transition-all duration-150 container-fluid" id="page_layout">
+                    <div id="content_layout">
 
 
-                                <div class="content-wrapper transition-all duration-150 " id="content_wrapper">
-                                    <div class="page-content" style="display: none">
-                                        <form method="GET" action="{{ url('home') }}">
-                                            <div class="card xl:col-span-2">
-                                                <div class="card-body flex flex-col p-4">
-                                                    <div class="space-y-6">
-                                                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
-                                                            <div class="input-area relative">
-                                                                <label for="largeInput" class="form-label">Año</label>
-                                                                <select class="form-control" name="anio">
-                                                                    @for ($i = date('Y'); $i >= 2023; $i--)
-                                                                        <option value="{{ $i }}"
-                                                                            {{ $anio == $i ? 'selected' : '' }}>
-                                                                            {{ $i }}</option>
-                                                                    @endfor
-                                                                </select>
-                                                            </div>
-                                                            <div class="input-area relative">
-                                                                <label for="largeInput" class="form-label">Mes</label>
-                                                                <select class="form-control" name="mes">
-                                                                    @foreach ($meses as $key => $value)
-                                                                        <option value="{{ $key }}"
-                                                                            {{ $mes == $key ? 'selected' : '' }}>
-                                                                            {{ $value }}</option>
-                                                                    @endforeach
-                                                                </select>
-                                                            </div>
-                                                            <div class="input-area relative">
-                                                                <label for="largeInput" class="form-label">&nbsp;
-                                                                </label>
-                                                                <button class="btn btn-dark btn-sm"
-                                                                    type="submit">Aceptar</button>
-                                                            </div>
-                                                        </div>
+                        <div class="content-wrapper transition-all duration-150 " id="content_wrapper">
+                            <div class="page-content" style="display: none">
+                                <form method="GET" action="{{ url('home') }}">
+                                    <div class="card xl:col-span-2">
+                                        <div class="card-body flex flex-col p-4">
+                                            <div class="space-y-6">
+                                                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
+                                                    <div class="input-area relative">
+                                                        <label for="largeInput" class="form-label">Año</label>
+                                                        <select class="form-control" name="anio">
+                                                            @for ($i = date('Y'); $i >= 2023; $i--)
+                                                            <option value="{{ $i }}" {{ $anio==$i ? 'selected' : '' }}>
+                                                                {{ $i }}</option>
+                                                            @endfor
+                                                        </select>
                                                     </div>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-
-                                    <div class="page-content">
-
-                                        <div class="transition-all duration-150 container-fluid" id="page_layout">
-                                            <div id="content_layout">
-
-
-
-                                                <div class="space-y-5">
-                                                    <div class="grid grid-cols-12 gap-5">
-                                                        <div class="xl:col-span-5 col-span-12 lg:col-span-5 ">
-                                                            <div class="card p-6 h-full">
-                                                                <div class="space-y-5">
-                                                                    <div id="container_tipo_luminaria_pie"></div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="xl:col-span-7 col-span-12 lg:col-span-7">
-                                                            <div class="card p-6 h-full">
-                                                                <div class="space-y-5">
-                                                                    <div id="container_tipo_luminaria"></div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-
-                                                        <div class="xl:col-span-5 col-span-12 lg:col-span-5 ">
-                                                            <div class="card p-6 h-full">
-                                                                <div class="space-y-5">
-                                                                    <div id="container_conteo_luminaria_pie"></div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-
-                                                        <div class="xl:col-span-7 col-span-12 lg:col-span-7">
-                                                            <div class="card p-6 h-full">
-                                                                <div class="space-y-5">
-                                                                    <div id="container_conteo_luminaria"></div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="xl:col-span-12 col-span-12 lg:col-span-12 ">
-                                                            <div class="card p-6 h-full">
-                                                                <div class="space-y-5">
-                                                                    <div id="container_data_rango_potencia_instalada">
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="xl:col-span-12 col-span-12 lg:col-span-12 ">
-                                                            <div class="card p-6 h-full">
-                                                                <div class="space-y-5" id="rango_data">
-
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
+                                                    <div class="input-area relative">
+                                                        <label for="largeInput" class="form-label">Mes</label>
+                                                        <select class="form-control" name="mes">
+                                                            @foreach ($meses as $key => $value)
+                                                            <option value="{{ $key }}" {{ $mes==$key ? 'selected' : ''
+                                                                }}>
+                                                                {{ $value }}</option>
+                                                            @endforeach
+                                                        </select>
                                                     </div>
-
+                                                    <div class="input-area relative">
+                                                        <label for="largeInput" class="form-label">&nbsp;
+                                                        </label>
+                                                        <button class="btn btn-dark btn-sm"
+                                                            type="submit">Aceptar</button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                </form>
+                            </div>
+
+                            <div class="page-content">
+
+                                <div class="transition-all duration-150 container-fluid" id="page_layout">
+                                    <div id="content_layout">
+
+
+
+                                        <div class="space-y-5">
+                                            <div class="grid grid-cols-12 gap-5">
+                                                <div class="xl:col-span-5 col-span-12 lg:col-span-5 ">
+                                                    <div class="card p-6 h-full">
+                                                        <div class="space-y-5">
+                                                            <div id="container_tipo_luminaria_pie"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="xl:col-span-7 col-span-12 lg:col-span-7">
+                                                    <div class="card p-6 h-full">
+                                                        <div class="space-y-5">
+                                                            <div id="container_tipo_luminaria"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="xl:col-span-5 col-span-12 lg:col-span-5 ">
+                                                    <div class="card p-6 h-full">
+                                                        <div class="space-y-5">
+                                                            <div id="container_conteo_luminaria_pie"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="xl:col-span-7 col-span-12 lg:col-span-7">
+                                                    <div class="card p-6 h-full">
+                                                        <div class="space-y-5">
+                                                            <div id="container_conteo_luminaria"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="xl:col-span-12 col-span-12 lg:col-span-12 ">
+                                                    <div class="card p-6 h-full">
+                                                        <div class="space-y-5">
+                                                            <div id="container_data_rango_potencia_instalada">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="xl:col-span-12 col-span-12 lg:col-span-12 ">
+                                                    <div class="card p-6 h-full">
+                                                        <div class="space-y-5" id="rango_data">
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
                                 </div>
-
-
-
-
-
                             </div>
                         </div>
 
@@ -893,8 +886,15 @@
 
 
 
-                        <script>
-                            $(document).ready(function() {
+                    </div>
+                </div>
+
+
+
+
+
+                <script>
+                    $(document).ready(function() {
                                 // consumo por tipo luminaria
                                 Highcharts.chart('container_tipo_luminaria', {
                                     chart: {
@@ -1195,40 +1195,40 @@
                                     }
                                 });
                             }
-                        </script>
-                    @endif
-
-                </div>
+                </script>
+                @endif
 
             </div>
-        </main>
-        <!-- scripts -->
 
-        <!-- Core Js -->
-        {{-- <script src="{{ asset('assets/js/jquery-3.6.0.min.js') }}"></script> --}}
-        <script src="{{ asset('assets/js/rt-plugins.js') }}"></script>
-        <script src="{{ asset('assets/js/popper.js') }}"></script>
-        <script src="{{ asset('assets/js/SimpleBar.js') }}"></script>
+        </div>
+    </main>
+    <!-- scripts -->
 
-        <script src="{{ asset('assets/js/iconify.js') }}"></script>
-        <!-- Jquery Plugins -->
+    <!-- Core Js -->
+    {{-- <script src="{{ asset('assets/js/jquery-3.6.0.min.js') }}"></script> --}}
+    <script src="{{ asset('assets/js/rt-plugins.js') }}"></script>
+    <script src="{{ asset('assets/js/popper.js') }}"></script>
+    <script src="{{ asset('assets/js/SimpleBar.js') }}"></script>
 
-
-        <!-- app js -->
-        <script src="{{ asset('assets/js/sidebar-menu.js') }}"></script>
-        <script src="{{ asset('assets/js/app.js') }}"></script>
-
-        <!-- Select2 -->
-        <script src="{{ asset('vendors/select2/select2.min.js') }}"></script>
+    <script src="{{ asset('assets/js/iconify.js') }}"></script>
+    <!-- Jquery Plugins -->
 
 
-        <script>
-            function get_data_dep(id) {
+    <!-- app js -->
+    <script src="{{ asset('assets/js/sidebar-menu.js') }}"></script>
+    <script src="{{ asset('assets/js/app.js') }}"></script>
+
+    <!-- Select2 -->
+    <script src="{{ asset('vendors/select2/select2.min.js') }}"></script>
+
+
+    <script>
+        function get_data_dep(id) {
                 var url = "{{ url('/') }}?opcion=2&departamento=" + id;
                 window.location.href = url;
             }
-        </script>
+    </script>
 
-    </body>
+</body>
 
-    </html>
+</html>

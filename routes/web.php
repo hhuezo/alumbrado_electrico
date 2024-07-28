@@ -69,7 +69,7 @@ Route::resource('seguridad/user', UsuarioController::class);
 Route::resource('seguridad/role', RoleController::class);
 Route::post('seguridad/role/unlink_permission', [RoleController::class, 'unlink_permission']);
 Route::post('seguridad/role/link_permission', [RoleController::class, 'link_permission']);
-Route::post('verificacion_dos_pasos',[LoginController::class, 'verificacion_dos_pasos']);
+Route::post('verificacion_dos_pasos', [LoginController::class, 'verificacion_dos_pasos']);
 
 
 Route::get('control/censo_luminaria/edit_censo', [CensoLuminariaController::class, 'edit_censo']);
@@ -101,10 +101,10 @@ Route::resource('catalogo/valorkwh', ValorKWHController::class);
 Route::get('catalogo/reporte_falla/get_distrito_id/{name}', [ReporteFallaController::class, 'getDistritoId']);
 Route::get('catalogo/reporte_falla/get_departamento_id/{name}', [ReporteFallaController::class, 'getDepartamentoId']);
 Route::resource('catalogo/distrito', DistritoController::class);
-Route::post('reporte_falla/finalizar_falla', [ControlReporteFallaController::class,'finalizar_falla']);
-Route::post('reporte_falla/registrar_falla', [ControlReporteFallaController::class,'store_falla']);
-Route::get('reporte_falla/show_map', [ControlReporteFallaController::class,'show_map']);
-Route::get('reporte_falla/registrar_falla', [ControlReporteFallaController::class,'registrar_falla']);
+Route::post('reporte_falla/finalizar_falla', [ControlReporteFallaController::class, 'finalizar_falla']);
+Route::post('reporte_falla/registrar_falla', [ControlReporteFallaController::class, 'store_falla']);
+Route::get('reporte_falla/show_map', [ControlReporteFallaController::class, 'show_map']);
+Route::get('reporte_falla/registrar_falla', [ControlReporteFallaController::class, 'registrar_falla']);
 Route::resource('reporte_falla', ControlReporteFallaController::class);
 
 
@@ -131,10 +131,11 @@ Route::resource('importacion/base_datos', BaseDatosController::class);
 Route::get('get_municipios/{id}', [DistritoController::class, 'get_municipios']);
 Route::get('get_distritos/{id}', [DistritoController::class, 'get_distritos']);
 Route::get('get_option/{id}', [DistritoController::class, 'get_option']);
+Route::get('catalogo/convenioFirmado', [MunicipioController::class, 'convenioFirmado']);
 Route::resource('catalogo/municipio', MunicipioController::class);
 
 Route::resource('control/EstimacionFacturaGeneral', EstimacionFacturaGeneralController::class);
 
 //base excel
-Route::get('importar_luminarias',[BaseDatosController::class,'importar_base']);
-Route::post('importar_censo_luminaria',[BaseDatosController::class,'importar_censo_luminaria']);
+Route::get('importar_luminarias', [BaseDatosController::class, 'importar_base']);
+Route::post('importar_censo_luminaria', [BaseDatosController::class, 'importar_censo_luminaria']);
