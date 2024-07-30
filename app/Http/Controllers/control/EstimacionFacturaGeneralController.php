@@ -53,7 +53,7 @@ class EstimacionFacturaGeneralController extends Controller
             $id_distrito = $dis->pluck('codigo')->toArray();
         }
 
-        if ($verificacion_data > 0 ) {
+        if ($verificacion_data > 0) {
 
 
             $resultados = DB::table('base_datos_siget')
@@ -122,14 +122,15 @@ class EstimacionFacturaGeneralController extends Controller
 
             // Calcular la diferencia entre los dos conjuntos de datos
             $diferencia_data = collect($data_base_siget)->map(function ($base_siget) use ($temp_data_censo) {
-                $censo_y = isset($temp_data_censo[$base_siget['name']]) ? $temp_data_censo[$base_siget['name']] : 0;
-                $diferencia_y = $base_siget['y'] - $censo_y;
-
-                return [
-                    "name" => $base_siget['name'],
-                    "y" => $diferencia_y,
-                    "drilldown" => $base_siget['drilldown'],
-                ];
+                if (isset($temp_data_censo[$base_siget['name']])) {
+                    $censo_y =  $temp_data_censo[$base_siget['name']];
+                    $diferencia_y = $base_siget['y'] - $censo_y;
+                    return [
+                        "name" => $base_siget['name'],
+                        "y" => $diferencia_y,
+                        "drilldown" => $base_siget['drilldown'],
+                    ];
+                }
             })->values();
             //dd($diferencia_data);
         } else {
