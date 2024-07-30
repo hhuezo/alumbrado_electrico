@@ -20,22 +20,22 @@
                 <div class="inline-block min-w-full align-middle">
                     <div class="overflow-hidden ">
                         <table id="myTable" class="display" cellspacing="0" width="100%">
-                            <thead >
-                                <tr class="td-table">
+                        <thead class=" border-t border-slate-100 dark:border-slate-800">
+                                <tr >
 
-                                    <th>Id</th>
-                                    <th>Descripción</th>
-                                    <th>Opciones</th>
+                                    <th scope="col" class=" table-th ">Id</th>
+                                    <th scope="col" class=" table-th ">Descripción</th>
+                                    <th scope="col" class=" table-th ">Opciones</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody class="bg-white divide-y divide-slate-100 dark:bg-slate-800 dark:divide-slate-700">
 
                                 @if ($permissions->count() > 0)
                                 @foreach ($permissions as $obj)
                                 <tr>
-                                    <td>{{ $obj->id }}</td>
-                                    <td>{{ $obj->name }}</td>
-                                    <td>
+                                    <td class="table-td">{{ $obj->id }}</td>
+                                    <td class="table-td">{{ $obj->name }}</td>
+                                    <td class="table-td">
                                         <iconify-icon icon="mdi:pencil-circle" onclick="modal_edit({{ $obj->id }},'{{ $obj->name }}')" class="success" width="40"></iconify-icon>
 
                                         &nbsp;&nbsp;
