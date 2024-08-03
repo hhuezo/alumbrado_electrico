@@ -8,7 +8,9 @@ use App\Imports\CensoLuminariasImport;
 use App\Imports\DataBaseImport;
 use App\Models\BaseDatosSiget;
 use App\Models\catalogo\Compania;
+use App\Models\catalogo\Departamento;
 use App\Models\catalogo\Distrito;
+use App\Models\catalogo\Municipio;
 use App\Models\catalogo\PotenciaPromedio;
 use App\Models\catalogo\TipoFalla;
 use App\Models\catalogo\TipoLuminaria;
@@ -219,10 +221,50 @@ class BaseDatosController extends Controller
         return back();
     }*/
 
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        $configuracion = Configuracion::first();
+
         $censos = CensoLuminaria::get();
+
+        $departamento_id = 0;
+        $municipio_id = 0;
+        $distrito_id = 0;
+
+
+
+
+        if ($request->departamento_id) {
+            $departamento_id = $request->departamento_id;
+        }
+
+        if ($request->municipio_id) {
+            $municipio_id = $request->municipio_id;
+        }
+
+        if ($request->distrito_id) {
+            $distrito_id = $request->distrito_id;
+            $censos = CensoLuminaria::where('distrito_id',$distrito_id)->get();
+        }
+
+        $configuracion = Configuracion::first();
+
+
+        $departamentos = Departamento::get();
+        $municipios = null;
+        if ($request->municipio_id) {
+            $obj_municipio = Municipio::findOrFail($request->municipio_id);
+            if ($obj_municipio) {
+                $municipios = Municipio::where('departamento_id', $obj_municipio->departamento_id)->get();
+            }
+        }
+
+        $distritos = null;
+        if ($request->distrito_id) {
+            $obj_distrito = Distrito::findOrFail($request->distrito_id);
+            if ($obj_distrito) {
+                $distritos = Distrito::where('municipio_id', $obj_distrito->municipio_id)->get();
+            }
+        }
 
         $array_data = [];
         foreach ($censos as $censo) {
@@ -235,7 +277,16 @@ class BaseDatosController extends Controller
             array_push($array_data, $array);
         }
 
-        return view('importacion.show', compact('configuracion', 'array_data'));
+        return view('importacion.show', compact(
+            'configuracion',
+            'array_data',
+            'departamentos',
+            'municipios',
+            'distritos',
+            'departamento_id',
+            'municipio_id',
+            'distrito_id'
+        ));
     }
 
 
@@ -292,7 +343,7 @@ class BaseDatosController extends Controller
 
 
                     /*
-                $censo['0'] correlativo 
+                $censo['0'] correlativo
                 $censo['1'] tipo luminaria
                 $censo['2'] potencia nominal
                 $censo['3'] consumo mensual
