@@ -22,9 +22,9 @@
     <!-- END: Theme CSS-->
     <script src="{{ asset('assets/js/settings.js') }}" sync></script>
     <script src="{{ asset('assets/js/iconify-icon.min.js') }}"></script>
-    <link rel="stylesheet" href="{{ asset('assets/css/jquery.dataTables.min.css') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('assets/css/jquery.dataTables.min.css') }}"> --}}
     <script src="{{ asset('assets/js/jquery-3.6.0.min.js') }}" sync></script>
-    <script src="{{ asset('assets/js/jquery.dataTables.min.js') }}"></script>
+        {{-- <script src="{{ asset('assets/js/jquery.dataTables.min.js') }}"></script> --}}
 
     <style>
         /* The switch - the box around the slider */
