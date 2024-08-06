@@ -225,6 +225,7 @@ class BaseDatosController extends Controller
     {
 
         $censos = CensoLuminaria::get();
+       
 
         $departamento_id = 0;
         $municipio_id = 0;

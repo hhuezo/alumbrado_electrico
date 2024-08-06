@@ -105,25 +105,24 @@
 
                                 @if ($tecnologiasRemplazar->count() > 0)
                                 <div class="xl:col-span-12 col-span-12 lg:col-span-12">
-                                    <table class="display" cellspacing="0" width="100%">
+                                    <table id="example" class="display" style="width:100%">
                                         <thead class=" border-t border-slate-100 dark:border-slate-800">
                                             <tr>
 
-                                                <th scope="col" class=" table-th ">Id</td>
-                                                <th scope="col" class=" table-th ">Iluminaria</td>
-                                                <th scope="col" class=" table-th ">Consumo promedio</td>
-                                                <th scope="col" class=" table-th ">opciones</td>
+                                                <td>Id</td>
+                                                <td>Iluminaria</td>
+                                                <td>Consumo promedio</td>
+                                                <td>opciones</td>
                                             </tr>
                                         </thead>
-                                        <tbody class="bg-white divide-y divide-slate-100 dark:bg-slate-800 dark:divide-slate-700">
-
+                                        <tbody>
                                             @foreach ($tecnologiasRemplazar as $obj)
                                             <tr>
-                                                <td align="center" class="table-td">{{ $obj->id }}</td>
-                                                <td class="table-td">{{ $obj->tipo_luminaria->nombre.' de '. $obj->potencia.' Vatios' }}</td>
-                                                <td class="table-td">{{ $obj->consumo_promedio }} kWh</td>
-                                                <td align="center" class="table-td">
-                                                    <iconify-icon icon="mdi:trash" data-bs-toggle="modal" data-bs-target="#modal-delete-{{ $obj->id }}" width="40">
+                                                <td align="center">{{ $obj->id }}</td>
+                                                <td>{{ $obj->tipo_luminaria->nombre.' de '. $obj->potencia.' Vatios' }}</td>
+                                                <td>{{ $obj->consumo_promedio }} kWh</td>
+                                                <td align="center">
+                                                    <iconify-icon icon="f7:trash-circle-fill" data-bs-toggle="modal" data-bs-target="#modal-delete-{{ $obj->id }}" width="40">
                                                     </iconify-icon>
                                                 </td>
                                             </tr>

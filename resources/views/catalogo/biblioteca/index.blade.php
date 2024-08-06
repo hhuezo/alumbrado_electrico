@@ -27,7 +27,7 @@
                                     <th>Título</td>
                                     <th>Descripción</td>
                                     <th>Descargable</td>
-                                    <th>opciones</td>
+                                    <th width="10%">Opciones</td>
 
                                 </tr>
                             </thead>
@@ -42,19 +42,21 @@
                                             <td><input type="checkbox" {{ $obj->descargable == '1' ? 'checked' : '' }}></td>
                                             <td align="center">
                                                 <a href="{{ url('catalogo/biblioteca') }}/{{ $obj->id }}/edit">
-                                                    <iconify-icon icon="mdi:pencil-box" width="40"></iconify-icon>
+                                                <iconify-icon icon="mdi:pencil-circle" width="40"></iconify-icon>
                                                 </a>
-                                                &nbsp;&nbsp;
+                                                
 
                                                 @if ($obj->activo == '1')
                                                     <iconify-icon data-bs-toggle="modal"
-                                                        data-bs-target="#modal-delete-{{ $obj->id }}" icon="mdi:trash"
+                                                        data-bs-target="#modal-delete-{{ $obj->id }}" icon="f7:trash-circle-fill"
                                                         width="40"></iconify-icon>
+                                                        
                                                 @else
                                                     <iconify-icon data-bs-toggle="modal"
                                                         data-bs-target="#modal-active-{{ $obj->id }}"
-                                                        icon="fontisto:checkbox-active" style="color: #1769aa;"
+                                                        icon="material-symbols:check-active" style="color: #1769aa;"
                                                         width="30"></iconify-icon>
+
                                                 @endif
 
                                             </td>

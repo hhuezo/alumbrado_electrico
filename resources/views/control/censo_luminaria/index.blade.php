@@ -37,7 +37,7 @@
                                 <td style="text-align: center">Consumo mensual</td>
                                 <td style="text-align: center">Distrito</td>
                                 <td style="text-align: center">Condición</td>
-                                <td style="text-align: center">Opciones</td>
+                                <td style="text-align: center" width="15%">Opciones</td>
                             </tr>
                         </thead>
                         <tbody>
