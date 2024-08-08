@@ -225,7 +225,7 @@ class BaseDatosController extends Controller
     {
 
         $censos = CensoLuminaria::get();
-       
+
 
         $departamento_id = 0;
         $municipio_id = 0;
@@ -244,7 +244,8 @@ class BaseDatosController extends Controller
 
         if ($request->distrito_id) {
             $distrito_id = $request->distrito_id;
-            $censos = CensoLuminaria::where('distrito_id',$distrito_id)->get();
+            $censos = $censos->where('distrito_id', $distrito_id);
+            //dd($censos);
         }
 
         $configuracion = Configuracion::first();
@@ -269,7 +270,9 @@ class BaseDatosController extends Controller
 
         $array_data = [];
         foreach ($censos as $censo) {
-            if ($censo->tipo_luminaria->icono) {
+            if ($censo->tipo_falla_id != null) {
+                $array = ["lat" => $censo->latitud + 0, "lng" => $censo->longitud + 0, "shortDescription" => "Cod: " . $censo->codigo_luminaria, "icono" => "lampara.png"];
+            } else if ($censo->tipo_luminaria->icono) {
                 $array = ["lat" => $censo->latitud + 0, "lng" => $censo->longitud + 0, "shortDescription" => "Cod: " . $censo->codigo_luminaria, "icono" => $censo->tipo_luminaria->icono];
             } else {
                 $array = ["lat" => $censo->latitud + 0, "lng" => $censo->longitud + 0, "shortDescription" => "Cod: " . $censo->codigo_luminaria, "icono" => "poste.png"];
@@ -277,6 +280,8 @@ class BaseDatosController extends Controller
 
             array_push($array_data, $array);
         }
+
+        //dd($array_data);
 
         return view('importacion.show', compact(
             'configuracion',

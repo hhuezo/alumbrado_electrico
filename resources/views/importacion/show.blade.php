@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DGEHM</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <script src="{{ asset('assets/js/jquery-3.6.0.min.js') }}"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key={{ $configuracion->api_key_maps }}&callback=initMap" async
-        defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ $configuracion->api_key_maps }}&callback=initMap" async defer></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <style>
@@ -115,13 +113,11 @@
         </div>
     </div>
 
-
     <script type="text/javascript">
         $(document).ready(function() {
             $("#departamento").change(function() {
                 // var para la Departamento
                 const Departamento = $(this).val();
-
 
                 $.get("{{ url('censo_luminaria/get_municipios') }}" + '/' + Departamento, function(data) {
                     console.log(data);
@@ -149,12 +145,12 @@
         });
     </script>
 
-
-
     <!-- Google Maps Script -->
     <script>
         var map;
         var markers = @json($array_data);
+
+        console.log("marcadores", markers);
 
         function initMap() {
             // Configurar el centro del mapa y la posición de inicio
@@ -169,34 +165,53 @@
                 center: centerPosition
             });
 
-            if (markers.length > 0) {
-                for (let i = 0; i < markers.length; i++) {
-                    let marker = new google.maps.Marker({
-                        position: markers[i],
-                        map: map,
-                        icon: {
-                            url: "{{ asset('img/') }}/" + markers[i].icono,
-                            scaledSize: new google.maps.Size(45, 45)
-                        }
-                    });
+            addMarkers(markers);
+        }
 
-                    let infowindow = new google.maps.InfoWindow({
-                        content: markers[i].shortDescription,
-                        maxWidth: 1000
-                    });
+        function addMarkers(markers) {
+            for (let i = 0; i < markers.length; i++) {
 
-                    marker.addListener('mouseover', function() {
-                        infowindow.open(map, marker);
-                    });
+                let marker = new google.maps.Marker({
+                    position: markers[i],
+                    map: map,
+                    icon: {
+                        url: "{{ asset('img/') }}/" + markers[i].icono,
+                        scaledSize: new google.maps.Size(45, 45)
+                    }
+                });
 
-                    marker.addListener('mouseout', function() {
-                        infowindow.close();
-                    });
-                }
+                console.log("marcador" + i, marker);
+
+                let infowindow = new google.maps.InfoWindow({
+                    content: markers[i].shortDescription,
+                    maxWidth: 1000
+                });
+
+                marker.addListener('mouseover', function() {
+                    infowindow.open(map, marker);
+                });
+
+                marker.addListener('mouseout', function() {
+                    infowindow.close();
+                });
             }
         }
+
+        function updateMap() {
+            var distrito = $("#distrito").val();
+            if (distrito) {
+                $.get("{{ url('importacion/base_datos') }}" + '/' + distrito, function(data) {
+                    markers = data;
+                    console.log("nuevos marcadores", markers);
+                    map.setCenter({ lat: markers[0].lat, lng: markers[0].lng });
+                    addMarkers(markers);
+                });
+            }
+        }
+
+        $("#distrito").change(function() {
+            updateMap();
+        });
     </script>
-
 </body>
-
 </html>
