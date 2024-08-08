@@ -22,12 +22,12 @@
                             <thead class=" border-t border-slate-100 dark:border-slate-800">
                                 <tr>
 
-                                    <th>Id</td>
-                                    <th>Tipo documento</td>
-                                    <th>Título</td>
-                                    <th>Descripción</td>
-                                    <th>Descargable</td>
-                                    <th width="10%">Opciones</td>
+                                    <th>Id</th>
+                                    <th>Tipo documento</th>
+                                    <th>Título</th>
+                                    <th>Descripción</th>
+                                    <th>Descargable</th>
+                                    <th width="10%">Opciones</th>
 
                                 </tr>
                             </thead>
@@ -79,31 +79,5 @@
     <script src="{{ asset('assets/js/jquery-3.6.0.min.js') }}"></script>
     <script src="{{ asset('assets/js/jquery.dataTables.min.js') }}"></script>
 
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('#example').DataTable({
-                language: {
-                    "decimal": "",
-                    "emptyTable": "No hay información",
-                    "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
-                    "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
-                    "infoFiltered": "(Filtrado de _MAX_ total entradas)",
-                    "infoPostFix": "",
-                    "thousands": ",",
-                    "lengthMenu": "Mostrar _MENU_ Entradas",
-                    "loadingRecords": "Cargando...",
-                    "processing": "Procesando...",
-                    "search": "Buscar:",
-                    "zeroRecords": "Sin resultados encontrados",
-                    "paginate": {
-                        "first": "Primero",
-                        "last": "Último",
-                        "next": ">",
-                        "previous": "<"
-                    }
-                }
-            });
-        });
-    </script>
-
+   
 @endsection
