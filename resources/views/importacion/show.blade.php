@@ -7,8 +7,7 @@
     <title>DGEHM</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <script src="{{ asset('assets/js/jquery-3.6.0.min.js') }}"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key={{ $configuracion->api_key_maps }}&callback=initMap" async
-        defer></script>
+
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <style>
@@ -156,6 +155,9 @@
     </script>
 
     <!-- Google Maps Script -->
+
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ $configuracion->api_key_maps }}&libraries=marker&callback=initMap" async defer></script>
+
     <script>
         var map;
         var markers = @json($array_data);
@@ -176,7 +178,8 @@
 
                 map = new google.maps.Map(document.getElementById('map'), {
                     zoom: 13,
-                    center: centerPosition
+                    center: centerPosition,
+                    mapId: "DEMO_MAP_ID"
                 });
 
                 addMarkers(markers);
@@ -188,29 +191,51 @@
         function addMarkers(markers) {
             markers.forEach(function(markerData, index) {
                 try {
-                    let marker = new google.maps.Marker({
-                        position: markerData,
-                        map: map,
-                        icon: {
-                            url: "{{ asset('img/') }}/" + markerData.icono,
-                            scaledSize: new google.maps.Size(45, 45)
-                        }
+
+                    const markerImage = document.createElement('img');
+                    markerImage.src = `{{ asset('img/') }}/${markerData.icono}`;
+                    markerImage.style.width = '45px';
+                    markerImage.style.height = '45px';
+
+                    let marker = new google.maps.marker.AdvancedMarkerElement({
+                        map,
+                        position: {
+                            lat: markerData.lat,
+                            lng: markerData.lng
+                        },
+                        content: markerImage,
+                        gmpClickable: true,
                     });
 
-                    console.log("marcador" + index, marker);
+                    // Add a click listener for each marker, and set up the info window.
+                    marker.addListener("click", ({ domEvent, latLng }) => {
+                    const { target } = domEvent;
 
-                    let infowindow = new google.maps.InfoWindow({
+                    infoWindow.close();
+                    infoWindow.setContent(marker.shortDescription);
+                    infoWindow.open(marker.map, marker);
+                    });
+
+                    console.log("marcador " + index, marker);
+
+                    // Crear y asociar el infoWindow
+                    const infowindow = new google.maps.InfoWindow({
                         content: markerData.shortDescription,
                         maxWidth: 1000
                     });
 
-                    marker.addListener('mouseover', function() {
-                        infowindow.open(map, marker);
+                    // Usar el evento mouseenter y mouseleave del contenido del marcador
+                    markerImage.addEventListener('mouseenter', () => {
+                        infowindow.open({
+                            anchor: marker,
+                            map: map
+                        });
                     });
 
-                    marker.addListener('mouseout', function() {
+                    markerImage.addEventListener('mouseleave', () => {
                         infowindow.close();
                     });
+
                 } catch (error) {
                     console.error("Error adding marker:", error);
                 }
