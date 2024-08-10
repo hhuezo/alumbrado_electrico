@@ -129,7 +129,7 @@
                 const Departamento = $(this).val();
 
                 $.get("{{ url('censo_luminaria/get_municipios') }}" + '/' + Departamento, function(data) {
-                    console.log(data);
+                    //console.log(data);
                     var _select = '<option value="">SELECCIONE</option>'
                     for (var i = 0; i < data.length; i++)
                         _select += '<option value="' + data[i].id + '">' + data[i].nombre +
@@ -156,13 +156,25 @@
 
     <!-- Google Maps Script -->
 
-    <script src="https://maps.googleapis.com/maps/api/js?key={{ $configuracion->api_key_maps }}&libraries=marker&callback=initMap" async defer></script>
+    <script>
+        function loadScript() {
+            var script = document.createElement('script');
+            script.src = "https://maps.googleapis.com/maps/api/js?key={{ $configuracion->api_key_maps }}&loading=async&libraries=marker&callback=initMap";
+            script.async = true;
+            script.defer = true;
+            document.head.appendChild(script);
+        }
 
+        window.onload = loadScript;
+    </script>
+</head>
+<body>
+    <div id="map" style="height: 500px; width: 100%;"></div>
     <script>
         var map;
         var markers = @json($array_data);
 
-        console.log("marcadores", markers);
+        //console.log("marcadores", markers);
 
         function initMap() {
             try {
@@ -216,7 +228,7 @@
                     infoWindow.open(marker.map, marker);
                     });
 
-                    console.log("marcador " + index, marker);
+                    //console.log("marcador " + index, marker);
 
                     // Crear y asociar el infoWindow
                     const infowindow = new google.maps.InfoWindow({
