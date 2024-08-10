@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DGEHM</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <script src="{{ asset('assets/js/jquery-3.6.0.min.js') }}"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key={{ $configuracion->api_key_maps }}&callback=initMap" async defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ $configuracion->api_key_maps }}&callback=initMap" async
+        defer></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <style>
@@ -52,9 +54,9 @@
     </button>
 
     <!-- Indicador de carga -->
-<div id="loading" style="display: none;">
-    <p>Cargando mapa...</p>
-</div>
+    <div id="loading" style="display: none;">
+        <p>Cargando mapa...</p>
+    </div>
 
     <!-- Map container -->
     <div id="map"></div>
@@ -77,8 +79,9 @@
                             <select class="form-control" name="departamento_id" id="departamento">
                                 <option value="">SELECCIONE</option>
                                 @foreach ($departamentos as $obj)
-                                    <option value="{{ $obj->id }}" {{$departamento_id == $obj->id ? 'selected':''}}>
-                                         {{ $obj->nombre }}
+                                    <option value="{{ $obj->id }}"
+                                        {{ $departamento_id == $obj->id ? 'selected' : '' }}>
+                                        {{ $obj->nombre }}
                                     </option>
                                 @endforeach
                             </select>
@@ -89,8 +92,9 @@
                             <select class="form-control" name="municipio_id" id="municipio">
                                 @if ($municipios)
                                     @foreach ($municipios as $obj)
-                                        <option value="{{ $obj->id }}" {{$municipio_id == $obj->id ? 'selected':''}}>
-                                             {{ $obj->nombre }}
+                                        <option value="{{ $obj->id }}"
+                                            {{ $municipio_id == $obj->id ? 'selected' : '' }}>
+                                            {{ $obj->nombre }}
                                         </option>
                                     @endforeach
                                 @endif
@@ -101,12 +105,13 @@
                             <label for="largeInput" class="form-label">Distrito</label>
                             <select class="form-control" name="distrito_id" id="distrito" required>
                                 @if ($distritos)
-                                @foreach ($distritos as $obj)
-                                    <option value="{{ $obj->id }}" {{$distrito_id == $obj->id ? 'selected':''}}>
-                                        {{ $obj->nombre }}
-                                    </option>
-                                @endforeach
-                            @endif
+                                    @foreach ($distritos as $obj)
+                                        <option value="{{ $obj->id }}"
+                                            {{ $distrito_id == $obj->id ? 'selected' : '' }}>
+                                            {{ $obj->nombre }}
+                                        </option>
+                                    @endforeach
+                                @endif
                             </select>
                         </div>
                     </div>
@@ -158,49 +163,60 @@
         console.log("marcadores", markers);
 
         function initMap() {
-            // Configurar el centro del mapa y la posición de inicio
-            var centerPosition = { lat: 13.6929, lng: -89.2182 };
+            try {
+                // Configurar el centro del mapa y la posición de inicio
+                var centerPosition = {
+                    lat: 13.6929,
+                    lng: -89.2182
+                };
 
-            if (markers.length > 0) {
-                centerPosition = markers[0]; // Establecer el centro del mapa al primer marcador si hay datos
+                if (markers.length > 0) {
+                    centerPosition = markers[0]; // Establecer el centro del mapa al primer marcador si hay datos
+                }
+
+                map = new google.maps.Map(document.getElementById('map'), {
+                    zoom: 13,
+                    center: centerPosition
+                });
+
+                addMarkers(markers);
+            } catch (error) {
+                console.error("Error initializing map:", error);
             }
-
-            map = new google.maps.Map(document.getElementById('map'), {
-                zoom: 13,
-                center: centerPosition
-            });
-
-            addMarkers(markers);
         }
 
         function addMarkers(markers) {
-            for (let i = 0; i < markers.length; i++) {
+            markers.forEach(function(markerData, index) {
+                try {
+                    let marker = new google.maps.Marker({
+                        position: markerData,
+                        map: map,
+                        icon: {
+                            url: "{{ asset('img/') }}/" + markerData.icono,
+                            scaledSize: new google.maps.Size(45, 45)
+                        }
+                    });
 
-                let marker = new google.maps.Marker({
-                    position: markers[i],
-                    map: map,
-                    icon: {
-                        url: "{{ asset('img/') }}/" + markers[i].icono,
-                        scaledSize: new google.maps.Size(45, 45)
-                    }
-                });
+                    console.log("marcador" + index, marker);
 
-                console.log("marcador" + i, marker);
+                    let infowindow = new google.maps.InfoWindow({
+                        content: markerData.shortDescription,
+                        maxWidth: 1000
+                    });
 
-                let infowindow = new google.maps.InfoWindow({
-                    content: markers[i].shortDescription,
-                    maxWidth: 1000
-                });
+                    marker.addListener('mouseover', function() {
+                        infowindow.open(map, marker);
+                    });
 
-                marker.addListener('mouseover', function() {
-                    infowindow.open(map, marker);
-                });
-
-                marker.addListener('mouseout', function() {
-                    infowindow.close();
-                });
-            }
+                    marker.addListener('mouseout', function() {
+                        infowindow.close();
+                    });
+                } catch (error) {
+                    console.error("Error adding marker:", error);
+                }
+            });
         }
     </script>
 </body>
+
 </html>
