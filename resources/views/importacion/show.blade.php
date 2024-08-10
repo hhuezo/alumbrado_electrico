@@ -51,6 +51,11 @@
         Filtrar
     </button>
 
+    <!-- Indicador de carga -->
+<div id="loading" style="display: none;">
+    <p>Cargando mapa...</p>
+</div>
+
     <!-- Map container -->
     <div id="map"></div>
 
@@ -196,22 +201,6 @@
                 });
             }
         }
-
-        function updateMap() {
-            var distrito = $("#distrito").val();
-            if (distrito) {
-                $.get("{{ url('importacion/base_datos') }}" + '/' + distrito, function(data) {
-                    markers = data;
-                    console.log("nuevos marcadores", markers);
-                    map.setCenter({ lat: markers[0].lat, lng: markers[0].lng });
-                    addMarkers(markers);
-                });
-            }
-        }
-
-        $("#distrito").change(function() {
-            updateMap();
-        });
     </script>
 </body>
 </html>
