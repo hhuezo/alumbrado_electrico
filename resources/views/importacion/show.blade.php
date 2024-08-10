@@ -14,7 +14,7 @@
         #map {
             height: 100vh;
             width: 100%;
-            position: relative;
+            position: fixed;
         }
 
         #floating-button {
