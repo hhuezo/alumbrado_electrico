@@ -61,10 +61,10 @@
                                         <iconify-icon icon="pepicons-pop:eye-circle-filled" width="40" height="40">
                                         </iconify-icon>
                                     </a>
-                                    &nbsp;&nbsp;
+                                    {{-- &nbsp;&nbsp;
                                     <a href="{{ url('reporte_falla') }}/{{ $obj->id }}/edit">
                                         <iconify-icon icon="mdi:pencil-box" width="40"></iconify-icon>
-                                    </a>
+                                    </a> --}}
                                     &nbsp;&nbsp;
                                     <iconify-icon data-bs-toggle="modal" data-bs-target="#modal-delete-{{ $obj->id }}"
                                         icon="mdi:trash" width="40"></iconify-icon>
