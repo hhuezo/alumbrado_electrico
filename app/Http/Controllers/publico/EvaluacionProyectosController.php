@@ -13,6 +13,8 @@ use App\Models\Configuracion;
 use App\Models\control\CensoLuminaria;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade\Pdf;
+
 
 class EvaluacionProyectosController extends Controller
 {
@@ -441,7 +443,7 @@ class EvaluacionProyectosController extends Controller
 
     public function getReporte(Request $request)
     {
-
+        set_time_limit(500);
         $jsonTablaSustituir = $request->input('jsonTablaSustituir');
         $jsonTablaSustituir = json_decode($jsonTablaSustituir, true);
         $jsonUbicacion = $request->input('jsonUbicacion');
@@ -456,6 +458,9 @@ class EvaluacionProyectosController extends Controller
 
         //dd($jsonTablaSustituir,$jsonUbicacion,$jsonGrafico,$jsonTecnologiaSustituir,$jsonAnalisisFinanciero, $jsonGraficoSustituir);
         return view('publico.reporte_evaluacion_proyectos', compact('configuracion','jsonTablaSustituir','jsonUbicacion','jsonGrafico','jsonTecnologiaSustituir','jsonAnalisisFinanciero', 'jsonGraficoSustituir'));
+        //$pdf = Pdf::loadView('publico.reporte_evaluacion_proyectos', compact('configuracion','jsonTablaSustituir','jsonUbicacion','jsonGrafico','jsonTecnologiaSustituir','jsonAnalisisFinanciero', 'jsonGraficoSustituir'))->setWarnings(false);
+        //$pdf->setOption(['isJavascriptEnabled' => true]);
+        //return $pdf->stream();
     }
 
     /**

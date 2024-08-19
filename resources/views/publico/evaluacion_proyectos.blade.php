@@ -20,7 +20,7 @@
         <div class="xl:col-span-6 col-span-12 lg:col-span-7">
             <div class="card h-full">
                 <div class="card-header">
-                    <h4 class="card-title">Evaluación de proyectos</h4>
+                    <h1 class="card-title">Evaluación de proyectos</h1>
                 </div>
                 <div class="card-body p-6">
                     <input type="hidden" id="tipo" value="1">
