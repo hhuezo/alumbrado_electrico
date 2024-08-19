@@ -5,7 +5,7 @@
 <script src="{{ asset('assets/js/jquery-3.6.0.min.js') }}"></script>
 <script>
 
-    chart = Highcharts.chart('container_conteo_luminaria_pie_sugerido', {
+    chartSugerido = Highcharts.chart('container_conteo_luminaria_pie_sugerido', {
         chart: {
             type: 'pie'
         },
@@ -58,4 +58,8 @@
 
         }]
     });
+
+    setTimeout(function() {
+        $('#jsonGraficoSustituir').val(chartToBase64(chartSugerido));
+    }, 500); // Ajusta el tiempo según sea necesario
 </script>

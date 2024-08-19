@@ -24,7 +24,6 @@ class EvaluacionProyectosController extends Controller
     public function index()
     {
         $departamentos = Departamento::get();
-        //$municipios =  Municipio::where('departamento_id', $id_departamento)->get();
         return view('publico.evaluacion_proyectos', compact(
             'departamentos'
         ));
@@ -438,6 +437,25 @@ class EvaluacionProyectosController extends Controller
         })->all();
         //dd($data_numero_luminaria);
         return view('publico.grafico', compact('data_numero_luminaria'));
+    }
+
+    public function getReporte(Request $request)
+    {
+
+        $jsonTablaSustituir = $request->input('jsonTablaSustituir');
+        $jsonTablaSustituir = json_decode($jsonTablaSustituir, true);
+        $jsonUbicacion = $request->input('jsonUbicacion');
+        $jsonUbicacion = json_decode($jsonUbicacion, true);
+        $jsonGrafico = $request->input('jsonGrafico');
+        $jsonTecnologiaSustituir = $request->input('jsonTecnologiaSustituir');
+        $jsonTecnologiaSustituir = json_decode($jsonTecnologiaSustituir, true);
+        $jsonAnalisisFinanciero = $request->input('jsonAnalisisFinanciero');
+        $jsonAnalisisFinanciero = json_decode($jsonAnalisisFinanciero, true);
+        $jsonGraficoSustituir = $request->input('jsonGraficoSustituir');
+        $configuracion = Configuracion::first();
+
+        //dd($jsonTablaSustituir,$jsonUbicacion,$jsonGrafico,$jsonTecnologiaSustituir,$jsonAnalisisFinanciero, $jsonGraficoSustituir);
+        return view('publico.reporte_evaluacion_proyectos', compact('configuracion','jsonTablaSustituir','jsonUbicacion','jsonGrafico','jsonTecnologiaSustituir','jsonAnalisisFinanciero', 'jsonGraficoSustituir'));
     }
 
     /**

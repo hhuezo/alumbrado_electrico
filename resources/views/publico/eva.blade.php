@@ -283,7 +283,8 @@
             </table>
             <br>
             <div class="flex-1">
-                <div class="text-slate-900 dark:text-white">PR: Periodo de recuperacion simple es la inversion entre el ahorro anual.</div>
+                <div class="text-slate-900 dark:text-white">PR: Periodo de recuperacion simple es la inversion entre el
+                    ahorro anual.</div>
             </div>
             <br>
             <div id="recomendable"
@@ -312,16 +313,22 @@
 
     <div class="card">
         <div class="card-body flex flex-col p-6">
-            {{-- <header class="flex mb-5 items-center border-b border-slate-100 dark:border-slate-700 pb-5 -mx-6 px-6">
-                <div class="flex-1">
-                    <div class="card-title text-slate-900 dark:text-white">Nuevo grafico
-                    </div>
-                </div>
-            </header> --}}
-
             <div id="nuevo_grafico"></div>
 
+            <form method="POST" action="{{ url('publico/evaluacion_proyectos/getReporte') }}" target="_blank">
+                <input type="hidden" id="tipo" value="1">
+                @csrf
+                <input type="hidden" name="jsonUbicacion" id="jsonUbicacion">
+                <input type="hidden" name="jsonTablaSustituir" id="jsonTablaSustituir">
+                <input type="hidden" name="jsonGrafico" id="jsonGrafico">
+                <input type="hidden" name="jsonTecnologiaSustituir" id="jsonTecnologiaSustituir">
+                <input type="hidden" name="jsonAnalisisFinanciero" id="jsonAnalisisFinanciero">
+                <input type="hidden" name="jsonGraficoSustituir" id="jsonGraficoSustituir">
 
+
+                <button id="btnGetTecnologiasSustituir" type="submit" style=" float: right;"
+                    class="btn inline-flex justify-center btn-dark">Generar grafico PDF</button>
+            </form>
         </div>
     </div>
 </div>
@@ -334,7 +341,7 @@
         //tecnologia_sustituir tecno_susti_kwh_uso
 
         function cambiarValorMercadoUnidadSusti() {
-            console.log("test ");
+            //console.log("test ");
             var select = document.getElementById('tecnologia_sustituir');
             var selectedOption = select.options[select.selectedIndex];
             var consumoPromedio = selectedOption.getAttribute('data-consumo');
@@ -390,7 +397,7 @@
 
         totalInversion = tecno_susti_total_iluminarias * parseFloat($('#tecno_susti_valor_mercado').val());
 
-        //console.log(numLuminarias," ",consumoMensual," ",tecno_susti_total_iluminarias," ",precioEnergiaMensualTotal);
+        ////console.log(numLuminarias," ",consumoMensual," ",tecno_susti_total_iluminarias," ",precioEnergiaMensualTotal);
 
         $('#tecno_susti_total_iluminarias').val(tecno_susti_total_iluminarias);
         $('#tecno_susti_total_inversion').val(new Intl.NumberFormat('en-US', {
@@ -434,7 +441,7 @@
         }).format(parseFloat(ahorro_mensual) * 12));
 
         //pr
-        console.log(totalInversion, ahorro_mensual);
+        //console.log(totalInversion, ahorro_mensual);
 
         var pr = (parseFloat(totalInversion) / parseFloat(ahorro_mensual * 12)).toFixed(2);
 
@@ -476,7 +483,7 @@
         } else {
             div.style.display = "none";
         }
-        console.log(checkbox);
+        //console.log(checkbox);
     }
 
     function clearCellIfZero(cell) {
@@ -526,7 +533,7 @@
                 }).format((valorInt * 100) / totalParque)) + '%');
             }
 
-            console.log("esta es la tecnologia: ", tecnologia_sustituir);
+            //console.log("esta es la tecnologia: ", tecnologia_sustituir);
         } else {
             $('#celda_' + input).text('0');
             document.getElementById("input_" + input).value = 0;
@@ -534,7 +541,7 @@
         }
         //imprimirValoresInputs();
         //input
-        console.log(valorInt, input, conteo);
+        //console.log(valorInt, input, conteo);
     }
 
     function getTecnologiaSustituir() {
@@ -551,7 +558,7 @@
             }
         @endforeach
 
-        console.log("tecnologia_actual_array: " + tecnologia_actual_array);
+        //console.log("tecnologia_actual_array: " + tecnologia_actual_array);
 
         let parametros = {
             "tecnologia_actual_array": tecnologia_actual_array,
@@ -562,7 +569,7 @@
             url: "{{ URL::to('publico/getTecnologiasSugeridas') }}",
             data: parametros,
             success: function(response) {
-                console.log(response);
+                //console.log(response);
                 let cBXtecnologia_sustituir = $('#tecnologia_sustituir');
                 cBXtecnologia_sustituir.empty();
                 $('#tecno_susti_kwh_uso').val(0);
@@ -585,7 +592,7 @@
             url: "{{ URL::to('publico/getTecnologiasSugeridas') }}",
             data: parametros,
             success: function(response) {
-                console.log(response);
+                //console.log(response);
                 let cBXtecnologia_sustituir = $('#tecnologia_sustituir');
                 cBXtecnologia_sustituir.empty();
                 $('#tecno_susti_kwh_uso').val(0);
@@ -600,28 +607,91 @@
         var tecno_susti_total_iluminarias = 0;
         var precioEnergiaMensualTotal = 0;
         const VALORKWH = {{ $configuracion->valor_kwh }};
+        var tablaSustituir = []; // Array para almacenar los objetos que construirán el JSON
+        var tablaUbicacion = [];
+        var TecnologiaSustituir = [];
+        var AnalisisFinanciero = [];
+
         @foreach ($resultados as $resultado)
             // Utiliza jQuery para obtener el valor del input _consumo_mensual_kwh
             var luminarias = $('#input_{{ $resultado->tipo_id }}_{{ $resultado->potencia_nominal }}').val();
-            console.log("luminarias: " + luminarias);
+            //console.log("luminarias: " + luminarias);
             var consumoMensual = $(
                 '#input_{{ $resultado->tipo_id }}_{{ $resultado->potencia_nominal }}_consumo_mensual_kwh').val();
-            console.log("consumoMensual: " + consumoMensual);
+            //console.log("consumoMensual: " + consumoMensual);
             var luminariasInt = parseInt(luminarias);
             var consumoMensualDecimal = parseFloat(consumoMensual);
 
             if (luminariasInt > 0) {
+
+                // Construye json jsonTablaSustituir
+                var item = {
+                    "tecnologia": '{{ $resultado->tipo }}',
+                    "potenciaNominal": '{{ $resultado->potencia_nominal }}',
+                    "consumoMensual": consumoMensualDecimal,
+                    "totalLuminarias": {{ $resultado->conteo }},
+                    "luminariasSustituir": luminariasInt
+                };
+                // Agrega el objeto al array
+                tablaSustituir.push(item);
+
                 tecno_susti_total_iluminarias += luminariasInt;
                 precioEnergiaMensualTotal += (VALORKWH * consumoMensualDecimal) * luminariasInt;
-
             }
         @endforeach
+        // Convierte el array de objetos a un JSON string
+        var jsonTablaSustituir = JSON.stringify(tablaSustituir);
+        $('#jsonTablaSustituir').val(jsonTablaSustituir);
 
-        console.log("total luminarias: " + tecno_susti_total_iluminarias);
-        console.log("precioEnergiaMensualTotal: " + precioEnergiaMensualTotal);
+        // Construye json jsonUbicacion
+        var itemTablaUbicacion = {
+            "departamento": $('#departamento option:selected').text().trim(),
+            "municipio": $('#municipio option:selected').text().trim(),
+            "distrito": $('#distrito option:selected').text().trim()
+        };
+        tablaUbicacion.push(itemTablaUbicacion);
+        var jsonUbicacion = JSON.stringify(tablaUbicacion);
+        $('#jsonUbicacion').val(jsonUbicacion);
 
+        // Construye json jsonUbicacion
+        var itemTablaUbicacion = {
+            "departamento": $('#departamento option:selected').text().trim(),
+            "municipio": $('#municipio option:selected').text().trim(),
+            "distrito": $('#distrito option:selected').text().trim()
+        };
+        tablaUbicacion.push(itemTablaUbicacion);
+        var jsonUbicacion = JSON.stringify(tablaUbicacion);
+        $('#jsonUbicacion').val(jsonUbicacion);
+
+        //console.log("JSON jsonTablaSustituir: " + jsonTablaSustituir);
         updateTotal(tecno_susti_total_iluminarias, precioEnergiaMensualTotal, VALORKWH);
 
+        // Construye json jsonTecnologiaSustituir
+        var itemTecnologiaSustituir = {
+            "tecnologia_sustituir": $('#tecnologia_sustituir option:selected').text().trim(),
+            "tecno_susti_kwh_uso": $('#tecno_susti_kwh_uso').val(),
+            "tecno_susti_valor_mercado": $('#tecno_susti_valor_mercado').val(),
+            "tecno_susti_total_iluminarias": $('#tecno_susti_total_iluminarias').val(),
+            "tecno_susti_total_inversion": $('#tecno_susti_total_inversion').val()
+        };
+        TecnologiaSustituir.push(itemTecnologiaSustituir);
+        var jsonTecnologiaSustituir = JSON.stringify(TecnologiaSustituir);
+        $('#jsonTecnologiaSustituir').val(jsonTecnologiaSustituir);
+
+        // Construye json jsonAnalisisFinanciero
+
+        var itemAnalisisFinanciero = {
+            "precio_facturado_mensual": $('#precio_facturado_mensual').text().trim(),
+            "precio_facturado_anual": $('#precio_facturado_anual').text().trim(),
+            "precio_sustituido_costo_mensual": $('#precio_sustituido_costo_mensual').text().trim(),
+            "precio_sustituido_costo_anual": $('#precio_sustituido_costo_anual').text().trim(),
+            "ahorro_mensual": $('#ahorro_mensual').text().trim(),
+            "ahorro_anual": $('#ahorro_anual').text().trim(),
+            "pr": $('#pr').text().trim()
+        };
+        AnalisisFinanciero.push(itemAnalisisFinanciero);
+        var jsonAnalisisFinanciero = JSON.stringify(AnalisisFinanciero);
+        $('#jsonAnalisisFinanciero').val(jsonAnalisisFinanciero);
     }
 
 
@@ -640,7 +710,7 @@
             }
         @endforeach
 
-        console.log("luminarias: " + JSON.stringify(tecnologia_sustituir));
+        //console.log("luminarias: " + JSON.stringify(tecnologia_sustituir));
 
         let distrito = $('#distrito').val();
 
@@ -657,7 +727,7 @@
             url: "{{ URL::to('publico/evaluacion_proyectos/get_grafico_sugerido') }}",
             data: parametros,
             success: function(response) {
-                console.log("nuevo_grafico ", response);
+                //console.log("nuevo_grafico ", response);
                 $('#nuevo_grafico').html(response);
             }
         });

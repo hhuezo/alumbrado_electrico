@@ -124,6 +124,9 @@ Route::get('publico/evaluacion_proyectos/getGraficoCenso/{distrito}', [Evaluacio
 Route::get('publico/evaluacion_proyectos/evaluacionProyectosCensoIndex', [EvaluacionProyectosController::class, 'evaluacionProyectosCensoIndex']);
 Route::get('publico/evaluacion_proyectos/getConteoLuminariaCenso', [EvaluacionProyectosController::class, 'getConteoLuminariaCenso']);
 
+Route::post('publico/evaluacion_proyectos/getReporte', [EvaluacionProyectosController::class, 'getReporte']);
+
+
 Route::resource('publico/evaluacion_proyectos', EvaluacionProyectosController::class);
 
 

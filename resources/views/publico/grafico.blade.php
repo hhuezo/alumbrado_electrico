@@ -1,10 +1,8 @@
-
 <div id="container_conteo_luminaria_pie" class="xl:col-span-6 col-span-6 lg:col-span-6 ">
 
 </div>
 <script src="{{ asset('assets/js/jquery-3.6.0.min.js') }}"></script>
 <script>
-
     chart = Highcharts.chart('container_conteo_luminaria_pie', {
         chart: {
             type: 'pie'
@@ -58,4 +56,30 @@
 
         }]
     });
+
+    // Convertir el gráfico a una imagen en Base64
+    function chartToBase64(chart) {
+        var svg = chart.getSVG(); // Obtener el SVG generado por Highcharts
+        var canvas = document.createElement('canvas');
+        var ctx = canvas.getContext('2d');
+        var img = new Image();
+
+        img.onload = function() {
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.drawImage(img, 0, 0);
+
+            // Convertir el canvas a Base64
+            var dataURL = canvas.toDataURL('image/png');
+            console.log(dataURL); // Aquí tienes la imagen en formato Base64
+
+            // Si necesitas almacenar el Base64 en un input hidden
+            $('#inputHiddenImagen').val(dataURL);
+        };
+
+        return btoa(unescape(encodeURIComponent(svg)));
+    }
+    setTimeout(function() {
+        $('#jsonGrafico').val(chartToBase64(chart));
+    }, 500); // Ajusta el tiempo según sea necesario
 </script>

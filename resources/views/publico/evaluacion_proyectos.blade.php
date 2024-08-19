@@ -1,96 +1,84 @@
 @extends('menu')
 @section('contenido')
-    <script src="https://code.highcharts.com/highcharts.js"></script>
-    <script src="https://code.highcharts.com/modules/exporting.js"></script>
-    <script src="https://code.highcharts.com/modules/export-data.js"></script>
-    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
 
 
-    <style>
-        .highcharts-credits {
-            display: none;
-        }
-    </style>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<style>
+    .highcharts-credits {
+        display: none;
+    }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
-    <div class="space-y-5">
-        <div class="grid grid-cols-12 gap-5">
+<div class="space-y-5">
+    <div class="grid grid-cols-12 gap-5">
 
-            <div class="xl:col-span-6 col-span-12 lg:col-span-7">
-                <div class="card h-full">
-                    <div class="card-header">
-                        <h4 class="card-title">Evaluación de proyectos</h4>
+        <div class="xl:col-span-6 col-span-12 lg:col-span-7">
+            <div class="card h-full">
+                <div class="card-header">
+                    <h4 class="card-title">Evaluación de proyectos</h4>
+                </div>
+                <div class="card-body p-6">
+                    <input type="hidden" id="tipo" value="1">
+                    @csrf
+                    <div class="input-area">
+                        <label for="largeInput" class="form-label">Departamento</label>
+                        <select class="form-control" id="departamento">
+                            <option value="" selected disabled>Seleccione...</option>
+                            @foreach ($departamentos as $obj)
+                            <option value="{{ $obj->id }}">
+                                {{ $obj->nombre }}
+                            </option>
+                            @endforeach
+                        </select>
                     </div>
-                    <div class="card-body p-6">
-                        <form method="POST" action="{{ url('control/censo_luminaria') }}">
-                            <input type="hidden" id="tipo" value="1">
-                            @csrf
-                            <div class="input-area">
-                                <label for="largeInput" class="form-label">Departamento</label>
-                                <select class="form-control" id="departamento">
-                                    <option value="" selected disabled>Seleccione...</option>
-                                    @foreach ($departamentos as $obj)
-                                        <option value="{{ $obj->id }}">
-                                            {{ $obj->nombre }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
 
-                            <div class="input-area">
-                                <label for="largeInput" class="form-label">Municipio</label>
-                                <select class="form-control" id="municipio">
-                                    <option value="" selected disabled>Seleccione...</option>
-                                </select>
-                            </div>
+                    <div class="input-area">
+                        <label for="largeInput" class="form-label">Municipio</label>
+                        <select class="form-control" id="municipio">
+                            <option value="" selected disabled>Seleccione...</option>
+                        </select>
+                    </div>
 
-                            <div class="input-area">
-                                <label for="largeInput" class="form-label">Distrito</label>
-                                <select class="form-control" name="distrito_id" id="distrito" required>
-                                    <option value="" selected disabled>Seleccione...</option>
-                                </select>
-                            </div>
-
-                        </form>
+                    <div class="input-area">
+                        <label for="largeInput" class="form-label">Distrito</label>
+                        <select class="form-control" name="distrito_id" id="distrito" required>
+                            <option value="" selected disabled>Seleccione...</option>
+                        </select>
                     </div>
                 </div>
             </div>
+        </div>
 
 
-            <div class="xl:col-span-6 col-span-12 lg:col-span-7">
-                <div class="card h-full">
+        <div class="xl:col-span-6 col-span-12 lg:col-span-7">
+            <div class="card h-full">
 
-                    <div class="card-body p-6">
-                        <div id="divGrafico"></div>
-                    </div>
+                <div class="card-body p-6">
+                    <div id="divGrafico"></div>
                 </div>
             </div>
-
         </div>
-
-
-        <div class="grid grid-cols-12 gap-5" id="render">
-
-
-
-
-
-        </div>
-
 
     </div>
+    <div class="grid grid-cols-12 gap-5" id="render">
+    </div>
+</div>
 
 
 
 
 
 
-    <script src="{{ asset('assets/js/jquery-3.6.0.min.js') }}"></script>
+<script src="{{ asset('assets/js/jquery-3.6.0.min.js') }}"></script>
 
 
-    <script type="text/javascript">
-        $(document).ready(function() {
+<script type="text/javascript">
+    $(document).ready(function() {
             let chart;
             $("#distrito").change();
 
@@ -196,13 +184,13 @@
             }
 
         });
-    </script>
+</script>
 
-    <script>
-        function updateSwitchText(element) {
+<script>
+    function updateSwitchText(element) {
             var switchText = document.getElementById("switchText");
             switchText.innerText = element.checked ? "Sí" : "No";
         }
-    </script>
+</script>
 
 @endsection
