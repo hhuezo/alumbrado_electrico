@@ -68,16 +68,24 @@
                 },
                 series: [{
                     name: 'Censo SIGET',
-                    colorByPoint: true,
                     data: data_base_siget
                 }]
             };
 
+            var color;
+            if (diferencia_data[0] !== null) {
+                if (diferencia_data[0].y > 0) {
+                    color = '#00ff00'; // Color para valores positivos
+                } else {
+                    color = '#ff0000'; // Color para valores negativos
+                }
+            }
+
+            console.log(color);
             // Agrega la serie "Inventario Actual AP" si existe
             if (data_censo_luminaria.length > 0) {
                 chartConfig.series.push({
                     name: 'Inventario Actual AP',
-                    colorByPoint: true,
                     data: data_censo_luminaria
                 });
                 console.log(data_censo_luminaria, data_censo_luminaria.length);
@@ -85,7 +93,7 @@
                 if (data_censo_luminaria.length > 0) {
                     chartConfig.series.push({
                         name: 'Diferencia',
-                        colorByPoint: true,
+                        color: color,
                         data: diferencia_data
                     });
                 }

@@ -124,7 +124,7 @@ class EstimacionFacturaGeneralController extends Controller
             $diferencia_data = collect($data_base_siget)->map(function ($base_siget) use ($temp_data_censo) {
                 if (isset($temp_data_censo[$base_siget['name']])) {
                     $censo_y =  $temp_data_censo[$base_siget['name']];
-                    $diferencia_y = $base_siget['y'] - $censo_y;
+                    $diferencia_y = $censo_y - $base_siget['y'];
                     return [
                         "name" => $base_siget['name'],
                         "y" => $diferencia_y,
