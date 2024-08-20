@@ -17,6 +17,15 @@
             var data_censo_luminaria = @json($data_censo_luminaria);
             var diferencia_data = @json($diferencia_data);
 
+            var color;
+            if (diferencia_data[0] !== null) {
+                if (diferencia_data[0].y > 0) {
+                    color = '#00ff00'; // Color para valores positivos
+                } else {
+                    color = '#ff0000'; // Color para valores negativos
+                }
+            }
+
             // Inicializa la configuración del gráfico
             var chartConfig = {
                 chart: {
@@ -67,42 +76,28 @@
                     }
                 },
                 series: [{
-                    name: 'Censo SIGET',
-                    data: data_base_siget
+                    name: 'Inventario Actual AP',
+                    data: data_censo_luminaria
                 }]
             };
 
-            var color;
-            if (diferencia_data[0] !== null) {
-                if (diferencia_data[0].y > 0) {
-                    color = '#00ff00'; // Color para valores positivos
-                } else {
-                    color = '#ff0000'; // Color para valores negativos
-                }
-            }
+            chartConfig.series.push({
+                name: 'Censo SIGET',
+                data: data_base_siget
+            });
 
-            console.log(color);
-            // Agrega la serie "Inventario Actual AP" si existe
+            //console.log(data_censo_luminaria, data_censo_luminaria.length);
+            // Agrega la serie "Diferencia" si existe "Inventario Actual AP"
             if (data_censo_luminaria.length > 0) {
                 chartConfig.series.push({
-                    name: 'Inventario Actual AP',
-                    data: data_censo_luminaria
+                    name: 'Diferencia',
+                    color: color,
+                    data: diferencia_data
                 });
-                console.log(data_censo_luminaria, data_censo_luminaria.length);
-                // Agrega la serie "Diferencia" si existe "Inventario Actual AP"
-                if (data_censo_luminaria.length > 0) {
-                    chartConfig.series.push({
-                        name: 'Diferencia',
-                        color: color,
-                        data: diferencia_data
-                    });
-                }
             }
 
             // Renderiza el gráfico
             Highcharts.chart('container_base_siget', chartConfig);
-
-
         });
 
         function getMunicipio(id) {
