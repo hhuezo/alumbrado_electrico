@@ -95,7 +95,7 @@ class CensoLuminariaController extends Controller
             $municipio_id = null;
             $id_distrito_valido = 1;
 
-            $companias = Compania::where('activo',1)->get();
+            $companias = Compania::where('activo', 1)->get();
 
             if (isset($data['address'])) {
 
@@ -150,10 +150,8 @@ class CensoLuminariaController extends Controller
                 $distritos = Distrito::whereIn('id', $distritos_id)->get();
                 $departamentos = $user->get_departamentos($user->id);
 
-                if($id_distrito != null)
-                {
-                    if(!in_array($id_distrito,$distritos_id ))
-                    {
+                if ($id_distrito != null) {
+                    if (!in_array($id_distrito, $distritos_id)) {
                         $id_distrito_valido = false;
                     }
                 }
@@ -207,15 +205,12 @@ class CensoLuminariaController extends Controller
 
     public function get_companias($id)
     {
-        try{
+        try {
             $distrito = Distrito::findOrFail($id);
             return $distrito->companias;
-        }
-        catch(Exception $e)
-        {
+        } catch (Exception $e) {
             return null;
         }
-
     }
 
 
@@ -226,11 +221,24 @@ class CensoLuminariaController extends Controller
         $codigo = $this->getCodigo($request->distrito_id);
         $censo = new CensoLuminaria();
         $censo->tipo_luminaria_id = $request->tipo_luminaria_id;
-        $censo->potencia_nominal = $request->potencia_nominal;
         if ($request->potencia_nominal != null) {
             $censo->potencia_nominal = $request->potencia_nominal;
-        } else {
+        } elseif ($request->potencia_promedio != null) {
             $censo->potencia_nominal = PotenciaPromedio::findOrFail($request->potencia_promedio)->potencia;
+        } else {
+            $censo->potencia_nominal = $request->potencia_nominal_led_val;
+
+            $existingPotencia = PotenciaPromedio::where('tipo_luminaria_id', $request->tipo_luminaria_id)
+                ->where('potencia', $request->potencia_nominal_led_val)
+                ->first();
+
+            if (!$existingPotencia) {
+                $potencia = new PotenciaPromedio();
+                $potencia->tipo_luminaria_id = $request->tipo_luminaria_id;
+                $potencia->potencia = $request->potencia_nominal_led_val;
+                $potencia->consumo_promedio = $request->consumo_mensual;
+                $potencia->save();
+            }
         }
         $censo->consumo_mensual = $request->consumo_mensual;
         $censo->distrito_id = $request->distrito_id;
@@ -379,14 +387,14 @@ class CensoLuminariaController extends Controller
         $configuracion = Configuracion::first();
         $censo = CensoLuminaria::findOrFail($id);
 
-        return view('control.censo_luminaria.map_edit', compact('configuracion','censo'));
+        return view('control.censo_luminaria.map_edit', compact('configuracion', 'censo'));
     }
     public function edit($id)
     {
         $configuracion = Configuracion::first();
         $censo = CensoLuminaria::findOrFail($id);
 
-        return view('control.censo_luminaria.map_edit', compact('configuracion','censo'));
+        return view('control.censo_luminaria.map_edit', compact('configuracion', 'censo'));
 
         /*$censo = CensoLuminaria::findOrFail($id);
         $tipos = TipoLuminaria::where('Activo', '=', 1)->get();
@@ -401,7 +409,7 @@ class CensoLuminariaController extends Controller
     public function edit_censo(Request $request)
     {
         $censo = CensoLuminaria::findOrFail($request->id);
-        $potencias_promedio = PotenciaPromedio::where('tipo_luminaria_id',$censo->tipo_luminaria_id)->get();
+        $potencias_promedio = PotenciaPromedio::where('tipo_luminaria_id', $censo->tipo_luminaria_id)->get();
         $latitude = $request->latitude;
         $longitude = $request->longitude;
 
@@ -419,8 +427,8 @@ class CensoLuminariaController extends Controller
         $distrito = Distrito::findOrFail($censo->distrito_id);
         $companias = $distrito->companias;
 
-        $municipios = Municipio::where('departamento_id',$censo->distrito->municipio->departamento_id)->get();
-        $distritos = Distrito::where('municipio_id',$censo->distrito->municipio_id)->get();
+        $municipios = Municipio::where('departamento_id', $censo->distrito->municipio->departamento_id)->get();
+        $distritos = Distrito::where('municipio_id', $censo->distrito->municipio_id)->get();
 
         $tipos = TipoLuminaria::where('Activo', '=', 1)->get();
         $departamentos = Departamento::get();
@@ -431,9 +439,7 @@ class CensoLuminariaController extends Controller
         //dd($censo);
 
 
-        return view('control.censo_luminaria.edit', compact('censo', 'tipos', 'departamentos', 'distritos','municipios','potencias_promedio','companias','tipos_falla'));
-
-
+        return view('control.censo_luminaria.edit', compact('censo', 'tipos', 'departamentos', 'distritos', 'municipios', 'potencias_promedio', 'companias', 'tipos_falla'));
     }
 
 
@@ -441,11 +447,9 @@ class CensoLuminariaController extends Controller
     {
         $censo = CensoLuminaria::findOrFail($id);
         $censo->tipo_luminaria_id = $request->tipo_luminaria_id;
-        if($request->potencia_promedio)
-        {
+        if ($request->potencia_promedio) {
             $censo->potencia_nominal = $request->potencia_promedio;
-        }
-        else{
+        } else {
             $censo->potencia_nominal = $request->potencia_nominal;
         }
 

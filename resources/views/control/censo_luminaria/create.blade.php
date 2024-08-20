@@ -184,10 +184,9 @@
                             <label for="largeInput" class="form-label">Departamento</label>
                             <select class="form-control" id="departamento">
                                 @foreach ($departamentos as $obj)
-                                    <option value="{{ $obj->id }}"
-                                        {{ $id_departamento == $obj->id ? 'selected' : '' }}>
-                                        {{ $obj->nombre }}
-                                    </option>
+                                <option value="{{ $obj->id }}" {{ $id_departamento==$obj->id ? 'selected' : '' }}>
+                                    {{ $obj->nombre }}
+                                </option>
                                 @endforeach
                             </select>
                         </div>
@@ -199,29 +198,25 @@
                                 <option value="{{ $obj->id }}">SELECCIONE
                                 </option>
                                 @if ($municipios)
-                                    @foreach ($municipios as $obj)
-                                        @if ($municipio_id == null)
-
-                                        @endif
-                                        <option value="{{ $obj->id }}"
-                                            {{ $municipio_id == $obj->id ? 'selected' : '' }}>
-                                            {{ $obj->nombre }}
-                                        </option>
-                                    @endforeach
+                                @foreach ($municipios as $obj)
+                                @if ($municipio_id == null)
+                                @endif
+                                <option value="{{ $obj->id }}" {{ $municipio_id==$obj->id ? 'selected' : '' }}>
+                                    {{ $obj->nombre }}
+                                </option>
+                                @endforeach
                                 @endif
                             </select>
                         </div>
 
                         <div class="input-area">
                             <label for="largeInput" class="form-label">Distrito</label>
-                            <select class="form-control" name="distrito_id" id="distrito"
-                                required>
+                            <select class="form-control" name="distrito_id" id="distrito" required>
                                 @if ($distritos)
-                                    @foreach ($distritos as $obj)
-                                        <option value="{{ $obj->id }}"
-                                            {{ $id_distrito == $obj->id ? 'selected' : '' }}>
-                                            {{ $obj->nombre }}</option>
-                                    @endforeach
+                                @foreach ($distritos as $obj)
+                                <option value="{{ $obj->id }}" {{ $id_distrito==$obj->id ? 'selected' : '' }}>
+                                    {{ $obj->nombre }}</option>
+                                @endforeach
                                 @endif
 
                             </select>
@@ -261,6 +256,17 @@
                                 (Vatio)</label>
                             <input type="number" step="0.001" name="potencia_nominal" id="potencia_nominal"
                                 value="{{ old('potencia_nominal') }}" required class="form-control">
+                        </div>
+
+                        <div class="input-area" id="div_potencia_nominal_led" style="display: none">
+                            <label for="largeInput" class="form-label">Favor ingresar la potencial Nominal
+                                (Vatio)</label>
+                            <input list="opciones_led" id="potencia_nominal_led" name="potencia_nominal_led"
+                                class="form-control">
+                            <input type="hidden" id="potencia_nominal_led_val" name="potencia_nominal_led_val">
+
+                            <datalist id="opciones_led">
+                            </datalist>
                         </div>
 
                         <div class="input-area">
@@ -343,8 +349,7 @@
 <script type="text/javascript">
     $(document).ready(function() {
 
-            $("#distrito").change();
-
+            getCompanias($("#distrito").val());
             $("#departamento").change(function() {
                 // var para la Departamento
                 const Departamento = $(this).val();
@@ -376,6 +381,10 @@
 
             $("#distrito").change(function() {
                 var distrito = $(this).val();
+                getCompanias(distrito);
+            });
+
+            function getCompanias(distrito) {
                 $.get("{{ url('censo_luminaria/get_companias') }}" + '/' + distrito, function(data) {
                     var _select = ''
                     for (var i = 0; i < data.length; i++)
@@ -384,7 +393,7 @@
 
                     $("#compania").html(_select);
                 });
-            });
+            }
 
             $("#tipo_luminaria").change(function() {
                 var tipo_luminaria = $(this).val();
@@ -394,29 +403,55 @@
                             $("#div_potencia_promedio").css("display", "none");
                             $("#potencia_promedio").prop('required', false);
 
+                            $("#div_potencia_nominal_led").css("display", "none");
+                            $("#potencia_nominal_led").prop('required', false);
 
                             $("#div_potencia_nominal").css("display", "block");
                             $("#potencia_nominal").prop('required', true);
 
                             var _select =
                                 '<option value="">Favor ingresar la potencial Nominal</option>';
-                        } else {
+                            var _datalist ='';
+                        } else if (tipo_luminaria != 1) {
                             $("#div_potencia_promedio").css("display", "block");
                             $("#potencia_promedio").prop('required', true);
+
+                            $("#div_potencia_nominal_led").css("display", "none");
+                            $("#potencia_nominal_led").prop('required', false);
 
                             $("#div_potencia_nominal").css("display", "none");
                             $("#potencia_nominal").prop('required', false);
 
+                            var _datalist ='';
                             var _select = '<option value="">Seleccione</option>'
                             for (var i = 0; i < data.length; i++)
                                 _select += '<option value="' + data[i].id + '"  >' + data[i].potencia +
                                 '</option>';
+                        } else {
+                            $("#div_potencia_promedio").css("display", "none");
+                            $("#potencia_promedio").prop('required', false);
+
+                            $("#div_potencia_nominal").css("display", "none");
+                            $("#potencia_nominal").prop('required', false);
+
+                            $("#div_potencia_nominal_led").css("display", "block");
+                            $("#potencia_nominal_led").prop('required', true);
+
+                            var _datalist ='';
+                            var _select =
+                            '<option value="">Favor ingresar la potencial Nominal</option>';
+                            for (var i = 0; i < data.length; i++)
+                            _datalist += '<option data-value="' + data[i].id + '" value="' + data[i].potencia + '"  >';
                         }
+
                         $("#potencia_promedio").html(_select);
+                        $("#opciones_led").html(_datalist);
                     });
 
                 document.getElementById('potencia_nominal').value = "";
                 document.getElementById('consumo_mensual').value = "";
+                document.getElementById('potencia_nominal_led').value = "";
+                document.getElementById('potencia_nominal_led_val').value = "";
             });
 
             $("#potencia_promedio").change(function() {
@@ -430,8 +465,7 @@
                             if (data.length === 0) {
                                 document.getElementById('consumo_mensual').value = "";
                             } else {
-                                document.getElementById('consumo_mensual').value = data
-                                    .consumo_promedio;
+                                document.getElementById('consumo_mensual').value = data.consumo_promedio;
                             }
 
                         });
@@ -458,6 +492,50 @@
                 }
 
             });
+
+            $('#potencia_nominal_led').on('input', function() {
+            var inputValue = $(this).val();
+            var selectedOption = $('#opciones_led option').filter(function() {
+                return this.value === inputValue;
+            });
+
+            if (selectedOption.length > 0) {
+                // Si el usuario selecciona una opción, toma el valor de data-value
+                $('#potencia_nominal_led_val').val(inputValue);
+                var potencia_nominal_led = selectedOption.data('value');
+                if (potencia_nominal_led == "") {
+                    document.getElementById('consumo_mensual').value = "";
+
+                } else {
+                    $.get("{{ url('censo_luminaria/get_consumo_mensual') }}" + '/' + potencia_nominal_led,
+                        function(data) {
+                            if (data.length === 0) {
+                                document.getElementById('consumo_mensual').value = "";
+                            } else {
+                                document.getElementById('consumo_mensual').value = data.consumo_promedio;
+                            }
+
+                        });
+                }
+            } else {
+                // Si el usuario escribe algo manualmente, toma ese valor
+                $('#potencia_nominal_led_val').val(inputValue);
+                if (inputValue > 0) {
+                    var potencia_nominal_led = parseFloat(inputValue);
+
+                    // var consumo_mensual = (potencia_nominal_led * 360 * 0.90) / 1000;
+                    var consumo_mensual = (potencia_nominal_led * 360) / 1000;
+                    document.getElementById('consumo_mensual').value = consumo_mensual;
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'El valor ingresado no es válido'
+                    })
+                    document.getElementById('potencia_nominal_led').value = "";
+                }
+            }
+        });
 
             $("#observacion").keyup(function() {
                 var numCaracteres = $(this).val().length;
