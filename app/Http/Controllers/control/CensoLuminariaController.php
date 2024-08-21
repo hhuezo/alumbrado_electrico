@@ -439,7 +439,7 @@ class CensoLuminariaController extends Controller
         //dd($censo);
 
 
-        return view('control.censo_luminaria.edit', compact('censo', 'tipos', 'departamentos', 'distritos', 'municipios', 'potencias_promedio', 'companias', 'tipos_falla'));
+        return view('control.censo_luminaria.edit', compact('censo', 'tipos', 'departamentos', 'distritos', 'municipios', 'potencias_promedio', 'companias', 'tipos_falla','latitude','longitude'));
     }
 
 
@@ -462,6 +462,7 @@ class CensoLuminariaController extends Controller
         $censo->observacion = $request->observacion;
         if ($request->condicion_lampara != null) {
             $censo->condicion_lampara = 1;
+            $censo->tipo_falla_id = null;
         } else {
             $censo->condicion_lampara = 0;
             $censo->tipo_falla_id = $request->tipo_falla_id;
@@ -470,7 +471,7 @@ class CensoLuminariaController extends Controller
         $censo->compania_id = $request->compania_id;
         $censo->save();
 
-        alert()->success('El registro ha sido creado correctamente');
+        alert()->success('El registro ha sido modificado correctamente');
 
 
         return back();

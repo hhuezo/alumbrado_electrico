@@ -32,7 +32,8 @@
                     <form method="POST" action="{{ route('censo_luminaria.update', $censo->id) }}">
                         @method('PUT')
                         @csrf
-
+                        <input type="hidden" name="latitud" value="{{ $latitude }}" class="form-control">
+                        <input type="hidden" name="longitud" value="{{ $longitude }}" class="form-control">
                         <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-7">
 
                             <div class="input-area">
@@ -124,7 +125,7 @@
                                 <label for="largeInput" class="form-label">Favor ingresar la potencial Nominal
                                     (Vatio)</label>
                                 <input type="number" step="0.001" name="potencia_nominal" id="potencia_nominal"
-                                    value="{{ old('potencia_nominal') }}" {{ $potencias_promedio->count() > 0 ? 'none' : 'required' }} class="form-control">
+                                    value="{{ $censo->potencia_nominal }}" {{ $potencias_promedio->count() > 0 ? 'none' : 'required' }} class="form-control">
                             </div>
 
                             <div class="input-area">
