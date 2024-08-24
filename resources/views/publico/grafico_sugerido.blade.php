@@ -59,7 +59,21 @@
         }]
     });
 
+    async function handleChartToBase642(chart) {
+        try {
+            const base64Data = await chartToBase64(chart);
+            console.log("grafico64", base64Data);
+            $('#jsonGraficoSustituir').val(base64Data);
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    }
+
     setTimeout(function() {
-        $('#jsonGraficoSustituir').val(chartToBase64(chartSugerido));
+       handleChartToBase642(chartSugerido);
     }, 500); // Ajusta el tiempo según sea necesario
+
+   /* setTimeout(function() {
+        $('#jsonGraficoSustituir').val(chartToBase64(chartSugerido));
+    }, 500); // Ajusta el tiempo según sea necesario*/
 </script>

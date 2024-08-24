@@ -11,9 +11,9 @@ use App\Models\catalogo\TecnologiaSustituir;
 use App\Models\catalogo\TipoLuminaria;
 use App\Models\Configuracion;
 use App\Models\control\CensoLuminaria;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Barryvdh\DomPDF\Facade\Pdf;
 
 
 class EvaluacionProyectosController extends Controller
@@ -446,21 +446,85 @@ class EvaluacionProyectosController extends Controller
         set_time_limit(500);
         $jsonTablaSustituir = $request->input('jsonTablaSustituir');
         $jsonTablaSustituir = json_decode($jsonTablaSustituir, true);
+
+
         $jsonUbicacion = $request->input('jsonUbicacion');
         $jsonUbicacion = json_decode($jsonUbicacion, true);
         $jsonGrafico = $request->input('jsonGrafico');
+
+
+        //convertir el primer grafico png en archivo
+        $base64Png = $request->input('jsonGrafico');
+
+        // Eliminar el prefijo 'data:image/png;base64,'
+        $base64Png = str_replace('data:image/png;base64,', '', $base64Png);
+
+        // Decodificar la cadena Base64
+        $decodedPng = base64_decode($base64Png);
+
+        $pathToSave = public_path('img/grafico1.png');
+
+        // Guardar la imagen en el archivo
+        file_put_contents($pathToSave, $decodedPng);
+
+
+
+
         $jsonTecnologiaSustituir = $request->input('jsonTecnologiaSustituir');
         $jsonTecnologiaSustituir = json_decode($jsonTecnologiaSustituir, true);
         $jsonAnalisisFinanciero = $request->input('jsonAnalisisFinanciero');
         $jsonAnalisisFinanciero = json_decode($jsonAnalisisFinanciero, true);
         $jsonGraficoSustituir = $request->input('jsonGraficoSustituir');
+
+
+        //convertir el segundo grafico png en archivo
+        $base64Png = $request->input('jsonGraficoSustituir');
+
+        // Eliminar el prefijo 'data:image/png;base64,'
+        $base64Png = str_replace('data:image/png;base64,', '', $base64Png);
+
+        // Decodificar la cadena Base64
+        $decodedPng = base64_decode($base64Png);
+
+        $pathToSave = public_path('img/grafico2.png');
+
+        // Guardar la imagen en el archivo
+        file_put_contents($pathToSave, $decodedPng);
+
+
+
         $configuracion = Configuracion::first();
 
+
+
+        /*return view('publico.reporte_evaluacion_proyectos',
+        [
+            'configuracion' => $configuracion,
+            'jsonTablaSustituir' => $jsonTablaSustituir,
+            'jsonUbicacion' => $jsonUbicacion,
+            'jsonGrafico' => $jsonGrafico,
+            'jsonTecnologiaSustituir' => $jsonTecnologiaSustituir,
+            'jsonAnalisisFinanciero' => $jsonAnalisisFinanciero,
+            'jsonGraficoSustituir' => $jsonGraficoSustituir,
+        ]);*/
+
         //dd($jsonTablaSustituir,$jsonUbicacion,$jsonGrafico,$jsonTecnologiaSustituir,$jsonAnalisisFinanciero, $jsonGraficoSustituir);
-        return view('publico.reporte_evaluacion_proyectos', compact('configuracion','jsonTablaSustituir','jsonUbicacion','jsonGrafico','jsonTecnologiaSustituir','jsonAnalisisFinanciero', 'jsonGraficoSustituir'));
+        return Pdf::loadView('publico.reporte_evaluacion_proyectos',
+        [
+            'configuracion' => $configuracion,
+            'jsonTablaSustituir' => $jsonTablaSustituir,
+            'jsonUbicacion' => $jsonUbicacion,
+            'jsonGrafico' => $jsonGrafico,
+            'jsonTecnologiaSustituir' => $jsonTecnologiaSustituir,
+            'jsonAnalisisFinanciero' => $jsonAnalisisFinanciero,
+            'jsonGraficoSustituir' => $jsonGraficoSustituir,
+        ]
+        )->download('invoice.pdf');;
+        return $pdf->download('invoice.pdf');
         //$pdf = Pdf::loadView('publico.reporte_evaluacion_proyectos', compact('configuracion','jsonTablaSustituir','jsonUbicacion','jsonGrafico','jsonTecnologiaSustituir','jsonAnalisisFinanciero', 'jsonGraficoSustituir'))->setWarnings(false);
         //$pdf->setOption(['isJavascriptEnabled' => true]);
         //return $pdf->stream();
+        //compact('configuracion','jsonTablaSustituir','jsonUbicacion','jsonGrafico','jsonTecnologiaSustituir','jsonAnalisisFinanciero', 'jsonGraficoSustituir')
     }
 
     /**

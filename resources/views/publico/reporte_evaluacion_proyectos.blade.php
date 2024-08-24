@@ -166,7 +166,7 @@
                     <div class="card h-full">
                         <div class="card-body p-6">
                             <div id="divGrafico">
-                                <img src="data:image/svg+xml;base64,{{ $jsonGrafico }}" alt="Gráfico"
+                                <img src="{{ base_path('public/img/grafico1.png') }}" alt="Gráfico"
                                     style="margin: 0 auto; " />
                             </div>
                         </div>
@@ -174,7 +174,7 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-12 gap-5" id="render">
+           <div class="grid grid-cols-12 gap-5" id="render">
 
                 <div class="xl:col-span-12 col-span-12 lg:col-span-12">
                     <div class="card">
@@ -410,13 +410,13 @@
         </div>
         <br>
 
-        <div class="xl:col-span-12 col-span-12 lg:col-span-12">
+         <div class="xl:col-span-12 col-span-12 lg:col-span-12">
             <div class="card">
                 <div class="card-body flex flex-col p-6">
 
                     <div class="card-text h-full ">
                         <div id="nuevo_grafico">
-                            <img src="data:image/svg+xml;base64,{{ $jsonGraficoSustituir }}" alt="Gráfico"
+                            <img src="{{ base_path('public/img/grafico2.png') }}" alt="Gráfico"
                                 style="margin: 0 auto;" />
                         </div>
                         </p>

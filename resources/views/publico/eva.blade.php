@@ -318,12 +318,13 @@
             <form method="POST" action="{{ url('publico/evaluacion_proyectos/getReporte') }}" target="_blank">
                 <input type="hidden" id="tipo" value="1">
                 @csrf
-                <input type="hidden" name="jsonUbicacion" id="jsonUbicacion">
-                <input type="hidden" name="jsonTablaSustituir" id="jsonTablaSustituir">
-                <input type="hidden" name="jsonGrafico" id="jsonGrafico">
-                <input type="hidden" name="jsonTecnologiaSustituir" id="jsonTecnologiaSustituir">
-                <input type="hidden" name="jsonAnalisisFinanciero" id="jsonAnalisisFinanciero">
-                <input type="hidden" name="jsonGraficoSustituir" id="jsonGraficoSustituir">
+                <input type="hidden" placeholder="JSON Ubicación" name="jsonUbicacion" id="jsonUbicacion">
+                <input type="hidden" placeholder="JSON Tabla Sustituir" name="jsonTablaSustituir" id="jsonTablaSustituir">
+                <input type="hidden" placeholder="JSON Gráfico" name="jsonGrafico" id="jsonGrafico">
+                <input type="hidden" placeholder="JSON Tecnología Sustituir" name="jsonTecnologiaSustituir" id="jsonTecnologiaSustituir">
+                <input type="hidden" placeholder="JSON Análisis Financiero" name="jsonAnalisisFinanciero" id="jsonAnalisisFinanciero">
+                <input type="hidden" placeholder="JSON Gráfico Sustituir" name="jsonGraficoSustituir" id="jsonGraficoSustituir">
+
 
 
                 <button id="btnGetTecnologiasSustituir" type="submit" style=" float: right;"
