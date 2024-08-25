@@ -311,7 +311,7 @@
         </div>
     </div>
 
-    <div class="card">
+    <div class="card" id="imprimir_grafico" style="display: none;">
         <div class="card-body flex flex-col p-6">
             <div id="nuevo_grafico"></div>
 
@@ -352,6 +352,7 @@
 
         $('#recomendable').hide();
         $('#noRecomendable').hide();
+        $("#imprimir_grafico").hide();
 
 
 
@@ -465,6 +466,7 @@
                 $('#recomendable').hide();
                 $('#noRecomendable').show();
             }
+            $("#imprimir_grafico").show();
         } else {
             $('#recomendable').hide();
             $('#noRecomendable').hide();
