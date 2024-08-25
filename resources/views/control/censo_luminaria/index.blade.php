@@ -28,6 +28,8 @@
                                     <td></td>
                                     <td></td>
                                     <td></td>
+                                    <td></td>
+                                    <td></td>
                                 </tr>
                                 <tr class="td-table">
                                     <td style="text-align: center">#</td>
@@ -37,6 +39,8 @@
                                     <td style="text-align: center">Consumo mensual</td>
                                     <td style="text-align: center">Distrito</td>
                                     <td style="text-align: center">Condición</td>
+                                    <td style="text-align: center">Latitud</td>
+                                    <td style="text-align: center">Longitud</td>
                                     <td style="text-align: center" width="15%">Opciones</td>
                                 </tr>
                             </thead>
@@ -54,6 +58,8 @@
                                             <td align="center">{{ $obj->consumo_mensual }} (kWh)</td>
                                             <td>{{ $obj->distrito->nombre }}</td>
                                             <td>{{ $obj->tipo_falla ? $obj->tipo_falla->nombre : 'En buen estado' }}</td>
+                                            <td>{{ $obj->latitud }}</td>
+                                            <td>{{ $obj->longitud }}</td>
                                             <td align="center">
                                                 <div
                                                     style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;">
@@ -91,17 +97,17 @@
                                 </thead>
                             <tbody>
                                 <!-- <tfoot>
-                                    <tr>
-                                        <th></th>
-                                        <th>Codigo</th>
-                                        <th>Tipo luminaria</th>
-                                        <th>Fecha</th>
-                                        <th>Consumo mensual</th>
-                                        <th>Distrito</th>
-                                        <th>Condición</th>
-                                        <th></th>
-                                    </tr>
-                                </tfoot> -->
+                                            <tr>
+                                                <th></th>
+                                                <th>Codigo</th>
+                                                <th>Tipo luminaria</th>
+                                                <th>Fecha</th>
+                                                <th>Consumo mensual</th>
+                                                <th>Distrito</th>
+                                                <th>Condición</th>
+                                                <th></th>
+                                            </tr>
+                                        </tfoot> -->
                         </table>
                     </div>
                 </div>
@@ -142,16 +148,49 @@
                     }
                 },
                 dom: 'Bfrtip', // Esto asegura que los botones se muestren
-                buttons: [
-                    'copy', 'csv', 'excel', 'pdf', 'print'
+                buttons: [{
+                        extend: 'copy',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8] // Especifica los índices de las columnas que deseas exportar
+                        }
+                    },
+                    {
+                        extend: 'csv',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8] // Especifica los índices de las columnas que deseas exportar
+                        }
+                    },
+                    {
+                        extend: 'excel',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8] // Especifica los índices de las columnas que deseas exportar
+                        }
+                    },
+                    {
+                        extend: 'pdf',
+                        orientation: 'landscape', // Configura la orientación a horizontal
+                        exportOptions: {
+                            columns: [1, 2, 3, 4, 5, 6, 7, 8] // Especifica los índices de las columnas que deseas exportar
+                        }
+                    },
+                    {
+                        extend: 'print',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8] // Especifica los índices de las columnas que deseas exportar
+                        }
+                    }
                 ],
+                columnDefs: [{
+                    targets: [7, 8], // Índices de las columnas que deseas ocultar en la UI.
+                    visible: false // Esto hace que las columnas estén ocultas en la tabla.
+                }],
                 initComplete: function() {
                     var api = this.api();
                     var numColumns = api.columns().nodes().length;
 
                     api.columns().every(function(index) {
                         // Exclude the last column
-                        if (index > 0 && index < numColumns - 1) {
+                        if (index > 0 && index < numColumns - 3) {
                             var column = this;
                             var header = $(column.header());
                             var filterCell = $('.filters td').eq(index);
