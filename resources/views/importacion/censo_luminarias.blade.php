@@ -11,10 +11,10 @@
                         <div class="flex-1">
                             <div class="card-title text-slate-900 dark:text-white">Importacion de Censo Luminarias
 
-                                <a href="{{ asset('censo_luminaria.xlsx') }}">
+                                <a href="{{ url('dowload_censo') }}" target="_blank">
                                     <button class="btn btn-dark btn-sm float-right">
                                         <iconify-icon icon="line-md:download-loop" style="color: white;" width="18"> </iconify-icon> Descarga base excel
-                                        
+
                                     </button>
                                 </a>
                             </div>
@@ -27,12 +27,8 @@
                         <div id="content_layout">
                             <div class="space-y-5">
                                 <div class="grid grid-cols-12 gap-5">
-                                    <div class="xl:col-span-3 col-span-12 lg:col-span-3 ">
-                                        <div class="card p-6 h-full">
-                                            &nbsp;
-                                        </div>
-                                    </div>
-                                    <div class="xl:col-span-6 col-span-12 lg:col-span-6">
+
+                                    <div class="xl:col-span-8 col-span-12 lg:col-span-8">
                                         @if (count($errors) > 0)
                                             <div class="alert alert-danger">
                                                 <ul>
@@ -55,7 +51,7 @@
                                                             @endforeach
                                                         </select>
                                                     </div>
-                                                </div>                                               
+                                                </div>
                                                 <div class="grid pt-4 pb-3 px-4">
                                                     <div class="input-area relative">
                                                         <label for="largeInput" class="form-label">Archivo</label>
@@ -70,11 +66,12 @@
                                             </div>
                                         </form>
                                     </div>
-                                    <div class="xl:col-span-3 col-span-12 lg:col-span-3 ">
-                                        <div class="card p-6 h-full">
-                                            &nbsp;
-                                        </div>
+                                    <div class="xl:col-span-4 col-span-12 lg:col-span-4 ">
+
+                                        <li style="color: #ec0a11;">En el archivo en la pestaña 2 se encuentran los catálogos con los cuales tendra que completar las columnas del censo</li>
+                                        <li style="color: #ec0a11;">El formato de la fecha debe ser dd/mm/yyyy</li>
                                     </div>
+
                                 </div>
                             </div>
                         </div>

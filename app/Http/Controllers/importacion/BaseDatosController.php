@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\importacion;
 
+use App\Exports\CensoLuminariasExport;
 use App\Exports\LuminariasExport;
 use App\Http\Controllers\Controller;
 use App\Imports\CensoLuminariasImport;
@@ -296,6 +297,14 @@ class BaseDatosController extends Controller
     }
 
 
+
+    public function dowload_censo(Request $request)
+    {
+        // Generar el archivo Excel con los encabezados y descargarlo
+        return Excel::download(new CensoLuminariasExport, 'censo_luminarias.xlsx');
+    }
+
+
     public function importar_base(Request $request)
     {
 
@@ -332,111 +341,88 @@ class BaseDatosController extends Controller
 
     public function importar_censo_luminaria(Request $request)
     {
-
         $archivo = $request->archivo;
         $distrito_id = $request->distrito_id;
         try {
             $imports = Excel::toArray(new CensoLuminariasImport, $archivo);
 
-            foreach ($imports as $import) {
-                unset($import[0]);  //descartar los encabezados
-                $censos = array_values($import);
-            }
+            // Solo trabajar con la primera hoja
+            $firstSheet = $imports[0]; // Esto obtiene la primera hoja
+
+            unset($firstSheet[0]); // Descartar los encabezados
+            $censos = array_values($firstSheet);
+
+
+            $tipos_luminaria = TipoLuminaria::all()->keyBy('nombre');
+
 
             // dd($censos);
             foreach ($censos as $censo) {
                 if ($censo['0'] != null) {
 
+                    $tipoLuminaria = trim($censo[0]); // Tipo Luminaria
+                    $potenciaNominal = trim($censo[1]); // Potencia Nominal
+                    $fechaUltimoCenso = trim($censo[2]); // Fecha Último Censo
+                    $latitud = trim($censo[3]);     // Latitud
+                    $longitud = trim($censo[4]);    // Longitud
+                    $direccion = trim($censo[5]);   // Dirección
+                    $observacion = trim($censo[6]); // Observación
+                    $tipoFalla = trim($censo[7]); // Tipo Falla
+                    $condicionLampara = (trim($censo[8]) == 'S') ? 1 : 0;
+                    $compania = trim($censo[9]); // Compañía
 
-                    /*
-                $censo['0'] correlativo
-                $censo['1'] tipo luminaria
-                $censo['2'] potencia nominal
-                $censo['3'] consumo mensual
-                $censo['4'] fecha de ultimo censo
-                $censo['5'] densidad luminica
-                $censo['6'] latitud
-                $censo['7'] longitud
-                $censo['8'] direccion
-                $censo['9'] observacion
-                $censo['10'] tipo de falla
-                $censo['11'] condicion lampara
-                $censo['12'] compañia
-                */
-                    // fecha de ultimo censo
-                    if (is_numeric($censo['4'])) {
-                        $fecha_ultimo_censo = Date::excelToDateTimeObject($censo['4'])->format('Y-m-d');
-                    } else {
-                        $fecha_ultimo_censo = $censo['4'];  // Si no es un número, mantener el valor original
+
+                    $tipoLuminariaId = TipoLuminaria::where('nombre', $tipoLuminaria)->first()->id ?? null;
+                    $tipoFallaId = TipoFalla::where('nombre', $tipoFalla)->first()->id ?? null;
+                    $companiaId = Compania::where('nombre', $compania)->first()->id ?? null;
+
+                    $fechaUltimoCensoConvertida = Carbon::hasFormat($fechaUltimoCenso, 'd/m/Y')
+                        ? Carbon::createFromFormat('d/m/Y', $fechaUltimoCenso)->format('Y-m-d')
+                        : null;
+
+
+                    /*if (is_null($tipoLuminariaId) || is_null($tipoFallaId) || is_null($companiaId) || is_null($fechaUltimoCensoConvertida)) {
+                        throw new \Exception("Algunos de los valores requeridos están nulos: tipo luminaria, tipo falla, compañía, o fecha.");
+                    }
+                    else{*/
+                    if (!is_null($tipoLuminariaId) && !is_null($tipoFallaId) && !is_null($companiaId) && !is_null($fechaUltimoCensoConvertida)) {
+                        $codigo = $this->getCodigo($request->distrito_id);
+
+                        $censo_nuevo = new CensoLuminaria();
+                        $censo_nuevo->tipo_luminaria_id = $tipoLuminariaId;
+                        $censo_nuevo->potencia_nominal = $potenciaNominal;
+                        //$censo_nuevo->consumo_mensual = $censo['3'];
+                        $censo_nuevo->fecha_ultimo_censo = $fechaUltimoCensoConvertida;
+                        $censo_nuevo->distrito_id = $distrito_id;
+                        $censo_nuevo->usuario_ingreso = auth()->user()->id;
+                        $censo_nuevo->codigo_luminaria = $codigo;
+                        //$censo_nuevo->decidad_luminicia = $censo['5'];
+                        $censo_nuevo->latitud = $latitud;
+                        $censo_nuevo->longitud = $longitud;
+                        $censo_nuevo->usuario_creacion = auth()->user()->id;
+                        $censo_nuevo->usuario_modificacion = auth()->user()->id;
+                        $censo_nuevo->direccion = $direccion;
+                        $censo_nuevo->observacion = $observacion;
+                        $censo_nuevo->tipo_falla_id = $tipoFallaId;
+                        $censo_nuevo->condicion_lampara = $condicionLampara;
+                        $censo_nuevo->compania_id = $companiaId;
+                        $censo_nuevo->save();
                     }
 
-                    // tipo luminaria
+                    //}
 
-                    $tipo_luminaria_existe = TipoLuminaria::where('nombre', 'like', '%' . $censo['1'] . '%')->first();
 
-                    if (!$tipo_luminaria_existe) {
-                        $tipo_luminaria = new TipoLuminaria();
-                        $tipo_luminaria->nombre = $censo['1'];
-                        $tipo_luminaria->save();
-                        $tipo_lum_id = $tipo_luminaria->id;
-                    } else {
-                        $tipo_lum_id = $tipo_luminaria_existe->id;
-                    }
-
-                    //codigo_luminaria
-                    $codigo = $this->getCodigo($request->distrito_id);
-
-                    //tipo de falla
-                    $tipo_falla_existe = TipoFalla::where('nombre', 'like', '%' . $censo['1'] . '%')->first();
-
-                    if (!$tipo_falla_existe) {
-                        $tipo_falla = new TipoFalla();
-                        $tipo_falla->nombre = $censo['10'];
-                        $tipo_falla->save();
-                        $tipo_falla_id = $tipo_falla->id;
-                    } else {
-                        $tipo_falla_id = $tipo_falla_existe->id;
-                    }
-
-                    //compañia
-                    $compania_existe = Compania::where('nombre', 'like', '%' . $censo['12'] . '%')->first();
-                    if (!$compania_existe) {
-                        $compania = new TipoFalla();
-                        $compania->nombre = $censo['10'];
-                        $compania->save();
-                        $compania_id = $compania->id;
-                    } else {
-                        $compania_id = $compania_existe->id;
-                    }
-
-                    $censo_nuevo = new CensoLuminaria();
-                    $censo_nuevo->tipo_luminaria_id = $tipo_lum_id;
-                    $censo_nuevo->potencia_nominal = $censo['2'];
-                    $censo_nuevo->consumo_mensual = $censo['3'];
-                    $censo_nuevo->fecha_ultimo_censo = $fecha_ultimo_censo;
-                    $censo_nuevo->distrito_id = $distrito_id;
-                    $censo_nuevo->usuario_ingreso = auth()->user()->id;
-                    $censo_nuevo->codigo_luminaria = $codigo;
-                    $censo_nuevo->decidad_luminicia = $censo['5'];
-                    $censo_nuevo->latitud = $censo['6'];
-                    $censo_nuevo->longitud = $censo['7'];
-                    $censo_nuevo->usuario_creacion = auth()->user()->id;
-                    $censo_nuevo->usuario_modificacion = auth()->user()->id;
-                    $censo_nuevo->direccion = $censo['8'];
-                    $censo_nuevo->observacion = $censo['9'];
-                    $censo_nuevo->tipo_falla_id = $tipo_falla_id;
-                    $censo_nuevo->condicion_lampara = $censo['11'];
-                    $censo_nuevo->compania_id = $compania_id;
-                    $censo_nuevo->save();
                 }
             }
 
             alert()->success('El registro ha sido creado correctamente');
-            return redirect('/importar_luminarias');
+            return back();
+            // return redirect('/importar_luminarias');
         } catch (\Throwable $th) {
             //throw $th;
         }
     }
+
 
     public function edit($id)
     {
