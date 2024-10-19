@@ -763,7 +763,7 @@
 
 
                                             <li>
-                                                <a href=chat.html>
+                                                <a href="{{url('home')}}">
                                                     <div class="flex space-x-2 items-start rtl:space-x-reverse">
                                                         <iconify-icon icon=heroicons-outline:chat
                                                             class="leading-[1] text-base"> </iconify-icon>
@@ -1972,7 +1972,7 @@
             <!-- END: Footer For Desktop and tab -->
             <div
                 class="bg-white bg-no-repeat custom-dropshadow footer-bg dark:bg-slate-700 flex justify-around items-center backdrop-filter backdrop-blur-[40px] fixed left-0 bottom-0 w-full z-[9999] bothrefm-0 py-[12px] px-4 md:hidden">
-                <a href="chat.html">
+                <a href="{{url('home')}}">
                     <div>
                         <span
                             class="relative cursor-pointer rounded-full text-[20px] flex flex-col items-center justify-center mb-1 dark:text-white text-slate-900 ">

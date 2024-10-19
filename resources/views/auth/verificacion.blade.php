@@ -38,9 +38,8 @@
             <div class="lg:w-1/2 w-full flex flex-col items-center justify-center">
                 <div class="auth-box-3">
                     <div class="mobile-logo text-center mb-6 lg:hidden block">
-                        <a heref="index.html">
-                            <img src="assets/images/logo/logo.svg" alt="" class="mb-10 dark_logo">
-                            <img src="assets/images/logo/logo-white.svg" alt="" class="mb-10 white_logo">
+                        <a heref="#">
+                            <img src="{{ asset('img/logo-negro.png') }}" alt="Logo" style="max-width: 160px">
                         </a>
                     </div>
                     <div class="text-center 2xl:mb-10 mb-5">
