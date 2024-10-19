@@ -2,18 +2,11 @@
 
 @section('content')
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/rt-plugins.css">
-    <link href="https://unpkg.com/aos@2.3.0/dist/aos.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
-        integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="">
+
     <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}">
-    <!-- START : Theme Config js-->
-    <script src="{{ asset('assets/js/settings.js') }}" sync></script>
-    <!-- END : Theme Config js-->
-    @include('sweetalert::alert', ['cdn' => 'https://cdn.jsdelivr.net/npm/sweetalert2@9'])
+
+
     <div class="loginwrapper bg-cover bg-no-repeat bg-center" style="background-image: url(img/image.jpg);">
         {{-- style="background-image: url(img/familia_dashboard.jpg);" --}}
         <div class="lg-inner-column">
@@ -26,12 +19,10 @@
             </div>
             <div class="lg:w-1/2 w-full flex flex-col items-center justify-center">
                 <div class="auth-box-3">
-                    <div class="mobile-logo text-center mb-6 lg:hidden block">
-                        <a heref="index.html">
-                            <img src="assets/images/logo/logo.svg" alt="" class="mb-10 dark_logo">
-                            <img src="assets/images/logo/logo-white.svg" alt="" class="mb-10 white_logo">
-                        </a>
+                    <div class="mobile-logo text-center mb-6 lg:hidden block" style="display: flex; justify-content: center;">
+                        <img src="{{ asset('img/logo-negro.png') }}" alt="Logo" style="max-width: 160px">
                     </div>
+
                     <div class="text-center 2xl:mb-10 mb-5">
                         <h4 class="font-medium">Iniciar sesión</h4>
 
@@ -112,7 +103,6 @@
     <!-- Core Js -->
     <script src="{{ asset('assets/js/jquery-3.6.0.min.js') }}"></script>
     <script src="{{ asset('assets/js/rt-plugins.js') }}"></script>
-    <script src="{{ asset('assets/js/app.js') }}"></script>
 
     <script>
         function submitForm() {
