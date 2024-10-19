@@ -231,6 +231,16 @@
                                 <li>
                                     <a href="{{ url('control/censo_luminaria/show_map') }}">Creación nuevo registro</a>
                                 </li>
+                                   <li>
+                                    <a href="{{ url('importar_luminarias') }}" class="navItem">
+                                        <span class="flex items-center">
+                                            <iconify-icon class="nav-icon" icon="material-symbols:add-notes"
+                                                style="color: white;">
+                                            </iconify-icon>
+                                            <span>Importar de Excel</span>
+                                        </span>
+                                    </a>
+                                </li>
                                 {{-- <li>
                                 <a href="#">Importacion de censo</a>
                             </li> --}}
@@ -264,16 +274,7 @@
                                 </li>
 
 
-                                <li>
-                                    <a href="{{ url('importar_luminarias') }}" class="navItem">
-                                        <span class="flex items-center">
-                                            <iconify-icon class="nav-icon" icon="material-symbols:add-notes"
-                                                style="color: white;">
-                                            </iconify-icon>
-                                            <span>Importar de Excel</span>
-                                        </span>
-                                    </a>
-                                </li>
+
                             </ul>
 
 
@@ -763,7 +764,7 @@
 
 
                                             <li>
-                                                <a href="{{url('home')}}">
+                                                <a href=chat.html>
                                                     <div class="flex space-x-2 items-start rtl:space-x-reverse">
                                                         <iconify-icon icon=heroicons-outline:chat
                                                             class="leading-[1] text-base"> </iconify-icon>
@@ -1972,7 +1973,7 @@
             <!-- END: Footer For Desktop and tab -->
             <div
                 class="bg-white bg-no-repeat custom-dropshadow footer-bg dark:bg-slate-700 flex justify-around items-center backdrop-filter backdrop-blur-[40px] fixed left-0 bottom-0 w-full z-[9999] bothrefm-0 py-[12px] px-4 md:hidden">
-                <a href="{{url('home')}}">
+                <a href="chat.html">
                     <div>
                         <span
                             class="relative cursor-pointer rounded-full text-[20px] flex flex-col items-center justify-center mb-1 dark:text-white text-slate-900 ">
