@@ -46,6 +46,7 @@ Route::get('/', [WelcomeController::class, 'index'])->name('index');
 // Route::get('/', function () {
 //     return view('auth.login');
 // });
+Route::post('verificacion_pasos', [LoginController::class, 'verificacion_dos_pasos']);
 Auth::routes();
 
 Route::middleware(['auth'])->group(function () {
@@ -69,7 +70,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('seguridad/role', RoleController::class);
     Route::post('seguridad/role/unlink_permission', [RoleController::class, 'unlink_permission']);
     Route::post('seguridad/role/link_permission', [RoleController::class, 'link_permission']);
-    Route::post('verificacion_dos_pasos', [LoginController::class, 'verificacion_dos_pasos']);
+
 
 
     Route::get('control/censo_luminaria/edit_censo', [CensoLuminariaController::class, 'edit_censo']);
