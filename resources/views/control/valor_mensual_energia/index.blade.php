@@ -52,7 +52,7 @@
                                             <td align="center" class="table-td">
                                                 <a href="{{url('control/valor_mensual_energia')}}/{{$obj->id}}/edit"
                                                 <button>
-                                                <iconify-icon icon="mdi:pencil-box" width="40" data-bs-toggle="modal" data-bs-target="#modal-edit-{{$obj->id}}"></iconify-icon>
+                                                <iconify-icon icon="mdi:pencil-circle" width="40" data-bs-toggle="modal" data-bs-target="#modal-edit-{{$obj->id}}" style="color: #0d6efd;"></iconify-icon>
                                                 </button>
                                                 </a>
 

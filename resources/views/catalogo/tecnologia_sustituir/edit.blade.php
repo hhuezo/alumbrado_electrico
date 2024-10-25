@@ -6,7 +6,7 @@
     <div class="2xl:col-span-12 lg:col-span-12 col-span-12">
         <div class="card">
             <div class="card-body flex flex-col p-6">
-                <header class="flex mb-5 items-center border-b border-slate-100 dark:border-slate-700 pb-5 -mx-6 px-6">
+                <header class="flex mb-5 items-center border-b border-slate-100 dark:border-slate-700 pb-5 -mx-6 px-6 card-header">
                     <div class="flex-1">
                         <div class="card-title text-slate-900 dark:text-white">Agregar tecnología recomendada para sustituir
 
@@ -90,7 +90,7 @@
     <div class="2xl:col-span-12 lg:col-span-12 col-span-12">
         <div class="card">
             <div class="card-body flex flex-col p-6">
-                <header class="flex mb-5 items-center border-b border-slate-100 dark:border-slate-700 pb-5 -mx-6 px-6">
+                <header class="flex mb-5 items-center border-b border-slate-100 dark:border-slate-700 pb-5 -mx-6 px-6 card-header">
                     <div class="flex-1">
                         <div class="card-title text-slate-900 dark:text-white">Tecnologías recomendadas para sustituir
 
@@ -122,7 +122,7 @@
                                                 <td>{{ $obj->tipo_luminaria->nombre.' de '. $obj->potencia.' Vatios' }}</td>
                                                 <td>{{ $obj->consumo_promedio }} kWh</td>
                                                 <td align="center">
-                                                    <iconify-icon icon="f7:trash-circle-fill" data-bs-toggle="modal" data-bs-target="#modal-delete-{{ $obj->id }}" width="40">
+                                                    <iconify-icon icon="f7:trash-circle-fill" data-bs-toggle="modal" data-bs-target="#modal-delete-{{ $obj->id }}" width="40" style="color:#dc3545;">
                                                     </iconify-icon>
                                                 </td>
                                             </tr>

@@ -67,7 +67,7 @@
                                     </a> --}}
                                     &nbsp;&nbsp;
                                     <iconify-icon data-bs-toggle="modal" data-bs-target="#modal-delete-{{ $obj->id }}"
-                                        icon="mdi:trash" width="40"></iconify-icon>
+                                        icon="mdi:trash" width="40" style="color:#dc3545;"></iconify-icon>
 
 
                                 </td>

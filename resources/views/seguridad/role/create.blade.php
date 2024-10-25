@@ -9,7 +9,7 @@
     <div class="2xl:col-span-12 lg:col-span-12 col-span-12">
         <div class="card">
             <div class="card-body flex flex-col p-6">
-                <header class="flex mb-5 items-center border-b border-slate-100 dark:border-slate-700 pb-5 -mx-6 px-6">
+                <header class="flex mb-5 items-center border-b border-slate-100 dark:border-slate-700 pb-5 -mx-6 px-6 card-header">
                     <div class="flex-1">
                         <div class="card-title text-slate-900 dark:text-white">Crear Rol
                             <a href="{{ url('seguridad/role')}}">

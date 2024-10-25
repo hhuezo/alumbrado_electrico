@@ -8,7 +8,7 @@
         <div class="2xl:col-span-12 lg:col-span-12 col-span-12">
             <div class="card">
                 <div class="card-body flex flex-col p-6">
-                    <header class="flex mb-5 items-center border-b border-slate-100 dark:border-slate-700 pb-5 -mx-6 px-6">
+                    <header class="flex mb-5 items-center border-b border-slate-100 dark:border-slate-700 pb-5 -mx-6 px-6 card-header">
                         <div class="flex-1">
                             <div class="card-title text-slate-900 dark:text-white">Usuario
                                 <a href="{{ url('seguridad/user') }}">
@@ -82,7 +82,7 @@
         <div class="2xl:col-span-12 lg:col-span-12 col-span-12">
             <div class="card">
                 <div class="card-body flex flex-col p-6">
-                    <header class="flex mb-5 items-center border-b border-slate-100 dark:border-slate-700 pb-5 -mx-6 px-6">
+                    <header class="flex mb-5 items-center border-b border-slate-100 dark:border-slate-700 pb-5 -mx-6 px-6 card-header">
                         <div class="flex-1">
                             <div class="card-title text-slate-900 dark:text-white">Administración</div>
                         </div>
@@ -110,7 +110,7 @@
                                     aria-labelledby="tabs-home-tab">
 
                                     <header
-                                        class="flex mb-5 items-center border-b border-slate-100 dark:border-slate-700 pb-5 -mx-6 px-6">
+                                        class="flex mb-5 items-center border-b border-slate-100 dark:border-slate-700 pb-5 -mx-6 px-6 card-header">
                                         <div class="flex-1">
                                             <div class="card-title text-slate-900 dark:text-white">
                                                 <button class="btn inline-flex justify-center btn-outline-dark float-right"
@@ -148,7 +148,7 @@
                                                                             <iconify-icon icon="mdi:delete-circle"
                                                                                 class="danger" width="40"
                                                                                 data-bs-toggle="modal"
-                                                                                data-bs-target="#modal-delete-{{ $obj->id }}"></iconify-icon></button>
+                                                                                data-bs-target="#modal-delete-{{ $obj->id }}" style="color:#dc3545;"></iconify-icon></button>
 
                                                                         </td>
                                                                     </tr>
@@ -167,7 +167,7 @@
                                 <div class="tab-pane fade" id="tabs-profile" role="tabpanel"
                                     aria-labelledby="tabs-profile-tab">
                                     <header
-                                        class="flex mb-5 items-center border-b border-slate-100 dark:border-slate-700 pb-5 -mx-6 px-6">
+                                        class="flex mb-5 items-center border-b border-slate-100 dark:border-slate-700 pb-5 -mx-6 px-6 card-header">
                                         <div class="flex-1">
                                             <div class="card-title text-slate-900 dark:text-white">
                                                 <button class="btn inline-flex justify-center btn-outline-dark float-right"
@@ -197,7 +197,7 @@
                                                         <td class="table-td ">
                                                             <iconify-icon icon="mdi:delete-circle" class="danger"
                                                                 width="40" data-bs-toggle="modal"
-                                                                data-bs-target="#modal-delete-{{ $obj->id }}"></iconify-icon>
+                                                                data-bs-target="#modal-delete-{{ $obj->id }}" style="color:#dc3545;"></iconify-icon>
 
                                                         </td>
                                                     </tr>

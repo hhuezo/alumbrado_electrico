@@ -36,14 +36,14 @@
 
                                         <td align="center" class="table-td">
                                             <a href="{{ url('catalogo/tipo_falla') }}/{{ $obj->id }}/edit">
-                                                <iconify-icon icon="mdi:pencil-box" width="40"></iconify-icon>
+                                                <iconify-icon icon="mdi:pencil-circle" width="40" style="color: #0d6efd;"></iconify-icon>
                                             </a>
                                             &nbsp;&nbsp;
 
                                             @if ($obj->activo == '1')
                                             <iconify-icon data-bs-toggle="modal"
-                                            data-bs-target="#modal-delete-{{ $obj->id }}" icon="mdi:trash"
-                                            width="40"></iconify-icon>
+                                            data-bs-target="#modal-delete-{{ $obj->id }}" icon="f7:trash-circle-fill"
+                                            width="40" style="color:#dc3545;"></iconify-icon>
                                             @else
                                             <iconify-icon data-bs-toggle="modal"
                                             data-bs-target="#modal-active-{{ $obj->id }}"

@@ -44,7 +44,7 @@
                                 <td>{{ $obj->municipio->departamento->nombre }}</td>
                                 <td align="center">
                                     <a href="{{ url('catalogo/distrito') }}/{{ $obj->id }}/edit">
-                                        <iconify-icon icon="mdi:pencil-circle" width="40"></iconify-icon>
+                                        <iconify-icon icon="mdi:pencil-circle" width="40" style="color:#0d6efd"></iconify-icon>
                                     </a>
 
                                 </td>

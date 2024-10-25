@@ -36,10 +36,10 @@
                                     <td class="table-td">{{ $obj->id }}</td>
                                     <td class="table-td">{{ $obj->name }}</td>
                                     <td class="table-td">
-                                        <iconify-icon icon="mdi:pencil-circle" onclick="modal_edit({{ $obj->id }},'{{ $obj->name }}')" class="success" width="40"></iconify-icon>
+                                        <iconify-icon icon="mdi:pencil-circle" onclick="modal_edit({{ $obj->id }},'{{ $obj->name }}')" style="color: #0d6efd;"width="40"></iconify-icon>
 
                                         &nbsp;&nbsp;
-                                        <iconify-icon data-bs-toggle="modal" data-bs-target="#modal-delete-{{ $obj->id }}" icon="mdi:delete-circle" class="danger" width="40"></iconify-icon>
+                                        <iconify-icon data-bs-toggle="modal" data-bs-target="#modal-delete-{{ $obj->id }}" icon="mdi:delete-circle" style="color:#dc3545;" width="40"></iconify-icon>
                                     </td>
                                 </tr>
                                 @include('seguridad.permission.modal')

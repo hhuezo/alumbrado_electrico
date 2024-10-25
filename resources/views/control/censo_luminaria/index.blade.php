@@ -71,16 +71,16 @@
 
                                                     <a
                                                         href="{{ url('control/censo_luminaria') }}/{{ $obj->id }}/edit">
-                                                        <iconify-icon icon="el:pencil-alt" width="40"
-                                                            height="40"></iconify-icon>
+                                                        <iconify-icon icon="mdi:pencil-circle" width="40"
+                                                            height="40" style="color: #0d6efd;"></iconify-icon>
                                                     </a>
 
 
                                                     @if ($obj->countCodigo($obj->codigo_luminaria) == 1)
                                                         <a href="#" data-bs-toggle="modal"
                                                             data-bs-target="#modal-delete-{{ $obj->id }}">
-                                                            <iconify-icon icon="f7:trash-circle-fill" width="45"
-                                                                height="45">
+                                                            <iconify-icon icon="f7:trash-circle-fill" width="40"
+                                                                height="40" style="color:#dc3545;">
                                                             </iconify-icon>
                                                         </a>
                                                     @else
