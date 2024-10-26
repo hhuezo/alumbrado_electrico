@@ -5,7 +5,7 @@
             <div class="transition-all duration-150 container-fluid" id="page_layout">
                 <div id="content_layout">
 
-                    <header class="flex mb-5 items-center border-b border-slate-100 dark:border-slate-700 pb-5 -mx-6 px-6">
+                    <header class="flex mb-5 items-center border-b border-slate-100 dark:border-slate-700 pb-5 -mx-6 px-6 card-header">
                         <div class="flex-1">
                             <div class="card-title text-slate-900 dark:text-white">Biblioteca
                             </div>

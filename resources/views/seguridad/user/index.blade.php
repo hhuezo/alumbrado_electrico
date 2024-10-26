@@ -43,7 +43,7 @@
                                         <td class="table-td ">
 
                                             <a href="{{ url('seguridad/user') }}/{{ $obj->id }}/edit">
-                                                <iconify-icon icon="mdi:pencil-circle" class="success" width="40"></iconify-icon>
+                                                <iconify-icon icon="mdi:pencil-circle" class="success" width="40" style="color: #0d6efd;"></iconify-icon>
                                             </a>
                                             &nbsp;&nbsp;
                                         </td>

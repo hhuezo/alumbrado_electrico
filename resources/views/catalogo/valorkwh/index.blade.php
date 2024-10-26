@@ -33,7 +33,7 @@
 
                                         <td align="center" class="table-td">
                                             <a href="{{ url('catalogo/valorkwh') }}/{{ $obj->id }}/edit">
-                                                <iconify-icon icon="mdi:pencil-box" width="40"></iconify-icon>
+                                                <iconify-icon icon="mdi:pencil-circle" width="40" style="color: #0d6efd;"></iconify-icon>
                                             </a>
 
 
