@@ -366,26 +366,27 @@
         </script>
     @endif
 
-    <div class="card">
+
+
+
+
+    <div class="card xl:col-span-2">
         <div class="card-body flex flex-col p-6">
             <header class="flex mb-5 items-center border-b border-slate-100 dark:border-slate-700 pb-5 -mx-6 px-6">
                 <div class="flex-1">
-                    <div class="card-title text-slate-900 dark:text-white">Censo genérico
-
-                    </div>
+                    <div class="card-title text-slate-900 dark:text-white">Censo genérico</div>
                 </div>
             </header>
-
-            <div class="card-body flex flex-col p-4">
-                <form method="GET" action="{{ url('home') }}">
-                    <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-7">
+            <div class="card-text h-full ">
+                <form method="GET" action="{{ url('home') }}" class="space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
                         <div class="input-area relative">
                             <label for="largeInput" class="form-label">Año</label>
                             <select class="form-control" name="anio">
                                 @for ($i = date('Y'); $i >= 2023; $i--)
-                                <option value="{{ $i }}" {{ $anio == $i ? 'selected' : '' }}>
-                                    {{ $i }}
-                                </option>
+                                    <option value="{{ $i }}" {{ $anio == $i ? 'selected' : '' }}>
+                                        {{ $i }}
+                                    </option>
                                 @endfor
                             </select>
                         </div>
@@ -393,64 +394,66 @@
                             <label for="largeInput" class="form-label">Mes</label>
                             <select class="form-control" name="mes">
                                 @foreach ($meses as $key => $value)
-                                <option value="{{ $key }}" {{ $mes == $key ? 'selected' : '' }}>
-                                    {{ $value }}
-                                </option>
+                                    <option value="{{ $key }}" {{ $mes == $key ? 'selected' : '' }}>
+                                        {{ $value }}
+                                    </option>
                                 @endforeach
                             </select>
                         </div>
-
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-7">
-
-                        <div>
-                            <label for="basicSelect" class="form-label">Departamento</label>
-                            <select name="departamento" id="departamento" class="form-control w-full mt-2" onchange="getMunicipio(this.value)" required>
+                        <div class="input-area relative">
+                        </div>
+                        <div class="input-area relative">
+                            <label for="largeInput" class="form-label">Departamento</label>
+                            <select name="departamento" id="departamento" class="form-control w-full mt-2"
+                                onchange="getMunicipio(this.value)" required>
                                 <option value="">Seleccione</option>
                                 @foreach ($departamentos as $obj)
-                                <option value="{{ $obj->id }}" {{ $id_departamento == $obj->id ? 'selected' : '' }}>
-                                    {{ $obj->nombre }}
-                                </option>
+                                    <option value="{{ $obj->id }}"
+                                        {{ $id_departamento == $obj->id ? 'selected' : '' }}>
+                                        {{ $obj->nombre }}
+                                    </option>
                                 @endforeach
                             </select>
                         </div>
-                        <div>
-                            <label for="basicSelect" class="form-label">Municipio</label>
-                            <select name="municipio" id="municipio" class="form-control w-full mt-2" onchange="getDistrito(this.value)" required>
+                        <div class="input-area relative">
+                            <label for="largeInput" class="form-label">Municipio</label>
+                            <select name="municipio" id="municipio" class="form-control w-full mt-2"
+                                onchange="getDistrito(this.value)" required>
                                 <option value="">Seleccione</option>
                                 @if ($municipios)
-                                @foreach ($municipios as $obj)
-                                <option value="{{ $obj->id }}" {{ $id_municipio == $obj->id ? 'selected' : '' }}>
-                                    {{ $obj->nombre }}
-                                </option>
-                                @endforeach
+                                    @foreach ($municipios as $obj)
+                                        <option value="{{ $obj->id }}"
+                                            {{ $id_municipio == $obj->id ? 'selected' : '' }}>
+                                            {{ $obj->nombre }}
+                                        </option>
+                                    @endforeach
                                 @endif
                             </select>
                         </div>
-                        <div>
-                            <label for="basicSelect" class="form-label">Distrito</label>
+                        <div class="input-area relative">
+                            <label for="largeInput" class="form-label">Distrito</label>
                             <select id="distrito" name="id_distrito" class="form-control w-full mt-2" required>
                                 <option value="">Seleccione</option>
                                 @if ($municipios)
-                                @foreach ($distritos as $obj)
-                                <option value="{{ $obj->id }}" {{ $id_distrito == $obj->id ? 'selected' : '' }}>
-                                    {{ $obj->nombre }}
-                                </option>
-                                @endforeach
+                                    @foreach ($distritos as $obj)
+                                        <option value="{{ $obj->id }}"
+                                            {{ $id_distrito == $obj->id ? 'selected' : '' }}>
+                                            {{ $obj->nombre }}
+                                        </option>
+                                    @endforeach
                                 @endif
                             </select>
                         </div>
+
                     </div>
-                    <br>
-                    <button class="btn btn-dark btn-sm float-right">Aceptar  </button>
+
+                    <button class="btn inline-flex justify-center btn-dark float-right">Aceptar</button>
                 </form>
-
-
             </div>
-
         </div>
     </div>
+
+
     <div class="content-wrapper transition-all duration-150 " id="content_wrapper">
 
         @if ($verificacion_data > 0)

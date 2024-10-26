@@ -157,13 +157,7 @@
                     --}}
                 </a>
                 <!-- Sidebar Type Button -->
-                <div id="sidebar_type" class="cursor-pointer text-slate-900 dark:text-white text-lg">
-                    <iconify-icon class="sidebarDotIcon extend-icon text-white" icon="fa-regular:dot-circle">
-                    </iconify-icon>
-                    <iconify-icon class="sidebarDotIcon collapsed-icon text-white"
-                        icon="material-symbols:circle-outline"></iconify-icon>
 
-                </div>
                 <button class="sidebarCloseIcon text-2xl">
                     <iconify-icon class="text-slate-900 dark:text-slate-200 text-white"
                         icon="clarity:window-close-line">

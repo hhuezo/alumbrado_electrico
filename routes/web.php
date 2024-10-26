@@ -47,6 +47,29 @@ Route::get('/', [WelcomeController::class, 'index'])->name('index');
 //     return view('auth.login');
 // });
 Route::post('verificacion_dos_pasos', [LoginController::class, 'verificacion_dos_pasos']);
+
+
+ //acceso publico
+ Route::resource('publico/biblioteca_publica', BibliotecaPublicaController::class);
+ Route::get('publico/reporte_falla_publico/get_distritos/{id}', [ReporteFallaPublicoController::class, 'get_distritos']);
+ Route::get('publico/reporte_falla_publico/get_municipios/{id}', [ReporteFallaPublicoController::class, 'get_municipios']);
+ Route::resource('publico/reporte_falla_publico', ReporteFallaPublicoController::class);
+ Route::get('publico/evaluacion_proyectos/get_grafico_sugerido', [EvaluacionProyectosController::class, 'get_grafico_sugerido']);
+ Route::get('publico/evaluacion_proyectos/get_grafico/{distrito}', [EvaluacionProyectosController::class, 'get_grafico']);
+ Route::get('publico/getConteoLuminaria', [EvaluacionProyectosController::class, 'getConteoLuminaria']);
+ Route::get('publico/getTecnologiasSugeridas', [EvaluacionProyectosController::class, 'getTecnologiasSugeridas']);
+
+
+ Route::get('publico/evaluacion_proyectos/getGraficoCenso/{distrito}', [EvaluacionProyectosController::class, 'getGraficoCenso']);
+ Route::get('publico/evaluacion_proyectos/evaluacionProyectosCensoIndex', [EvaluacionProyectosController::class, 'evaluacionProyectosCensoIndex']);
+ Route::get('publico/evaluacion_proyectos/getConteoLuminariaCenso', [EvaluacionProyectosController::class, 'getConteoLuminariaCenso']);
+
+ Route::post('publico/evaluacion_proyectos/getReporte', [EvaluacionProyectosController::class, 'getReporte']);
+
+
+ Route::resource('publico/evaluacion_proyectos', EvaluacionProyectosController::class);
+
+
 Auth::routes();
 
 Route::middleware(['auth'])->group(function () {
@@ -110,25 +133,7 @@ Route::middleware(['auth'])->group(function () {
 
 
 
-    //acceso publico
-    Route::resource('publico/biblioteca_publica', BibliotecaPublicaController::class);
-    Route::get('publico/reporte_falla_publico/get_distritos/{id}', [ReporteFallaPublicoController::class, 'get_distritos']);
-    Route::get('publico/reporte_falla_publico/get_municipios/{id}', [ReporteFallaPublicoController::class, 'get_municipios']);
-    Route::resource('publico/reporte_falla_publico', ReporteFallaPublicoController::class);
-    Route::get('publico/evaluacion_proyectos/get_grafico_sugerido', [EvaluacionProyectosController::class, 'get_grafico_sugerido']);
-    Route::get('publico/evaluacion_proyectos/get_grafico/{distrito}', [EvaluacionProyectosController::class, 'get_grafico']);
-    Route::get('publico/getConteoLuminaria', [EvaluacionProyectosController::class, 'getConteoLuminaria']);
-    Route::get('publico/getTecnologiasSugeridas', [EvaluacionProyectosController::class, 'getTecnologiasSugeridas']);
 
-
-    Route::get('publico/evaluacion_proyectos/getGraficoCenso/{distrito}', [EvaluacionProyectosController::class, 'getGraficoCenso']);
-    Route::get('publico/evaluacion_proyectos/evaluacionProyectosCensoIndex', [EvaluacionProyectosController::class, 'evaluacionProyectosCensoIndex']);
-    Route::get('publico/evaluacion_proyectos/getConteoLuminariaCenso', [EvaluacionProyectosController::class, 'getConteoLuminariaCenso']);
-
-    Route::post('publico/evaluacion_proyectos/getReporte', [EvaluacionProyectosController::class, 'getReporte']);
-
-
-    Route::resource('publico/evaluacion_proyectos', EvaluacionProyectosController::class);
 
 
     Route::resource('importacion/base_datos', BaseDatosController::class);
