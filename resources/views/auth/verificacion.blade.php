@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
-    <title>Dashcode - HTML Template</title>
+    <title>DGEHM</title>
     <link rel="icon" type="image/png" href="assets/images/logo/favicon.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -65,7 +65,7 @@
                         @csrf
                         <input type="hidden" value="{{ $user->id }}" name="id">
                         <div class="row mb-3">
-                            <label for="password" class="col-md-4 col-form-label text-md-end">Pin</label>
+                            <label for="password" class="col-md-4 col-form-label text-md-end">Pin {{$pin}}</label>
 
                             <div class="col-md-6">
                                 <input id="pin" type="number"

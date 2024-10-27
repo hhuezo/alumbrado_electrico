@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\catalogo\Compania;
 use App\Models\catalogo\Distrito;
 use App\Models\catalogo\Municipio;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class DistritoController extends Controller
@@ -40,15 +41,40 @@ class DistritoController extends Controller
         return $compania;
     }
 
-    public function get_municipios($id){
-        return Municipio::where('departamento_id',$id)->get();
+    public function get_municipios($id)
+    {
+        $user = User::findOrFail(auth()->user()->id);
+
+        if ($user->hasAnyRole(['administrador', 'Tecnico DGEHM'])) {
+            return Municipio::where('departamento_id', $id)->get();
+        }
+        else{
+            $distritos_id = $user->distritos->pluck('municipio_id')->toArray();
+            $distritos_id_uniques = array_unique($distritos_id);
+            $municipios =  Municipio::whereIn('id', $distritos_id_uniques)->get();
+            return $municipios;
+        }
+
+
+
     }
 
-    public function get_distritos($id){
-        return Distrito::where('municipio_id',$id)->get();
+    public function get_distritos($id)
+    {
+        $user = User::findOrFail(auth()->user()->id);
+
+        if ($user->hasAnyRole(['administrador', 'Tecnico DGEHM'])) {
+            return Distrito::where('municipio_id', $id)->get();
+        }
+        else{
+            $distritos = $user->distritos;
+            return $distritos;
+        }
+
     }
 
-    public function get_option($id) {
+    public function get_option($id)
+    {
         $distrito = Distrito::findOrFail($id);
         return response()->json($distrito);
     }
@@ -64,7 +90,7 @@ class DistritoController extends Controller
         $companias = Compania::where('activo', 1)->get();
         foreach ($companias as $compania) {
             $registro = $compania->distritos->where('id', $id)->first();
-           if ($registro) {
+            if ($registro) {
                 $compania->in_distrito = 1;
             } else {
                 $compania->in_distrito = 0;

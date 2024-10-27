@@ -7,6 +7,7 @@ use App\Models\catalogo\Departamento;
 use App\Models\catalogo\Distrito;
 use App\Models\catalogo\Municipio;
 use App\Models\catalogo\TipoLuminaria;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -140,7 +141,19 @@ class HomeController extends Controller
             $data_rango_potencia_instalada = null;
         }
         $meses = ["01" => "Enero", "02" => "Febrero", "03" => "Marzo", "04" => "Abril", "05" => "Mayo", "06" => "Junio", "07" => "Julio", "08" => "Agosto", "09" => "Septiembre", "10" => "Octubre", "11" => "Noviembre", "12" => "Diciembre"];
-        $departamentos = Departamento::get();
+
+
+
+
+        $user = User::findOrFail(auth()->user()->id);
+
+
+        if ($user->hasAnyRole(['administrador', 'Tecnico DGEHM'])) {
+            $departamentos = Departamento::get();
+        } else {
+            $departamentos = $user->get_departamentos($user->id);
+        }
+
         if ($request->departamento) {
             $id_departamento = $request->departamento;
             $municipios = Municipio::where('departamento_id', $request->departamento)->get();
@@ -157,6 +170,13 @@ class HomeController extends Controller
 
         if ($request->id_distrito) {
             $id_distrito = $request->id_distrito;
+        }
+
+        if ($user->hasAnyRole(['Administrador Alcaldia', 'Tecnico Alcaldia'])) {
+
+            $distritos = $user->get_municipios($user->id);
+
+            //dd($distritos);
         }
 
 

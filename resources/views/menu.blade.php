@@ -201,12 +201,17 @@
                             {{-- <li>
                                 <a href="#">Gráficos</a>
                             </li> --}}
+                            @can('evaluacion proyectos')
                             <li>
                                 <a href="{{ url('publico/evaluacion_proyectos') }}">Evaluación de proyectos</a>
                             </li>
+                            @endcan
+
+                            @can('biblioteca')
                             <li>
                                 <a href="{{ url('publico/biblioteca_publica') }}">Biblioteca / Info general</a>
                             </li>
+                            @endcan
                         </ul>
                     </li>
                     {{-- @can('read menu informacion publica')
