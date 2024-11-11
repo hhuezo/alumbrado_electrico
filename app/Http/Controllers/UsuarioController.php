@@ -74,16 +74,18 @@ class UsuarioController extends Controller
         if (auth()->user()->can('edit users')) {
             $usuarios = User::findOrFail($id);
             $roles = $usuarios->user_rol;
+          //  dd($usuarios->user_rol);
 
             $rolArray =  $roles->pluck('id')->toArray();
 
             $rol_no_asignados = Role::whereNotIn('id', $rolArray)->get();
-
+            $roles_all = Role::get();
+           // dd($roles_all->user_rol);
             $departamentos = Departamento::get();
 
 
 
-            return view('seguridad.user.edit', compact('usuarios', 'roles', 'rol_no_asignados', 'departamentos'));
+            return view('seguridad.user.edit', compact('roles_all','usuarios', 'roles', 'rol_no_asignados', 'departamentos'));
         } else {
             alert()->error('Usuario No Autorizado');
             return back();
@@ -109,12 +111,30 @@ class UsuarioController extends Controller
 
     public function  attach_roles(Request $request)
     {
-        $user = User::findOrFail($request->model_id);
-        $roles = Role::findOrFail($request->rol_id);
-        $user->assignRole($roles->name);
-        // $roles->user_has_role()->attach($request->model_id);
-        alert()->success('se han sido Agregado correctamente');
-        return back();
+        // $user = User::findOrFail($request->model_id);
+        // $roles = Role::findOrFail($request->rol_id);
+        // $user->assignRole($roles->name);
+        // // $roles->user_has_role()->attach($request->model_id);
+        // alert()->success('se han sido Agregado correctamente');
+        // return back();
+
+        $user = User::find($request->model_id);
+        $role = Role::find($request->rol_id);
+
+        if ($user && $role) {
+            // Verificar si el usuario ya tiene el rol
+            if ($user->roles->contains($role->id)) {
+                // Quitar el rol si ya lo tiene
+                $user->roles()->detach($role->id);
+                return response()->json(['status' => 'removed']);
+            } else {
+                // Asignar el rol si no lo tiene
+                $user->roles()->attach($role->id);
+                return response()->json(['status' => 'added']);
+            }
+        }
+
+        return response()->json(['status' => 'error', 'message' => 'User or Role not found'], 404);
     }
 
     public function  dettach_roles(Request $request)

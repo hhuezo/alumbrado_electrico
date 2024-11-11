@@ -51,8 +51,13 @@ class RoleController extends Controller
             $role = Role::findOrFail($id);
             $permissions = Permission::get();
             $permission_in_role = $role->role_has_permissions;
+           // dd($permission_in_role);
 
-            return view('seguridad.role.edit', compact('role', 'permissions', 'permission_in_role'));
+             $permissionArray =  $permission_in_role->pluck('id')->toArray();
+
+            $permisos_no_asignados = Permission::whereNotIn('id', $permissionArray)->get();
+
+            return view('seguridad.role.edit', compact('role', 'permissions', 'permission_in_role','permisos_no_asignados'));
         } else {
             alert()->error('Usuario No Autorizado');
             return back();

@@ -61,7 +61,7 @@
                         <label for="largeInput" class="inline-inputLabel">Permiso</label>
                         <input type="hidden" name="role_id" id="role_id" value="{{ $role->id }}">
                         <select name="permission_id[]" id="permission_id" class="form-control" multiple style="height: 200px;">
-                            @foreach ($permissions as $obj)
+                            @foreach ($permisos_no_asignados as $obj)
                             <option value="{{ $obj->id }}" >{{ $obj->name }}</option>
                             @endforeach
                         </select>
